@@ -5,7 +5,11 @@
   <artifactId>Uber</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Uber</name>
+  <properties>
+    <maven.compiler.source>18</maven.compiler.source>
+    <maven.compiler.target>18</maven.compiler.target>
+  </properties>
+    <name>Uber</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
