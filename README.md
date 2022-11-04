@@ -1,5 +1,5 @@
-# Uber Web and Mobile application
-Project assignment for courses: Engineering of server-side application layer, Client Side Engineering, Software Development Methodologies, Mobile Apps and Software Testing
+# Uber Web Application
+Project assignment for courses: Engineering of server-side application layer, Client Side Engineering, Software Development Methodologies and Software Testing
 ## Team members
 - [Anastasija Savić](https://github.com/savic-a) SV7/2020
 - [Katarina Vučić](https://github.com/kaca01) SV29/2020
