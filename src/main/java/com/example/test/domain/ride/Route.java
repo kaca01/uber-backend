@@ -4,10 +4,8 @@ import java.time.LocalDate;
 
 public class Route {
     private int id;
-    private LocalDate startTime;
-    private LocalDate endTime;
-    private int startingPointId;  // this is from location class
-    private int endingPointId;
+    private Location startingPoint;
+    private Location endingPoint;
     private double distance;
     private double estimatedTime;
     private double price;
@@ -16,13 +14,10 @@ public class Route {
 
     }
 
-    public Route(int id, LocalDate startTime, LocalDate endTime, int startingPointId, int endingPointId,
-                 double distance, double estimatedTime, double price) {
+    public Route(int id, Location startingPoint, Location endingPoint, double distance, double estimatedTime, double price) {
         this.id = id;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.startingPointId = startingPointId;
-        this.endingPointId = endingPointId;
+        this.startingPoint = startingPoint;
+        this.endingPoint = endingPoint;
         this.distance = distance;
         this.estimatedTime = estimatedTime;
         this.price = price;
@@ -36,36 +31,20 @@ public class Route {
         this.id = id;
     }
 
-    public LocalDate getStartTime() {
-        return startTime;
+    public Location getStartingPoint() {
+        return startingPoint;
     }
 
-    public void setStartTime(LocalDate startTime) {
-        this.startTime = startTime;
+    public void setStartingPoint(Location startingPoint) {
+        this.startingPoint = startingPoint;
     }
 
-    public LocalDate getEndTime() {
-        return endTime;
+    public Location getEndingPoint() {
+        return endingPoint;
     }
 
-    public void setEndTime(LocalDate endTime) {
-        this.endTime = endTime;
-    }
-
-    public int getStartingPointId() {
-        return startingPointId;
-    }
-
-    public void setStartingPointId(int startingPointId) {
-        this.startingPointId = startingPointId;
-    }
-
-    public int getEndingPointId() {
-        return endingPointId;
-    }
-
-    public void setEndingPointId(int endingPointId) {
-        this.endingPointId = endingPointId;
+    public void setEndingPoint(Location endingPoint) {
+        this.endingPoint = endingPoint;
     }
 
     public double getDistance() {
@@ -96,10 +75,8 @@ public class Route {
     public String toString() {
         return "Route{" +
                 "id=" + id +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", startingPointId=" + startingPointId +
-                ", endingPointId=" + endingPointId +
+                ", startingPoint=" + startingPoint +
+                ", endingPoint=" + endingPoint +
                 ", distance=" + distance +
                 ", estimatedTime=" + estimatedTime +
                 ", price=" + price +

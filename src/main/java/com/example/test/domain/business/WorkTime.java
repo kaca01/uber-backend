@@ -6,17 +6,15 @@ public class WorkTime {
     private int id;
     private LocalDate start;
     private LocalDate end;
-    private int driverInt;
 
     public WorkTime() {
 
     }
 
-    public WorkTime(int id, LocalDate start, LocalDate end, int driverInt) {
+    public WorkTime(int id, LocalDate start, LocalDate end) {
         this.id = id;
         this.start = start;
         this.end = end;
-        this.driverInt = driverInt;
     }
 
     public int getId() {
@@ -43,20 +41,12 @@ public class WorkTime {
         this.end = end;
     }
 
-    public int getDriverInt() {
-        return driverInt;
-    }
-
-    public void setDriverInt(int driverInt) {
-        this.driverInt = driverInt;
-    }
 
     @Override
     public String toString() {
         return "WorkTime{" +
                 "start=" + start +
                 ", end=" + end +
-                ", driverInt=" + driverInt +
                 '}';
     }
 }

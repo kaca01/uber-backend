@@ -1,6 +1,6 @@
 package com.example.test.domain.user;
 
-public class User {
+abstract public class User {
     private int id;
     private String name;
     // TODO add profile picture

@@ -1,15 +1,15 @@
 package com.example.test.domain.vehicle;
 
+import com.example.test.domain.ride.Location;
 import com.example.test.enumeration.VehicleModel;
 
 public class Vehicle {
     private int id;
-    private int driverId;
+    private VehicleType type;
     private VehicleModel model;
-    private int type;
     private String licensePlate;
     private int numberOfSeats;
-    private int locationId;
+    private Location currentLocation;
     private boolean babiesAllowed;
     private boolean petsAllowed;
 
@@ -17,15 +17,13 @@ public class Vehicle {
 
     }
 
-    public Vehicle(int id, int driverId, VehicleModel model, int type, String licensePlate, int numberOfSeats,
-                   int locationId, boolean babiesAllowed, boolean petsAllowed) {
+    public Vehicle(int id, VehicleType type, VehicleModel model, String licensePlate, int numberOfSeats, Location currentLocation, boolean babiesAllowed, boolean petsAllowed) {
         this.id = id;
-        this.driverId = driverId;
-        this.model = model;
         this.type = type;
+        this.model = model;
         this.licensePlate = licensePlate;
         this.numberOfSeats = numberOfSeats;
-        this.locationId = locationId;
+        this.currentLocation = currentLocation;
         this.babiesAllowed = babiesAllowed;
         this.petsAllowed = petsAllowed;
     }
@@ -38,12 +36,12 @@ public class Vehicle {
         this.id = id;
     }
 
-    public int getDriverId() {
-        return driverId;
+    public VehicleType getType() {
+        return type;
     }
 
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
+    public void setType(VehicleType type) {
+        this.type = type;
     }
 
     public VehicleModel getModel() {
@@ -52,14 +50,6 @@ public class Vehicle {
 
     public void setModel(VehicleModel model) {
         this.model = model;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getLicensePlate() {
@@ -78,12 +68,12 @@ public class Vehicle {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public boolean isBabiesAllowed() {
@@ -106,12 +96,11 @@ public class Vehicle {
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
-                ", driverId=" + driverId +
-                ", model=" + model +
                 ", type=" + type +
+                ", model='" + model + '\'' +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", numberOfSeats=" + numberOfSeats +
-                ", locationId=" + locationId +
+                ", currentLocation=" + currentLocation +
                 ", babiesAllowed=" + babiesAllowed +
                 ", petsAllowed=" + petsAllowed +
                 '}';

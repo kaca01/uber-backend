@@ -1,51 +1,65 @@
 package com.example.test.domain.ride;
 
+import com.example.test.domain.business.Payment;
+import com.example.test.domain.communication.Message;
+import com.example.test.domain.communication.RejectionLetter;
+import com.example.test.domain.communication.Review;
+import com.example.test.domain.user.Driver;
+import com.example.test.domain.user.Passenger;
+import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.enumeration.RideStatus;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Ride {
     private int id;
     private LocalTime startTime;
     private LocalTime endTime;
     private double price;
-    private int driverId;
-    private int passengerId;  // TODO : not passengers list?
-    // TODO : no list of routes?
-    private int estimatedTimeInMin;  // TODO : or double?
-    private int reviewId;  // TODO : here is not list of reviews because only one passenger can order ??? (no split fare)
+    private double estimatedTimeInMin;
+    private Vehicle vehicle;
+    private Driver driver;
+    private ArrayList<Passenger> passengers;
+
+    private ArrayList<Review> reviews;
+
     private RideStatus rideStatus;
-    private int rejectionLetterId;
-    private boolean panicPressed;
-    // TODO : do we really need flag for babies and pets
+    private RejectionLetter rejectionLetter;
+    private Message panic;
     private boolean babiesAllowed;
     private boolean petsAllowed;
-    // TODO : should here be vehicle instead of vehicle type, flags for babies and pets?
-    private int vehicleTypeId;
-    private int paymentId;
+    private Payment payment;
+
+    private ArrayList<Message> messages;
+
+    private Route route;
 
     public Ride() {
 
     }
 
-    public Ride(int id, LocalTime startTime, LocalTime endTime, double price, int driverId, int passengerId,
-                int estimatedTimeInMin, int reviewId, RideStatus rideStatus, int rejectionLetterId,
-                boolean panicPressed, boolean babiesAllowed, boolean petsAllowed, int vehicleTypeId, int paymentId) {
+    public Ride(int id, LocalTime startTime, LocalTime endTime, double price, double estimatedTimeInMin, Vehicle vehicle,
+                Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus rideStatus,
+                RejectionLetter rejectionLetter, Message panic, boolean babiesAllowed, boolean petsAllowed,
+                Payment payment, ArrayList<Message> messages, Route route) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;
-        this.driverId = driverId;
-        this.passengerId = passengerId;
         this.estimatedTimeInMin = estimatedTimeInMin;
-        this.reviewId = reviewId;
+        this.vehicle = vehicle;
+        this.driver = driver;
+        this.passengers = passengers;
+        this.reviews = reviews;
         this.rideStatus = rideStatus;
-        this.rejectionLetterId = rejectionLetterId;
-        this.panicPressed = panicPressed;
+        this.rejectionLetter = rejectionLetter;
+        this.panic = panic;
         this.babiesAllowed = babiesAllowed;
         this.petsAllowed = petsAllowed;
-        this.vehicleTypeId = vehicleTypeId;
-        this.paymentId = paymentId;
+        this.payment = payment;
+        this.messages = messages;
+        this.route = route;
     }
 
     public int getId() {
@@ -80,36 +94,44 @@ public class Ride {
         this.price = price;
     }
 
-    public int getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
-    }
-
-    public int getPassengerId() {
-        return passengerId;
-    }
-
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
-    }
-
-    public int getEstimatedTimeInMin() {
+    public double getEstimatedTimeInMin() {
         return estimatedTimeInMin;
     }
 
-    public void setEstimatedTimeInMin(int estimatedTimeInMin) {
+    public void setEstimatedTimeInMin(double estimatedTimeInMin) {
         this.estimatedTimeInMin = estimatedTimeInMin;
     }
 
-    public int getReviewId() {
-        return reviewId;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(ArrayList<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public RideStatus getRideStatus() {
@@ -120,20 +142,20 @@ public class Ride {
         this.rideStatus = rideStatus;
     }
 
-    public int getRejectionLetterId() {
-        return rejectionLetterId;
+    public RejectionLetter getRejectionLetter() {
+        return rejectionLetter;
     }
 
-    public void setRejectionLetterId(int rejectionLetterId) {
-        this.rejectionLetterId = rejectionLetterId;
+    public void setRejectionLetter(RejectionLetter rejectionLetter) {
+        this.rejectionLetter = rejectionLetter;
     }
 
-    public boolean isPanicPressed() {
-        return panicPressed;
+    public Message getPanic() {
+        return panic;
     }
 
-    public void setPanicPressed(boolean panicPressed) {
-        this.panicPressed = panicPressed;
+    public void setPanic(Message panic) {
+        this.panic = panic;
     }
 
     public boolean isBabiesAllowed() {
@@ -152,20 +174,28 @@ public class Ride {
         this.petsAllowed = petsAllowed;
     }
 
-    public int getVehicleTypeId() {
-        return vehicleTypeId;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setVehicleTypeId(int vehicleTypeId) {
-        this.vehicleTypeId = vehicleTypeId;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
-    public int getPaymentId() {
-        return paymentId;
+    public ArrayList<Message> getMessages() {
+        return messages;
     }
 
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     @Override
@@ -175,17 +205,19 @@ public class Ride {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", price=" + price +
-                ", driverId=" + driverId +
-                ", passengerId=" + passengerId +
                 ", estimatedTimeInMin=" + estimatedTimeInMin +
-                ", reviewId=" + reviewId +
+                ", vehicle=" + vehicle +
+                ", driver=" + driver +
+                ", passengers=" + passengers +
+                ", reviews=" + reviews +
                 ", rideStatus=" + rideStatus +
-                ", rejectionLetterId=" + rejectionLetterId +
-                ", panicPressed=" + panicPressed +
+                ", rejectionLetter=" + rejectionLetter +
+                ", panic=" + panic +
                 ", babiesAllowed=" + babiesAllowed +
                 ", petsAllowed=" + petsAllowed +
-                ", vehicleTypeId=" + vehicleTypeId +
-                ", paymentId=" + paymentId +
+                ", payment=" + payment +
+                ", messages=" + messages +
+                ", route=" + route +
                 '}';
     }
 }

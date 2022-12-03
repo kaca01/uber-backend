@@ -1,19 +1,21 @@
 package com.example.test.domain.business;
 
+import com.example.test.domain.user.Passenger;
+
 import java.time.LocalDate;
 
 public class Payment {
     private int id;
-    private int passengerId;
+    private Passenger passenger;
     private LocalDate date;
     private double price;
 
     public Payment() {
     }
 
-    public Payment(int id, int passengerId, LocalDate date, double price) {
+    public Payment(int id, Passenger passenger, LocalDate date, double price) {
         this.id = id;
-        this.passengerId = passengerId;
+        this.passenger = passenger;
         this.date = date;
         this.price = price;
     }
@@ -26,12 +28,12 @@ public class Payment {
         this.id = id;
     }
 
-    public int getPassengerId() {
-        return passengerId;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
     public LocalDate getDate() {
@@ -54,7 +56,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                ", passengerId=" + passengerId +
+                ", passenger=" + passenger +
                 ", date=" + date +
                 ", price=" + price +
                 '}';

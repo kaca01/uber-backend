@@ -6,7 +6,7 @@ public class Admin{
     private String password;
     private String name;
     private String lastname;
-    // TODO : add profile picture
+    //TODO : add profile picture
 
     public Admin() {
 

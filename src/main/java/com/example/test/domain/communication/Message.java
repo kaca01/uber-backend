@@ -1,31 +1,29 @@
 package com.example.test.domain.communication;
 
+import com.example.test.domain.user.User;
 import com.example.test.enumeration.MessageType;
 
 import java.time.LocalDate;
 
 public class Message {
     private int id;
-    private int senderId;
-    private int recipientId;
+    private User sender;
+    private User receiver;
     private String message;
     private LocalDate time;
     private MessageType messageType;
-    private int rideId;
 
     public Message() {
 
     }
 
-    public Message(int id, int senderId, int recipientId, String message, LocalDate time, MessageType messageType,
-                   int rideId) {
+    public Message(int id, User sender, User receiver, String message, LocalDate time, MessageType messageType) {
         this.id = id;
-        this.senderId = senderId;
-        this.recipientId = recipientId;
+        this.sender = sender;
+        this.receiver = receiver;
         this.message = message;
         this.time = time;
         this.messageType = messageType;
-        this.rideId = rideId;
     }
 
     public int getId() {
@@ -36,20 +34,20 @@ public class Message {
         this.id = id;
     }
 
-    public int getSenderId() {
-        return senderId;
+    public User getSender() {
+        return sender;
     }
 
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
-    public int getRecipientId() {
-        return recipientId;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public void setRecipientId(int recipientId) {
-        this.recipientId = recipientId;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public String getMessage() {
@@ -76,24 +74,15 @@ public class Message {
         this.messageType = messageType;
     }
 
-    public int getRideId() {
-        return rideId;
-    }
-
-    public void setRideId(int rideId) {
-        this.rideId = rideId;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", senderId=" + senderId +
-                ", recipientId=" + recipientId +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
                 ", message='" + message + '\'' +
                 ", time=" + time +
                 ", messageType=" + messageType +
-                ", rideId=" + rideId +
                 '}';
     }
 }

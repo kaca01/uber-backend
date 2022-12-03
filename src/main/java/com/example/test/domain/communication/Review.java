@@ -1,24 +1,26 @@
 package com.example.test.domain.communication;
 
+import com.example.test.domain.user.Passenger;
 import com.example.test.enumeration.Grade;
+import com.example.test.enumeration.ReviewType;
 
 public class Review {
     private int id;
     private Grade grade;
     private String comment;
-    private int rideId;
-    private int passengerId;
+    private Passenger passenger;
+    private ReviewType type;
 
     public Review() {
 
     }
 
-    public Review(int id, Grade grade, String comment, int rideId, int passengerId) {
+    public Review(int id, Grade grade, String comment, Passenger passenger, ReviewType type) {
         this.id = id;
         this.grade = grade;
         this.comment = comment;
-        this.rideId = rideId;
-        this.passengerId = passengerId;
+        this.passenger = passenger;
+        this.type = type;
     }
 
     public int getId() {
@@ -45,20 +47,20 @@ public class Review {
         this.comment = comment;
     }
 
-    public int getRideId() {
-        return rideId;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public void setRideId(int rideId) {
-        this.rideId = rideId;
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
-    public int getPassengerId() {
-        return passengerId;
+    public ReviewType getType() {
+        return type;
     }
 
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
+    public void setType(ReviewType type) {
+        this.type = type;
     }
 
     @Override
@@ -67,8 +69,8 @@ public class Review {
                 "id=" + id +
                 ", grade=" + grade +
                 ", comment='" + comment + '\'' +
-                ", rideId=" + rideId +
-                ", passengerId=" + passengerId +
+                ", passenger=" + passenger +
+                ", type=" + type +
                 '}';
     }
 }
