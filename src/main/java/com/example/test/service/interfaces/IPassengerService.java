@@ -18,5 +18,5 @@ public interface IPassengerService {
 
     Passenger findUserById(Long id);
 
-    boolean activatePassenger(Long activationId);
+    Boolean activatePassenger(Long activationId);
 }

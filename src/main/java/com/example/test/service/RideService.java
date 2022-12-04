@@ -29,7 +29,7 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public boolean cancelExistingRide(Long id) {
+    public Boolean cancelExistingRide(Long id) {
         return false;
     }
 

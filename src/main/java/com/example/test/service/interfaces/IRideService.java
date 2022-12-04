@@ -15,7 +15,7 @@ public interface IRideService {
 
     Ride findRideById(Long id);
 
-    boolean cancelExistingRide(Long id);
+    Boolean cancelExistingRide(Long id);
 
     Message setPanic(String reason, Long id);
 

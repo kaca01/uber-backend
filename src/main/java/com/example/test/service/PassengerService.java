@@ -36,7 +36,7 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public boolean activatePassenger(Long activationId) {
+    public Boolean activatePassenger(Long activationId) {
         return false;
     }
 }

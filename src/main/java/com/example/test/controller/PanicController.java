@@ -5,7 +5,9 @@ import com.example.test.domain.user.Passenger;
 import com.example.test.service.interfaces.IPanicService;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +22,9 @@ public class PanicController {
     IPanicService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Message> getPanicMessages()
+    public ResponseEntity<Collection<Message>> getPanicMessages()
     {
-        return service.getAll();
+        Collection<Message> messages = service.getAll();
+        return new ResponseEntity<Collection<Message>>(messages, HttpStatus.OK);
     }
 }
