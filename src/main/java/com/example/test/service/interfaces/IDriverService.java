@@ -30,7 +30,7 @@ public interface IDriverService {
 
     public Vehicle insertVehicle(Long id, Vehicle vehicle);
 
-    public Vehicle updateVehicle(Long id, Long vehicleId);
+    public Vehicle updateVehicle(Long id, Vehicle vehicle);
 
     public WorkTime getWorkTime(Long id);
 
@@ -40,6 +40,6 @@ public interface IDriverService {
 
     public WorkTime getWorkTime(Long id, Long workTimeId);
 
-    public WorkTime updateWorkTime(Long id, WorkTime workTime);
+    public WorkTime updateWorkTime(Long id, Long workTimeId);
 
 }

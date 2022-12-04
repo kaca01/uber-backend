@@ -6,9 +6,11 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.DriverDocument;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.service.interfaces.IDriverService;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class DriverService implements IDriverService {
 
     @Override
@@ -57,7 +59,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Vehicle updateVehicle(Long id, Long vehicleId) {
+    public Vehicle updateVehicle(Long id, Vehicle vehicle) {
         return null;
     }
 
@@ -82,7 +84,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public WorkTime updateWorkTime(Long id, WorkTime workTime) {
+    public WorkTime updateWorkTime(Long id, Long workTimeId) {
         return null;
     }
 }
