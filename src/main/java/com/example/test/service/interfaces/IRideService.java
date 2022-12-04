@@ -9,19 +9,19 @@ public interface IRideService {
 
     Ride insert(Ride ride);
 
-    Ride findDriversActiveRide(int id);
+    Ride findDriversActiveRide(Long id);
 
-    Ride findPassengersActiveRide(int id);
+    Ride findPassengersActiveRide(Long id);
 
-    Ride findRideById(int id);
+    Ride findRideById(Long id);
 
-    boolean cancelExistingRide(int id);
+    boolean cancelExistingRide(Long id);
 
-    Message setPanic(String reason, int id);
+    Message setPanic(String reason, Long id);
 
-    Ride acceptRide(int id);
+    Ride acceptRide(Long id);
 
-    Ride endRide(int id);
+    Ride endRide(Long id);
 
-    Ride cancelRide(String reason, int id);
+    Ride cancelRide(String reason, Long id);
 }

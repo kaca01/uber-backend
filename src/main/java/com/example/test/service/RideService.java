@@ -3,7 +3,9 @@ package com.example.test.service;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
 import com.example.test.service.interfaces.IRideService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RideService implements IRideService {
 
     @Override
@@ -12,42 +14,42 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public Ride findDriversActiveRide(int id) {
+    public Ride findDriversActiveRide(Long id) {
         return null;
     }
 
     @Override
-    public Ride findPassengersActiveRide(int id) {
+    public Ride findPassengersActiveRide(Long id) {
         return null;
     }
 
     @Override
-    public Ride findRideById(int id) {
+    public Ride findRideById(Long id) {
         return null;
     }
 
     @Override
-    public boolean cancelExistingRide(int id) {
+    public boolean cancelExistingRide(Long id) {
         return false;
     }
 
     @Override
-    public Message setPanic(String reason, int id) {
+    public Message setPanic(String reason, Long id) {
         return null;
     }
 
     @Override
-    public Ride acceptRide(int id) {
+    public Ride acceptRide(Long id) {
         return null;
     }
 
     @Override
-    public Ride endRide(int id) {
+    public Ride endRide(Long id) {
         return null;
     }
 
     @Override
-    public Ride cancelRide(String reason, int id) {
+    public Ride cancelRide(String reason, Long id) {
         return null;
     }
 }

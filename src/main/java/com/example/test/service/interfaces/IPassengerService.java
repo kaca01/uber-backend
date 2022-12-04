@@ -12,11 +12,11 @@ public interface IPassengerService {
 
     Passenger insert(Passenger passenger);
 
-    Passenger update(Passenger passenger, int passengerId);
+    Passenger update(Passenger passenger, Long passengerId);
 
-    Collection<Ride> getRidesByPassenger(int passengerId);
+    Collection<Ride> getRidesByPassenger(Long passengerId);
 
-    Passenger findUserById(int id);
+    Passenger findUserById(Long id);
 
-    boolean activatePassenger(int activationId);
+    boolean activatePassenger(Long activationId);
 }

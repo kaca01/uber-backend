@@ -3,9 +3,11 @@ package com.example.test.service;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.service.interfaces.IPassengerService;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class PassengerService implements IPassengerService {
 
     @Override
@@ -19,22 +21,22 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public Passenger update(Passenger passenger, int passengerId) {
+    public Passenger update(Passenger passenger, Long passengerId) {
         return null;
     }
 
     @Override
-    public Collection<Ride> getRidesByPassenger(int passengerId) {
+    public Collection<Ride> getRidesByPassenger(Long passengerId) {
         return null;
     }
 
     @Override
-    public Passenger findUserById(int id) {
+    public Passenger findUserById(Long id) {
         return null;
     }
 
     @Override
-    public boolean activatePassenger(int activationId) {
+    public boolean activatePassenger(Long activationId) {
         return false;
     }
 }

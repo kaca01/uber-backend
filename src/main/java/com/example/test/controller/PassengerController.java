@@ -26,22 +26,22 @@ public class PassengerController {
     //treba da ako nije isteklo vrijeme, da user-u prebacim aktivnost na active
     //todo da li activation id ili passenger id??
     @PostMapping("/{activationId}")
-    public boolean activatePassenger(@PathVariable int activationId) {
+    public boolean activatePassenger(@PathVariable Long activationId) {
         return service.activatePassenger(activationId);
     }
 
     @GetMapping("/{id}")
-    public Passenger findUserById(@PathVariable int id) {
+    public Passenger findUserById(@PathVariable Long id) {
         return service.findUserById(id);
     }
 
     //gotovo
     @PutMapping("/{id}")
-    public Passenger update(@RequestBody Passenger passenger, @PathVariable int id) {
+    public Passenger update(@RequestBody Passenger passenger, @PathVariable Long id) {
         return service.update(passenger, id);
     }
 
     //todo paginatorske voznje ??
     @GetMapping("/{id}/ride")
-    public Collection<Ride> getRidesByPassenger(@PathVariable int id) {return service.getRidesByPassenger(id);}
+    public Collection<Ride> getRidesByPassenger(@PathVariable Long id) {return service.getRidesByPassenger(id);}
 }
