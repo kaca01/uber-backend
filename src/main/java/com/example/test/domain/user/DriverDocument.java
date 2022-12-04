@@ -1,9 +1,11 @@
 package com.example.test.domain.user;
 
 
+import java.util.Arrays;
+
 public class DriverDocument {
     private String name;
-    private int documentImage;  //todo kako se sladisti slika?
+    private byte[] documentImage;
     private Driver driver;
 
     public DriverDocument()
@@ -11,7 +13,7 @@ public class DriverDocument {
 
     }
 
-    public DriverDocument(String name, int documentImage, Driver driver) {
+    public DriverDocument(String name, byte[] documentImage, Driver driver) {
         this.name = name;
         this.documentImage = documentImage;
         this.driver = driver;
@@ -25,11 +27,11 @@ public class DriverDocument {
         this.name = name;
     }
 
-    public int getDocumentImage() {
+    public byte[] getDocumentImage() {
         return documentImage;
     }
 
-    public void setDocumentImage(int documentImage) {
+    public void setDocumentImage(byte[] documentImage) {
         this.documentImage = documentImage;
     }
 
@@ -45,7 +47,7 @@ public class DriverDocument {
     public String toString() {
         return "DriverDocument{" +
                 "name='" + name + '\'' +
-                ", documentImage=" + documentImage +
+                ", documentImage=" + Arrays.toString(documentImage) +
                 ", driver=" + driver +
                 '}';
     }
