@@ -2,6 +2,8 @@ package com.example.test.domain.ride;
 
 import java.time.LocalDate;
 
+//todo u dokumentu za pitanja su pisali da su rute skroz izbacene, da postoji samo pocetna i krajnja lokacija
+//todo u specifikaciji (colicevoj) postoji vise lokacija i definisane su kao lista lokacija u voznji (isto ne postoje rute?)
 public class Route {
     private int id;
     private Location startingPoint;

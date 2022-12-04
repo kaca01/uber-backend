@@ -4,6 +4,8 @@ import com.example.test.domain.user.Passenger;
 import com.example.test.enumeration.Grade;
 import com.example.test.enumeration.ReviewType;
 
+//todo u specifikaciji receno da korisnik ocijeni vozaca, vozilo i ostavi komentar (tako smo u figmi) i voznja ima listu recenzija
+//todo medjutim tako nije u njihovom klasnom dijagramu, dodala sam reviewType (u tom slucaju ce biti dva koemntara-treba promijeniti na figmi)
 public class Review {
     private int id;
     private Grade grade;

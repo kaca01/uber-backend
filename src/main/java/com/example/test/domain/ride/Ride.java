@@ -21,19 +21,15 @@ public class Ride {
     private Vehicle vehicle;
     private Driver driver;
     private ArrayList<Passenger> passengers;
-
-    private ArrayList<Review> reviews;
-
+    private ArrayList<Review> reviews;  //TODO ride da vidi review ili obrnuto?
     private RideStatus rideStatus;
     private RejectionLetter rejectionLetter;
     private Message panic;
     private boolean babiesAllowed;
     private boolean petsAllowed;
     private Payment payment;
-
     private ArrayList<Message> messages;
-
-    private Route route;
+    private Route route;  //TODO colic ima listu lokacija umjesto objekta Route
 
     public Ride() {
 

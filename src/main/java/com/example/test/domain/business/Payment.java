@@ -4,6 +4,7 @@ import com.example.test.domain.user.Passenger;
 
 import java.time.LocalDate;
 
+//todo placanje je skroz izbaceno iz specifikacije? (nema ga u novom dijagramu)
 public class Payment {
     private int id;
     private Passenger passenger;
