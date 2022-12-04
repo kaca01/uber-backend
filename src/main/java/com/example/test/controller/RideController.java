@@ -26,7 +26,7 @@ public class RideController {
         return new ResponseEntity<Ride>(newRide, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/active/{driverId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/active/{driverId}/driver", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ride> findDriversActiveRide(@PathVariable Long id)
     {
         Ride ride = service.findDriversActiveRide(id);
@@ -37,7 +37,7 @@ public class RideController {
         return new ResponseEntity<Ride>(ride, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/active/{passengerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/active/{passengerId}/passenger", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ride> findPassengersActiveRide(@PathVariable Long id)
     {
         Ride ride = service.findPassengersActiveRide(id);
