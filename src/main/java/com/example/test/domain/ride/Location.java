@@ -4,7 +4,7 @@ public class Location {
     private int id;
     private double latitude;
     private double longitude;
-    private String address;  //TODO ovo je dodao colic kod sebe
+    private String address;
 
     public Location() {
 

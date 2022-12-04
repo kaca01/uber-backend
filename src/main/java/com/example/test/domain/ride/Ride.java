@@ -1,6 +1,5 @@
 package com.example.test.domain.ride;
 
-import com.example.test.domain.business.Payment;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.RejectionLetter;
 import com.example.test.domain.communication.Review;
@@ -21,13 +20,12 @@ public class Ride {
     private Vehicle vehicle;
     private Driver driver;
     private ArrayList<Passenger> passengers;
-    private ArrayList<Review> reviews;  //TODO ride da vidi review ili obrnuto?
+    private ArrayList<Review> reviews;
     private RideStatus rideStatus;
     private RejectionLetter rejectionLetter;
     private Message panic;
     private boolean babiesAllowed;
     private boolean petsAllowed;
-    private Payment payment;
     private ArrayList<Message> messages;
     private Route route;  //TODO colic ima listu lokacija umjesto objekta Route
 
@@ -38,7 +36,7 @@ public class Ride {
     public Ride(int id, LocalTime startTime, LocalTime endTime, double price, double estimatedTimeInMin, Vehicle vehicle,
                 Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus rideStatus,
                 RejectionLetter rejectionLetter, Message panic, boolean babiesAllowed, boolean petsAllowed,
-                Payment payment, ArrayList<Message> messages, Route route) {
+                ArrayList<Message> messages, Route route) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -53,7 +51,6 @@ public class Ride {
         this.panic = panic;
         this.babiesAllowed = babiesAllowed;
         this.petsAllowed = petsAllowed;
-        this.payment = payment;
         this.messages = messages;
         this.route = route;
     }
@@ -170,14 +167,6 @@ public class Ride {
         this.petsAllowed = petsAllowed;
     }
 
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
-
     public ArrayList<Message> getMessages() {
         return messages;
     }
@@ -211,7 +200,6 @@ public class Ride {
                 ", panic=" + panic +
                 ", babiesAllowed=" + babiesAllowed +
                 ", petsAllowed=" + petsAllowed +
-                ", payment=" + payment +
                 ", messages=" + messages +
                 ", route=" + route +
                 '}';

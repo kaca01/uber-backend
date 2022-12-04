@@ -1,6 +1,6 @@
 package com.example.test.domain.user;
 
-//todo nemam pojma sta je ova klasa
+
 public class DriverDocument {
     private String name;
     private int documentImage;  //todo kako se sladisti slika?

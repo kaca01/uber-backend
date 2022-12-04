@@ -9,7 +9,6 @@ abstract public class User {
     private String address;
     private String password;
     private boolean blocked;
-    //todo fleg da li je aktivan wtf ?
 
     public User() {
 
@@ -93,6 +92,4 @@ abstract public class User {
                 ", blocked=" + blocked +
                 '}';
     }
-
-    //todo sta je Napomena ??
 }
