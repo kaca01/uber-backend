@@ -29,7 +29,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Driver update(Driver driver) {
+    public Driver update(Long id, Driver driver) {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public boolean deleteDriverDocument(Long id) {
+    public Boolean deleteDriverDocument(Long id) {
         return false;
     }
 

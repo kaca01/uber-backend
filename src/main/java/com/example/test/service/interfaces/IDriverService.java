@@ -18,11 +18,11 @@ public interface IDriverService {
 
     public Driver get(Long id);
 
-    public Driver update(Driver driver);
+    public Driver update(Long id, Driver driver);
 
     public Collection<DriverDocument> getDriverDocuments(Long id);
 
-    public boolean deleteDriverDocument(Long id);
+    public Boolean deleteDriverDocument(Long id);
 
     public Collection<DriverDocument> insertDriverDocuments(Long id, Collection<DriverDocument> driverDocument);
 
