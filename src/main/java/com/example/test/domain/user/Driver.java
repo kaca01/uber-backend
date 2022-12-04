@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class Driver extends User {
     // TODO add documents to upload
-    private boolean active;
     private int vehicleRegistration;
     private int drivingLicense;
     private WorkTime workTime;
@@ -17,22 +16,12 @@ public class Driver extends User {
 
     }
 
-    public Driver(int id, String name, String phone, String email, String address, String password, boolean blocked,
-                  boolean active, int vehicleRegistration, int drivingLicense, WorkTime workTime, Vehicle vehicle) {
-        super(id, name, phone, email, address, password, blocked);
-        this.active = active;
+    public Driver(int id, String name, String phone, String email, String address, String password, boolean blocked, boolean active, int vehicleRegistration, int drivingLicense, WorkTime workTime, Vehicle vehicle) {
+        super(id, name, phone, email, address, password, blocked, active);
         this.vehicleRegistration = vehicleRegistration;
         this.drivingLicense = drivingLicense;
         this.workTime = workTime;
         this.vehicle = vehicle;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public int getVehicleRegistration() {
@@ -70,35 +59,10 @@ public class Driver extends User {
     @Override
     public String toString() {
         return "Driver{" +
-                "active=" + active +
-                ", vehicleRegistration=" + vehicleRegistration +
+                "vehicleRegistration=" + vehicleRegistration +
                 ", drivingLicense=" + drivingLicense +
                 ", workTime=" + workTime +
                 ", vehicle=" + vehicle +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Driver)) return false;
-
-        Driver driver = (Driver) o;
-
-        if (active != driver.active) return false;
-        if (vehicleRegistration != driver.vehicleRegistration) return false;
-        if (drivingLicense != driver.drivingLicense) return false;
-        if (!workTime.equals(driver.workTime)) return false;
-        return vehicle.equals(driver.vehicle);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (active ? 1 : 0);
-        result = 31 * result + vehicleRegistration;
-        result = 31 * result + drivingLicense;
-        result = 31 * result + workTime.hashCode();
-        result = 31 * result + vehicle.hashCode();
-        return result;
     }
 }

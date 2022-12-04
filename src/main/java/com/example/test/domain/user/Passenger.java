@@ -16,8 +16,8 @@ public class Passenger extends User {
     }
 
     public Passenger(int id, String name, String phone, String email, String address, String password, boolean blocked,
-                     ArrayList<Location> favoriteLocations) {
-        super(id, name, phone, email, address, password, blocked);
+                     boolean active, ArrayList<Location> favoriteLocations) {
+        super(id, name, phone, email, address, password, blocked, active);
         this.favoriteLocations = favoriteLocations;
     }
 
@@ -32,8 +32,7 @@ public class Passenger extends User {
     @Override
     public String toString() {
         return "Passenger{" +
-                ", favoriteLocations=" + favoriteLocations +
+                "favoriteLocations=" + favoriteLocations +
                 '}';
     }
-
 }
