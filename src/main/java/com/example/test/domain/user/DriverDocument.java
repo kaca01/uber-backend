@@ -11,8 +11,6 @@ public class DriverDocument {
 
     }
 
-    // ! Nemam
-
     public DriverDocument(String name, int documentImage, Driver driver) {
         this.name = name;
         this.documentImage = documentImage;
