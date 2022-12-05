@@ -39,7 +39,7 @@ public class UserController {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> login(@RequestBody String email, @RequestBody String password) throws Exception {
-        Boolean success = service.login();
+        Boolean success = service.login(email, password);
 
         if(success == null) {
             return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
@@ -59,8 +59,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message> insertMessage(@PathVariable Long id) throws Exception {
-        Message message = service.insertMessage(id);
+    public ResponseEntity<Message> insertMessage(@PathVariable Long id, @RequestBody Message requestMessage) throws Exception {
+        Message message = service.insertMessage(id, requestMessage);
 
         if(message == null) {
             return new ResponseEntity<Message>(HttpStatus.NOT_FOUND);
@@ -90,8 +90,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Note> insertNote(@PathVariable Long id) throws Exception {
-        Note note = service.insertNote(id);
+    public ResponseEntity<Note> insertNote(@PathVariable Long id, @RequestBody Note requestNote) throws Exception {
+        Note note = service.insertNote(id, requestNote);
 
         if(note == null) {
             return new ResponseEntity<Note>(HttpStatus.NOT_FOUND);

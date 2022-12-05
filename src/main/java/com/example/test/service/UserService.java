@@ -23,7 +23,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Boolean login() {
+    public Boolean login(String email, String password) {
         return null;
     }
 
@@ -33,7 +33,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Message insertMessage(Long id) {
+    public Message insertMessage(Long id, Message requestMessage) {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Note insertNote(Long id) {
+    public Note insertNote(Long id, Note requestNote) {
         return null;
     }
 

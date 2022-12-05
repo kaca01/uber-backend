@@ -13,17 +13,17 @@ public interface IUserService {
 
     public User get();
 
-    public Boolean login();
+    public Boolean login(String email, String password);
 
     public Collection<Message> getMessages(Long id);
 
-    public Message insertMessage(Long id);
+    public Message insertMessage(Long id, Message requestMessage);
 
     public Boolean block(Long id);
 
     public Boolean unblock(Long id);
 
-    public Note insertNote(Long id);
+    public Note insertNote(Long id, Note requestNote);
 
     public Collection<Note> getNotes(Long id);
 }
