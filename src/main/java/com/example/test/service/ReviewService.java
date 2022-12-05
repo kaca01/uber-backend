@@ -10,7 +10,7 @@ import java.util.Collection;
 public class ReviewService implements IReviewService {
 
     @Override
-    public Review insertVehicleReview(Long vehicleId, Review review) {
+    public Review insertVehicleReview(Long rideId, Long vehicleId, Review review) {
         return null;
     }
 
@@ -20,7 +20,7 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public Review insertDriverReview(Long driverId, Review review) {
+    public Review insertDriverReview(Long rideId, Long driverId, Review review) {
         return null;
     }
 
