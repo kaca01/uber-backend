@@ -8,6 +8,7 @@ import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +22,17 @@ public class DriverController {
     @Autowired
     IDriverService service;
 
-    @PostMapping
-    public ResponseEntity<Driver> insert(@RequestBody Driver driver) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> insert(@RequestBody Driver driver) throws Exception{
         Driver returnedDriver = service.insert(driver);
         if (returnedDriver == null) {
-            return new ResponseEntity<Driver>(returnedDriver, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Driver>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Driver>(returnedDriver, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<Collection<Driver>> getAll() {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Driver>> getAll() throws Exception{
         Collection<Driver> drivers =  service.getAll();
         if (drivers == null) {
             return new ResponseEntity<Collection<Driver>>(HttpStatus.NOT_FOUND);
@@ -39,8 +40,8 @@ public class DriverController {
         return new ResponseEntity<Collection<Driver>>(drivers, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Driver> get(@PathVariable Long id) {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> get(@PathVariable Long id) throws Exception {
         Driver driver = service.get(id);
         // TODO : add 400 status
         if (driver == null) {
@@ -49,8 +50,9 @@ public class DriverController {
         return new ResponseEntity<Driver>(driver, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Driver> update (@PathVariable Long id, @RequestBody Driver driver) {
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> update (@PathVariable Long id, @RequestBody Driver driver) throws Exception {
         Driver returnedDriver = service.update(id, driver);
         // TODO : add 400 status
         if (returnedDriver == null) {
@@ -59,8 +61,8 @@ public class DriverController {
         return new ResponseEntity<Driver>(returnedDriver, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/documents")
-    public ResponseEntity<Collection<DriverDocument>> getDriverDocuments(@PathVariable Long id) {
+    @GetMapping(value = "/{id}/documents", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<DriverDocument>> getDriverDocuments(@PathVariable Long id) throws Exception {
         Collection<DriverDocument> driverDocuments = service.getDriverDocuments(id);
         // TODO : add 400 status
         if (driverDocuments == null) {
@@ -69,8 +71,8 @@ public class DriverController {
         return new ResponseEntity<Collection<DriverDocument>>(driverDocuments, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/documents")
-    public ResponseEntity<Boolean> deleteDriverDocument(@PathVariable Long id) {
+    @DeleteMapping(value = "/{id}/documents")
+    public ResponseEntity<Boolean> deleteDriverDocument(@PathVariable Long id) throws Exception {
         Boolean isDeleted = service.deleteDriverDocument(id);
         // TODO : add 400 status
         if (isDeleted == null) {
@@ -79,9 +81,12 @@ public class DriverController {
         return new ResponseEntity<Boolean>(isDeleted, HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/{id}/documents")
+    @PostMapping(value = "/{id}/documents", consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<DriverDocument>> insertDriverDocuments(@PathVariable Long id,
-                                                            @RequestBody Collection<DriverDocument> driverDocuments) {
+                                                                            @RequestBody Collection<DriverDocument>
+                                                                                         driverDocuments)
+                                                                            throws Exception{
         Collection<DriverDocument> returnedDriverDocuments = service.insertDriverDocuments(id, driverDocuments);
         // TODO : add 400 status
         if (returnedDriverDocuments == null) {
@@ -90,8 +95,8 @@ public class DriverController {
         return new ResponseEntity<Collection<DriverDocument>>(returnedDriverDocuments, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}/vehicle")
-    public ResponseEntity<Vehicle> getVehicle(@PathVariable Long id) {
+    @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vehicle> getVehicle(@PathVariable Long id) throws Exception {
         Vehicle vehicle = service.getVehicle(id);
         // TODO : add 400 status
         if (vehicle == null) {
@@ -100,8 +105,9 @@ public class DriverController {
         return new ResponseEntity<Vehicle>(vehicle, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/vehicle")
-    public ResponseEntity<Vehicle> insertVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
+    @PostMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vehicle> insertVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) throws Exception {
         Vehicle returnedVehicle = service.insertVehicle(id, vehicle);
         // TODO : add 400 status
         if (returnedVehicle == null) {
@@ -110,8 +116,9 @@ public class DriverController {
         return new ResponseEntity<Vehicle>(returnedVehicle, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/vehicle")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
+    @PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) throws Exception {
         Vehicle updatedVehicle = service.updateVehicle(id, vehicle);
         // TODO : add 400 status
         if (updatedVehicle == null) {
@@ -120,8 +127,8 @@ public class DriverController {
         return new ResponseEntity<Vehicle>(updatedVehicle, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/work-hours")
-    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id) {
+    @GetMapping(value = "/{id}/working-hours", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id) throws Exception{
         WorkTime workTime = service.getWorkTime(id);
         // TODO : add 400 status
         if (workTime == null) {
@@ -130,8 +137,9 @@ public class DriverController {
         return new ResponseEntity<WorkTime>(workTime, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/work-hours")
-    public ResponseEntity<WorkTime> insertWorkTime(@PathVariable Long id, @RequestBody WorkTime workTime) {
+    @PostMapping(value = "/{id}/working-hours", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkTime> insertWorkTime(@PathVariable Long id, @RequestBody WorkTime workTime)
+                                                    throws Exception {
         WorkTime updatedWorkTime = service.insertWorkTime(id, workTime);
         // TODO : add 400 status
         if (updatedWorkTime == null) {
@@ -140,8 +148,8 @@ public class DriverController {
         return new ResponseEntity<WorkTime>(workTime, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}/ride")
-    public ResponseEntity<Collection<Ride>> getRides(@PathVariable Long id) {
+    @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Ride>> getRides(@PathVariable Long id) throws Exception {
         Collection<Ride> rides = service.getRides(id);
         // TOD : add 400 status
         if (rides == null) {
@@ -150,8 +158,8 @@ public class DriverController {
         return new ResponseEntity<Collection<Ride>>(rides, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/work-hours/{working-hour-id}")
-    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id, @PathVariable Long workTimeId) {
+    @GetMapping(value = "/{id}/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id, @PathVariable Long workTimeId) throws Exception {
         WorkTime workTime = service.getWorkTime(id, workTimeId);
         // TODO : add 400 status
         if (workTime == null) {
@@ -160,8 +168,9 @@ public class DriverController {
         return new ResponseEntity<WorkTime>(workTime, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/work-hours/{working-hour-id}")
-    public ResponseEntity<WorkTime> updateWorkTime(@PathVariable Long id, @PathVariable Long workTimeId) {
+    @PutMapping(value = "/{id}/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkTime> updateWorkTime(@PathVariable Long id, @PathVariable Long workTimeId)
+                                                    throws Exception {
         WorkTime workTime = service.updateWorkTime(id, workTimeId);
         // TODO : add 400 status
         if (workTime == null) {
