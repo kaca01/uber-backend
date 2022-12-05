@@ -1,5 +1,6 @@
 package com.example.test.domain.communication;
 
+import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
 import com.example.test.enumeration.MessageType;
 
@@ -12,18 +13,20 @@ public class Message {
     private String message;
     private LocalDate time;
     private MessageType messageType;
+    private Ride ride;
 
     public Message() {
 
     }
 
-    public Message(int id, User sender, User receiver, String message, LocalDate time, MessageType messageType) {
+    public Message(int id, User sender, User receiver, String message, LocalDate time, MessageType messageType, Ride ride) {
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.time = time;
         this.messageType = messageType;
+        this.ride = ride;
     }
 
     public int getId() {
@@ -74,6 +77,14 @@ public class Message {
         this.messageType = messageType;
     }
 
+    public Ride getRide() {
+        return ride;
+    }
+
+    public void setRide(Ride ride) {
+        this.ride = ride;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -83,6 +94,7 @@ public class Message {
                 ", message='" + message + '\'' +
                 ", time=" + time +
                 ", messageType=" + messageType +
+                ", ride=" + ride +
                 '}';
     }
 }
