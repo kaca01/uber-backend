@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/api/unregisteredUser")
+@RequestMapping("/api/unregisteredUser/")
 public class UnregisteredUserController {
 
     @Autowired
