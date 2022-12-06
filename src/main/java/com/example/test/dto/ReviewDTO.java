@@ -1,11 +1,12 @@
 package com.example.test.dto;
 
+import com.example.test.domain.user.Passenger;
+
 public class ReviewDTO {
-    // TODO add dtos
     private Long id;
     private int rating;
     private String comment;
-    // private UserDTO passenger;
+    private Passenger passenger;
 
     public ReviewDTO() {
 
@@ -19,11 +20,11 @@ public class ReviewDTO {
 
 
     // response
-    public ReviewDTO(Long id, int rating, String comment) {
+    public ReviewDTO(Long id, int rating, String comment, Passenger passenger) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
-        // TODO this.passenger = passenger;
+        this.passenger = passenger;
     }
 
     public Long getId() {
@@ -48,5 +49,13 @@ public class ReviewDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 }
