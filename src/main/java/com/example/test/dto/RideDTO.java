@@ -20,7 +20,7 @@ public class RideDTO {
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
-    private int estimatedTimeInMinutes;
+    private double estimatedTimeInMinutes;
     private String status;
     private Driver driver;
     private Rejection rejection;
@@ -44,7 +44,7 @@ public class RideDTO {
     // response
     public RideDTO(Long id, Date startTime, Date endTime, double totalCost, ArrayList<Route> locations,
                    ArrayList<Passenger> passengers , String vehicleType, boolean babyTransport,
-                   boolean petTransport, int estimatedTimeInMinutes, String status, Driver driver,
+                   boolean petTransport, double estimatedTimeInMinutes, String status, Driver driver,
                    Rejection rejection) {
         this.id = id;
         this.startTime = startTime;
@@ -133,11 +133,11 @@ public class RideDTO {
         this.totalCost = totalCost;
     }
 
-    public int getEstimatedTimeInMinutes() {
+    public double getEstimatedTimeInMinutes() {
         return estimatedTimeInMinutes;
     }
 
-    public void setEstimatedTimeInMinutes(int estimatedTimeInMinutes) {
+    public void setEstimatedTimeInMinutes(double estimatedTimeInMinutes) {
         this.estimatedTimeInMinutes = estimatedTimeInMinutes;
     }
 
