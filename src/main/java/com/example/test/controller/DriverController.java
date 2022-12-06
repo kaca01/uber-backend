@@ -3,7 +3,7 @@ package com.example.test.controller;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.DriverDocument;
+import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +62,13 @@ public class DriverController {
     }
 
     @GetMapping(value = "/{id}/documents", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<DriverDocument>> getDriverDocuments(@PathVariable Long id) throws Exception {
-        Collection<DriverDocument> driverDocuments = service.getDriverDocuments(id);
+    public ResponseEntity<Collection<Document>> getDriverDocuments(@PathVariable Long id) throws Exception {
+        Collection<Document> driverDocuments = service.getDriverDocuments(id);
         // TODO : add 400 status
         if (driverDocuments == null) {
-            return new ResponseEntity<Collection<DriverDocument>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Collection<Document>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Collection<DriverDocument>>(driverDocuments, HttpStatus.OK);
+        return new ResponseEntity<Collection<Document>>(driverDocuments, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}/documents")
@@ -83,16 +83,16 @@ public class DriverController {
 
     @PostMapping(value = "/{id}/documents", consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<DriverDocument>> insertDriverDocuments(@PathVariable Long id,
-                                                                            @RequestBody Collection<DriverDocument>
+    public ResponseEntity<Collection<Document>> insertDriverDocuments(@PathVariable Long id,
+                                                                      @RequestBody Collection<Document>
                                                                                          driverDocuments)
                                                                             throws Exception{
-        Collection<DriverDocument> returnedDriverDocuments = service.insertDriverDocuments(id, driverDocuments);
+        Collection<Document> returnedDriverDocuments = service.insertDriverDocuments(id, driverDocuments);
         // TODO : add 400 status
         if (returnedDriverDocuments == null) {
-            return new ResponseEntity<Collection<DriverDocument>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Collection<Document>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Collection<DriverDocument>>(returnedDriverDocuments, HttpStatus.CREATED);
+        return new ResponseEntity<Collection<Document>>(returnedDriverDocuments, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)

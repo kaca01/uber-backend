@@ -3,7 +3,7 @@ package com.example.test.service.interfaces;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.DriverDocument;
+import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
 
 import java.util.Collection;
@@ -19,11 +19,11 @@ public interface IDriverService {
 
     public Driver update(Long id, Driver driver);
 
-    public Collection<DriverDocument> getDriverDocuments(Long id);
+    public Collection<Document> getDriverDocuments(Long id);
 
     public Boolean deleteDriverDocument(Long id);
 
-    public Collection<DriverDocument> insertDriverDocuments(Long id, Collection<DriverDocument> driverDocument);
+    public Collection<Document> insertDriverDocuments(Long id, Collection<Document> driverDocument);
 
     public Vehicle getVehicle(Long id);
 

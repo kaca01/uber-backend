@@ -5,8 +5,8 @@ import com.example.test.enumeration.Grade;
 import com.example.test.enumeration.ReviewType;
 
 public class Review {
-    private int id;
-    private Grade grade;
+    private Long id;
+    private int rating;
     private String comment;
     private Passenger passenger;
     private ReviewType type;
@@ -15,28 +15,28 @@ public class Review {
 
     }
 
-    public Review(int id, Grade grade, String comment, Passenger passenger, ReviewType type) {
+    public Review(Long id, int rating, String comment, Passenger passenger, ReviewType type) {
         this.id = id;
-        this.grade = grade;
+        this.rating = rating;
         this.comment = comment;
         this.passenger = passenger;
         this.type = type;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Grade getGrade() {
-        return grade;
+    public int getRating() {
+        return rating;
     }
 
-    public void setGrade(Grade grade) {
-        this.grade = grade;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     public String getComment() {
@@ -67,7 +67,7 @@ public class Review {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", grade=" + grade +
+                ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", passenger=" + passenger +
                 ", type=" + type +

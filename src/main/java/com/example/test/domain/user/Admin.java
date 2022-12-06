@@ -1,30 +1,31 @@
 package com.example.test.domain.user;
 
 public class Admin{
-    private int id;
+    private Long id;
     private String username;
     private String password;
     private String name;
     private String lastname;
-    //TODO : add profile picture
+    private String profilePicture;
 
     public Admin() {
 
     }
 
-    public Admin(int id, String username, String password, String name, String lastname) {
+    public Admin(Long id, String username, String password, String name, String lastname, String profilePicture) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.lastname = lastname;
+        this.profilePicture = profilePicture;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -68,6 +69,7 @@ public class Admin{
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 }

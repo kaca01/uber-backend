@@ -2,8 +2,14 @@ package com.example.test.domain.communication;
 
 import com.example.test.domain.user.User;
 
+import java.util.Date;
+
 public class Note {
-    private String description;
+
+    private Long id;
+
+    private Date date;
+    private String message;
     private User user;
 
     public Note()
@@ -11,17 +17,35 @@ public class Note {
 
     }
 
-    public Note(String description, User user) {
-        this.description = description;
+    public Note(Long id, Date date, String message, User user) {
+        this.id = id;
+        this.date = date;
+        this.message = message;
         this.user = user;
     }
 
-    public String getDescription() {
-        return description;
+    public Long getId() {
+        return id;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public User getUser() {
@@ -35,7 +59,9 @@ public class Note {
     @Override
     public String toString() {
         return "Note{" +
-                "description='" + description + '\'' +
+                "id=" + id +
+                ", date=" + date +
+                ", message='" + message + '\'' +
                 ", user=" + user +
                 '}';
     }

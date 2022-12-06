@@ -4,36 +4,36 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
 import com.example.test.enumeration.MessageType;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Message {
-    private int id;
+    private Long id;
     private User sender;
     private User receiver;
     private String message;
-    private LocalDate time;
-    private MessageType messageType;
+    private Date timeOfSending;
+    private MessageType type;
     private Ride ride;
 
     public Message() {
 
     }
 
-    public Message(int id, User sender, User receiver, String message, LocalDate time, MessageType messageType, Ride ride) {
+    public Message(Long id, User sender, User receiver, String message, Date timeOfSending, MessageType type, Ride ride) {
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.time = time;
-        this.messageType = messageType;
+        this.timeOfSending = timeOfSending;
+        this.type = type;
         this.ride = ride;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,20 +61,20 @@ public class Message {
         this.message = message;
     }
 
-    public LocalDate getTime() {
-        return time;
+    public Date getTimeOfSending() {
+        return timeOfSending;
     }
 
-    public void setTime(LocalDate time) {
-        this.time = time;
+    public void setTimeOfSending(Date timeOfSending) {
+        this.timeOfSending = timeOfSending;
     }
 
-    public MessageType getMessageType() {
-        return messageType;
+    public MessageType getType() {
+        return type;
     }
 
-    public void setMessageType(MessageType messageType) {
-        this.messageType = messageType;
+    public void setType(MessageType type) {
+        this.type = type;
     }
 
     public Ride getRide() {
@@ -92,8 +92,8 @@ public class Message {
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 ", message='" + message + '\'' +
-                ", time=" + time +
-                ", messageType=" + messageType +
+                ", time=" + timeOfSending +
+                ", type=" + type +
                 ", ride=" + ride +
                 '}';
     }

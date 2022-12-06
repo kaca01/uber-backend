@@ -1,18 +1,18 @@
 package com.example.test.domain.user;
 
 
-public class DriverDocument {
+public class Document {
     private Long id;
     private String name;
     private String documentImage;
     private Driver driver;
 
-    public DriverDocument()
+    public Document()
     {
 
     }
 
-    public DriverDocument(String name, String documentImage, Driver driver) {
+    public Document(String name, String documentImage, Driver driver) {
         this.name = name;
         this.documentImage = documentImage;
         this.driver = driver;

@@ -3,7 +3,7 @@ package com.example.test.service;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.DriverDocument;
+import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Collection<DriverDocument> getDriverDocuments(Long id) {
+    public Collection<Document> getDriverDocuments(Long id) {
         return null;
     }
 
@@ -44,7 +44,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Collection<DriverDocument> insertDriverDocuments(Long id, Collection<DriverDocument> driverDocuments) {
+    public Collection<Document> insertDriverDocuments(Long id, Collection<Document> driverDocuments) {
         return null;
     }
 
