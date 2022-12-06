@@ -1,28 +1,20 @@
 package com.example.test.domain.ride;
 
-import java.time.LocalDate;
-
-//todo u dokumentu za pitanja su pisali da su rute skroz izbacene, da postoji samo pocetna i krajnja lokacija
-//todo u specifikaciji (colicevoj) postoji vise lokacija i definisane su kao lista lokacija u voznji (isto ne postoje rute?)
 public class Route {
     private int id;
     private Location startingPoint;
     private Location endingPoint;
     private double distance;
-    private double estimatedTime;
-    private double price;
 
     public Route() {
 
     }
 
-    public Route(int id, Location startingPoint, Location endingPoint, double distance, double estimatedTime, double price) {
+    public Route(int id, Location startingPoint, Location endingPoint, double distance) {
         this.id = id;
         this.startingPoint = startingPoint;
         this.endingPoint = endingPoint;
         this.distance = distance;
-        this.estimatedTime = estimatedTime;
-        this.price = price;
     }
 
     public int getId() {
@@ -57,21 +49,6 @@ public class Route {
         this.distance = distance;
     }
 
-    public double getEstimatedTime() {
-        return estimatedTime;
-    }
-
-    public void setEstimatedTime(double estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {
@@ -80,8 +57,6 @@ public class Route {
                 ", startingPoint=" + startingPoint +
                 ", endingPoint=" + endingPoint +
                 ", distance=" + distance +
-                ", estimatedTime=" + estimatedTime +
-                ", price=" + price +
                 '}';
     }
 }

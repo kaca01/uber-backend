@@ -65,7 +65,7 @@ public class RideController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Boolean> cancelExistingRide(@PathVariable Long id) throws Exception
     {
-        Boolean flag = service.cancelExistingRide(id);  //PRIJE NEGO VOZAC DODJE NA DESTINACIJU (to passenger moze)
+        Boolean flag = service.cancelExistingRide(id);  //PRIJE NEGO VOZAC DODJE NA DESTINACIJU (to PASSENGER moze)
 
         if (!flag) {
             return new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
@@ -113,7 +113,7 @@ public class RideController {
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ride> cancelRide(@RequestBody String reason, @PathVariable Long id)
     {
-        Ride ride = service.cancelRide(reason, id);  //vozac moze da canceluje
+        Ride ride = service.cancelRide(reason, id);  //VOZAC moze da canceluje
         if (ride == null) {
             return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
         }

@@ -26,8 +26,7 @@ public class Ride {
     private Message panic;
     private boolean babiesAllowed;
     private boolean petsAllowed;
-    private ArrayList<Message> messages;
-    private Route route;  //TODO colic ima listu lokacija umjesto objekta Route
+    private ArrayList<Route> routes;
 
     public Ride() {
 
@@ -36,7 +35,7 @@ public class Ride {
     public Ride(int id, LocalTime startTime, LocalTime endTime, double price, double estimatedTimeInMin, Vehicle vehicle,
                 Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus rideStatus,
                 RejectionLetter rejectionLetter, Message panic, boolean babiesAllowed, boolean petsAllowed,
-                ArrayList<Message> messages, Route route) {
+                ArrayList<Route> routes) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -51,8 +50,7 @@ public class Ride {
         this.panic = panic;
         this.babiesAllowed = babiesAllowed;
         this.petsAllowed = petsAllowed;
-        this.messages = messages;
-        this.route = route;
+        this.routes = routes;
     }
 
     public int getId() {
@@ -167,20 +165,12 @@ public class Ride {
         this.petsAllowed = petsAllowed;
     }
 
-    public ArrayList<Message> getMessages() {
-        return messages;
+    public ArrayList<Route> getRoutes() {
+        return routes;
     }
 
-    public void setMessages(ArrayList<Message> messages) {
-        this.messages = messages;
-    }
-
-    public Route getRoute() {
-        return route;
-    }
-
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setRoutes(ArrayList<Route> routes) {
+        this.routes = routes;
     }
 
     @Override
@@ -200,8 +190,7 @@ public class Ride {
                 ", panic=" + panic +
                 ", babiesAllowed=" + babiesAllowed +
                 ", petsAllowed=" + petsAllowed +
-                ", messages=" + messages +
-                ", route=" + route +
+                ", routes=" + routes +
                 '}';
     }
 }
