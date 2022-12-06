@@ -1,29 +1,53 @@
 package com.example.test.dto;
 
-public class AllRideReviewsDTO {
-    private ReviewDTO vehicleReview;
-    private ReviewDTO driverReview;
+import java.util.ArrayList;
 
+public class AllRideReviewsDTO {
+
+    private class RideReview {
+        private ReviewDTO vehicleReview;
+        private ReviewDTO driverReview;
+
+        public RideReview(ReviewDTO vehicleReview, ReviewDTO driverReview) {
+            this.vehicleReview = vehicleReview;
+            this.driverReview = driverReview;
+        }
+
+        public ReviewDTO getVehicleReview() {
+            return vehicleReview;
+        }
+
+        public void setVehicleReview(ReviewDTO vehicleReview) {
+            this.vehicleReview = vehicleReview;
+        }
+
+        public ReviewDTO getDriverReview() {
+            return driverReview;
+        }
+
+        public void setDriverReview(ReviewDTO driverReview) {
+            this.driverReview = driverReview;
+        }
+
+
+    }
+
+    private ArrayList<RideReview> rideReviews;
 
     // response
-    public AllRideReviewsDTO(ReviewDTO vehicleReview, ReviewDTO driverReview) {
-        this.vehicleReview = vehicleReview;
-        this.driverReview = driverReview;
+    public AllRideReviewsDTO() {
+
     }
 
-    public ReviewDTO getVehicleReview() {
-        return vehicleReview;
+    public AllRideReviewsDTO(ArrayList<RideReview> rideReviews) {
+        this.rideReviews = rideReviews;
     }
 
-    public void setVehicleReview(ReviewDTO vehicleReview) {
-        this.vehicleReview = vehicleReview;
+    public ArrayList<RideReview> getRideReviews() {
+        return rideReviews;
     }
 
-    public ReviewDTO getDriverReview() {
-        return driverReview;
-    }
-
-    public void setDriverReview(ReviewDTO driverReview) {
-        this.driverReview = driverReview;
+    public void setRideReviews(ArrayList<RideReview> rideReviews) {
+        this.rideReviews = rideReviews;
     }
 }
