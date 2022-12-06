@@ -1,96 +1,96 @@
 package com.example.test.domain.ride;
 
 import com.example.test.domain.communication.Message;
-import com.example.test.domain.communication.RejectionLetter;
+import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.communication.Review;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.enumeration.RideStatus;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Ride {
-    private int id;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private double price;
-    private double estimatedTimeInMin;
+    private Long id;
+    private Date startTime;
+    private Date endTime;
+    private double totalCost;
+    private double estimatedTimeInMinutes;
     private Vehicle vehicle;
     private Driver driver;
     private ArrayList<Passenger> passengers;
     private ArrayList<Review> reviews;
-    private RideStatus rideStatus;
-    private RejectionLetter rejectionLetter;
+    private RideStatus status;
+    private Rejection rejection;
     private Message panic;
-    private boolean babiesAllowed;
-    private boolean petsAllowed;
-    private ArrayList<Route> routes;
+    private boolean babyTransport;
+    private boolean petTransport;
+    private ArrayList<Route> locations;
 
     public Ride() {
 
     }
 
-    public Ride(int id, LocalTime startTime, LocalTime endTime, double price, double estimatedTimeInMin, Vehicle vehicle,
-                Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus rideStatus,
-                RejectionLetter rejectionLetter, Message panic, boolean babiesAllowed, boolean petsAllowed,
-                ArrayList<Route> routes) {
+    public Ride(Long id, Date startTime, Date endTime, double totalCost, double estimatedTimeInMinutes, Vehicle vehicle,
+                Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus status,
+                Rejection rejection, Message panic, boolean babyTransport, boolean petTransport,
+                ArrayList<Route> locations) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.price = price;
-        this.estimatedTimeInMin = estimatedTimeInMin;
+        this.totalCost = totalCost;
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
         this.vehicle = vehicle;
         this.driver = driver;
         this.passengers = passengers;
         this.reviews = reviews;
-        this.rideStatus = rideStatus;
-        this.rejectionLetter = rejectionLetter;
+        this.status = status;
+        this.rejection = rejection;
         this.panic = panic;
-        this.babiesAllowed = babiesAllowed;
-        this.petsAllowed = petsAllowed;
-        this.routes = routes;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+        this.locations = locations;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public LocalTime getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
-    public double getPrice() {
-        return price;
+    public double getTotalCost() {
+        return totalCost;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setTotalCost(double totalCost) {
+        this.totalCost = totalCost;
     }
 
-    public double getEstimatedTimeInMin() {
-        return estimatedTimeInMin;
+    public double getEstimatedTimeInMinutes() {
+        return estimatedTimeInMinutes;
     }
 
-    public void setEstimatedTimeInMin(double estimatedTimeInMin) {
-        this.estimatedTimeInMin = estimatedTimeInMin;
+    public void setEstimatedTimeInMinutes(double estimatedTimeInMinutes) {
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
     }
 
     public Vehicle getVehicle() {
@@ -125,20 +125,20 @@ public class Ride {
         this.reviews = reviews;
     }
 
-    public RideStatus getRideStatus() {
-        return rideStatus;
+    public RideStatus getStatus() {
+        return status;
     }
 
-    public void setRideStatus(RideStatus rideStatus) {
-        this.rideStatus = rideStatus;
+    public void setStatus(RideStatus status) {
+        this.status = status;
     }
 
-    public RejectionLetter getRejectionLetter() {
-        return rejectionLetter;
+    public Rejection getRejection() {
+        return rejection;
     }
 
-    public void setRejectionLetter(RejectionLetter rejectionLetter) {
-        this.rejectionLetter = rejectionLetter;
+    public void setRejection(Rejection rejection) {
+        this.rejection = rejection;
     }
 
     public Message getPanic() {
@@ -149,28 +149,28 @@ public class Ride {
         this.panic = panic;
     }
 
-    public boolean isBabiesAllowed() {
-        return babiesAllowed;
+    public boolean isBabyTransport() {
+        return babyTransport;
     }
 
-    public void setBabiesAllowed(boolean babiesAllowed) {
-        this.babiesAllowed = babiesAllowed;
+    public void setBabyTransport(boolean babyTransport) {
+        this.babyTransport = babyTransport;
     }
 
-    public boolean isPetsAllowed() {
-        return petsAllowed;
+    public boolean isPetTransport() {
+        return petTransport;
     }
 
-    public void setPetsAllowed(boolean petsAllowed) {
-        this.petsAllowed = petsAllowed;
+    public void setPetTransport(boolean petTransport) {
+        this.petTransport = petTransport;
     }
 
-    public ArrayList<Route> getRoutes() {
-        return routes;
+    public ArrayList<Route> getLocations() {
+        return locations;
     }
 
-    public void setRoutes(ArrayList<Route> routes) {
-        this.routes = routes;
+    public void setLocations(ArrayList<Route> locations) {
+        this.locations = locations;
     }
 
     @Override
@@ -179,18 +179,18 @@ public class Ride {
                 "id=" + id +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", price=" + price +
-                ", estimatedTimeInMin=" + estimatedTimeInMin +
+                ", price=" + totalCost +
+                ", estimatedTimeInMinutes=" + estimatedTimeInMinutes +
                 ", vehicle=" + vehicle +
                 ", driver=" + driver +
                 ", passengers=" + passengers +
                 ", reviews=" + reviews +
-                ", rideStatus=" + rideStatus +
-                ", rejectionLetter=" + rejectionLetter +
+                ", ride=" + status +
+                ", rejection=" + rejection +
                 ", panic=" + panic +
-                ", babiesAllowed=" + babiesAllowed +
-                ", petsAllowed=" + petsAllowed +
-                ", routes=" + routes +
+                ", babyTransport=" + babyTransport +
+                ", petTransport=" + petTransport +
+                ", locations=" + locations +
                 '}';
     }
 }

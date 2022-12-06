@@ -2,30 +2,30 @@ package com.example.test.domain.communication;
 
 import com.example.test.domain.user.User;
 
-import java.time.LocalDate;
+import java.util.Date;
 
-public class RejectionLetter {
-    private int id;
+public class Rejection {
+    private Long id;
     private String reason;
     private User user;
-    private LocalDate time;
+    private Date timeOfRejection;
 
-    public RejectionLetter() {
+    public Rejection() {
 
     }
 
-    public RejectionLetter(int id, String reason, User user, LocalDate time) {
+    public Rejection(Long id, String reason, User user, Date timeOfRejection) {
         this.id = id;
         this.reason = reason;
         this.user = user;
-        this.time = time;
+        this.timeOfRejection = timeOfRejection;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,12 +45,12 @@ public class RejectionLetter {
         this.user = user;
     }
 
-    public LocalDate getTime() {
-        return time;
+    public Date getTimeOfRejection() {
+        return timeOfRejection;
     }
 
-    public void setTime(LocalDate time) {
-        this.time = time;
+    public void setTimeOfRejection(Date timeOfRejection) {
+        this.timeOfRejection = timeOfRejection;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class RejectionLetter {
                 "id=" + id +
                 ", reason='" + reason + '\'' +
                 ", user=" + user +
-                ", time=" + time +
+                ", time=" + timeOfRejection +
                 '}';
     }
 }

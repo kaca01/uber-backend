@@ -1,10 +1,11 @@
 package com.example.test.domain.user;
 
 abstract public class User {
-    private int id;
+    private Long id;
     private String name;
-    // TODO add profile picture
-    private String phone;
+    private String surname;
+    private String profilePicture;
+    private String telephoneNumber;
     private String email;
     private String address;
     private String password;
@@ -15,10 +16,13 @@ abstract public class User {
 
     }
 
-    public User(int id, String name, String phone, String email, String address, String password, boolean blocked, boolean active) {
+    public User(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                String address, String password, boolean blocked, boolean active) {
         this.id = id;
         this.name = name;
-        this.phone = phone;
+        this.surname = surname;
+        this.profilePicture = profilePicture;
+        this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
         this.password = password;
@@ -26,11 +30,11 @@ abstract public class User {
         this.active = active;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,12 +46,28 @@ abstract public class User {
         this.name = name;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     public String getEmail() {
@@ -95,7 +115,9 @@ abstract public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
+                ", surname='" + surname + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", password='" + password + '\'' +

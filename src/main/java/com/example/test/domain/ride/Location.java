@@ -1,7 +1,7 @@
 package com.example.test.domain.ride;
 
 public class Location {
-    private int id;
+    private Long id;
     private double latitude;
     private double longitude;
     private String address;
@@ -10,18 +10,18 @@ public class Location {
 
     }
 
-    public Location(int id, double latitude, double longitude, String address) {
+    public Location(Long id, double latitude, double longitude, String address) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

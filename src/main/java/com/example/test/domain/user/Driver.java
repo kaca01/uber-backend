@@ -1,35 +1,27 @@
 package com.example.test.domain.user;
 
-import com.example.test.domain.business.WorkTime;
+import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
 
 import java.util.ArrayList;
 
 public class Driver extends User {
     // TODO add documents to upload
-    private int vehicleRegistration;
     private int drivingLicense;
-    private WorkTime workTime;
+    private ArrayList<WorkingHour> workingHours;
     private Vehicle vehicle;
 
     public Driver() {
 
     }
 
-    public Driver(int id, String name, String phone, String email, String address, String password, boolean blocked, boolean active, int vehicleRegistration, int drivingLicense, WorkTime workTime, Vehicle vehicle) {
-        super(id, name, phone, email, address, password, blocked, active);
-        this.vehicleRegistration = vehicleRegistration;
+    public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                  String address, String password, boolean blocked, boolean active,
+                  int drivingLicense, ArrayList<WorkingHour> workingHours, Vehicle vehicle) {
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
         this.drivingLicense = drivingLicense;
-        this.workTime = workTime;
+        this.workingHours = workingHours;
         this.vehicle = vehicle;
-    }
-
-    public int getVehicleRegistration() {
-        return vehicleRegistration;
-    }
-
-    public void setVehicleRegistration(int vehicleRegistration) {
-        this.vehicleRegistration = vehicleRegistration;
     }
 
     public int getDrivingLicense() {
@@ -40,12 +32,12 @@ public class Driver extends User {
         this.drivingLicense = drivingLicense;
     }
 
-    public WorkTime getWorkTime() {
-        return workTime;
+    public ArrayList<WorkingHour> getWorkingHours() {
+        return workingHours;
     }
 
-    public void setWorkTime(WorkTime workTime) {
-        this.workTime = workTime;
+    public void setWorkingHours(ArrayList<WorkingHour> workingHours) {
+        this.workingHours = workingHours;
     }
 
     public Vehicle getVehicle() {
@@ -59,9 +51,8 @@ public class Driver extends User {
     @Override
     public String toString() {
         return "Driver{" +
-                "vehicleRegistration=" + vehicleRegistration +
-                ", drivingLicense=" + drivingLicense +
-                ", workTime=" + workTime +
+                "drivingLicense=" + drivingLicense +
+                ", workingHours=" + workingHours +
                 ", vehicle=" + vehicle +
                 '}';
     }

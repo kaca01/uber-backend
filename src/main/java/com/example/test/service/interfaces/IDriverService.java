@@ -1,11 +1,10 @@
 package com.example.test.service.interfaces;
 
-import com.example.test.domain.business.WorkTime;
+import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.DriverDocument;
 import com.example.test.domain.vehicle.Vehicle;
-import org.hibernate.jdbc.Work;
 
 import java.util.Collection;
 
@@ -32,14 +31,14 @@ public interface IDriverService {
 
     public Vehicle updateVehicle(Long id, Vehicle vehicle);
 
-    public WorkTime getWorkTime(Long id);
+    public WorkingHour getWorkTime(Long id);
 
-    public WorkTime insertWorkTime(Long id, WorkTime workTime);
+    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
 
     public Collection<Ride> getRides(Long id);
 
-    public WorkTime getWorkTime(Long id, Long workTimeId);
+    public WorkingHour getWorkTime(Long id, Long workTimeId);
 
-    public WorkTime updateWorkTime(Long id, Long workTimeId);
+    public WorkingHour updateWorkTime(Long id, Long workTimeId);
 
 }

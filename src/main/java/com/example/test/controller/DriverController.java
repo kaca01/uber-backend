@@ -1,6 +1,6 @@
 package com.example.test.controller;
 
-import com.example.test.domain.business.WorkTime;
+import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.DriverDocument;
@@ -128,24 +128,24 @@ public class DriverController {
     }
 
     @GetMapping(value = "/{id}/working-hours", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id) throws Exception{
-        WorkTime workTime = service.getWorkTime(id);
+    public ResponseEntity<WorkingHour> getWorkTime(@PathVariable Long id) throws Exception{
+        WorkingHour workingHour = service.getWorkTime(id);
         // TODO : add 400 status
-        if (workTime == null) {
-            return new ResponseEntity<WorkTime>(HttpStatus.NOT_FOUND);
+        if (workingHour == null) {
+            return new ResponseEntity<WorkingHour>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkTime>(workTime, HttpStatus.OK);
+        return new ResponseEntity<WorkingHour>(workingHour, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/working-hours", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkTime> insertWorkTime(@PathVariable Long id, @RequestBody WorkTime workTime)
+    public ResponseEntity<WorkingHour> insertWorkTime(@PathVariable Long id, @RequestBody WorkingHour workingHour)
                                                     throws Exception {
-        WorkTime updatedWorkTime = service.insertWorkTime(id, workTime);
+        WorkingHour updatedWorkingHour = service.insertWorkTime(id, workingHour);
         // TODO : add 400 status
-        if (updatedWorkTime == null) {
-            return new ResponseEntity<WorkTime>(HttpStatus.NOT_FOUND);
+        if (updatedWorkingHour == null) {
+            return new ResponseEntity<WorkingHour>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkTime>(workTime, HttpStatus.CREATED);
+        return new ResponseEntity<WorkingHour>(workingHour, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -159,24 +159,24 @@ public class DriverController {
     }
 
     @GetMapping(value = "/{id}/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkTime> getWorkTime(@PathVariable Long id, @PathVariable Long workTimeId) throws Exception {
-        WorkTime workTime = service.getWorkTime(id, workTimeId);
+    public ResponseEntity<WorkingHour> getWorkTime(@PathVariable Long id, @PathVariable Long workTimeId) throws Exception {
+        WorkingHour workingHour = service.getWorkTime(id, workTimeId);
         // TODO : add 400 status
-        if (workTime == null) {
-            return new ResponseEntity<WorkTime>(HttpStatus.NOT_FOUND);
+        if (workingHour == null) {
+            return new ResponseEntity<WorkingHour>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkTime>(workTime, HttpStatus.OK);
+        return new ResponseEntity<WorkingHour>(workingHour, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkTime> updateWorkTime(@PathVariable Long id, @PathVariable Long workTimeId)
+    public ResponseEntity<WorkingHour> updateWorkTime(@PathVariable Long id, @PathVariable Long workTimeId)
                                                     throws Exception {
-        WorkTime workTime = service.updateWorkTime(id, workTimeId);
+        WorkingHour workingHour = service.updateWorkTime(id, workTimeId);
         // TODO : add 400 status
-        if (workTime == null) {
-            return new ResponseEntity<WorkTime>(HttpStatus.NOT_FOUND);
+        if (workingHour == null) {
+            return new ResponseEntity<WorkingHour>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkTime>(workTime, HttpStatus.OK);
+        return new ResponseEntity<WorkingHour>(workingHour, HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.test.service;
 
-import com.example.test.domain.business.WorkTime;
+import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.DriverDocument;
@@ -64,12 +64,12 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public WorkTime getWorkTime(Long id) {
+    public WorkingHour getWorkTime(Long id) {
         return null;
     }
 
     @Override
-    public WorkTime insertWorkTime(Long id, WorkTime workTime) {
+    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour) {
         return null;
     }
 
@@ -79,12 +79,12 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public WorkTime getWorkTime(Long id, Long workTimeId) {
+    public WorkingHour getWorkTime(Long id, Long workTimeId) {
         return null;
     }
 
     @Override
-    public WorkTime updateWorkTime(Long id, Long workTimeId) {
+    public WorkingHour updateWorkTime(Long id, Long workTimeId) {
         return null;
     }
 }

@@ -1,38 +1,38 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
-import com.example.test.enumeration.VehicleModel;
 
 public class Vehicle {
-    private int id;
+    private Long id;
     private VehicleType type;
-    private VehicleModel model;
-    private String licensePlate;
-    private int numberOfSeats;
+    private String model;
+    private String licenseNumber;
+    private int passengerSeats;
     private Location currentLocation;
-    private boolean babiesAllowed;
-    private boolean petsAllowed;
+    private boolean babyTransport;
+    private boolean petTransport;
 
     private Vehicle() {
 
     }
 
-    public Vehicle(int id, VehicleType type, VehicleModel model, String licensePlate, int numberOfSeats, Location currentLocation, boolean babiesAllowed, boolean petsAllowed) {
+    public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
+                   Location currentLocation, boolean babyTransport, boolean petTransport) {
         this.id = id;
         this.type = type;
         this.model = model;
-        this.licensePlate = licensePlate;
-        this.numberOfSeats = numberOfSeats;
+        this.licenseNumber = licenseNumber;
+        this.passengerSeats = passengerSeats;
         this.currentLocation = currentLocation;
-        this.babiesAllowed = babiesAllowed;
-        this.petsAllowed = petsAllowed;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,28 +44,28 @@ public class Vehicle {
         this.type = type;
     }
 
-    public VehicleModel getModel() {
+    public String getModel() {
         return model;
     }
 
-    public void setModel(VehicleModel model) {
+    public void setModel(String model) {
         this.model = model;
     }
 
-    public String getLicensePlate() {
-        return licensePlate;
+    public String getLicenseNumber() {
+        return licenseNumber;
     }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 
-    public int getNumberOfSeats() {
-        return numberOfSeats;
+    public int getPassengerSeats() {
+        return passengerSeats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
+    public void setPassengerSeats(int passengerSeats) {
+        this.passengerSeats = passengerSeats;
     }
 
     public Location getCurrentLocation() {
@@ -76,20 +76,20 @@ public class Vehicle {
         this.currentLocation = currentLocation;
     }
 
-    public boolean isBabiesAllowed() {
-        return babiesAllowed;
+    public boolean isBabyTransport() {
+        return babyTransport;
     }
 
-    public void setBabiesAllowed(boolean babiesAllowed) {
-        this.babiesAllowed = babiesAllowed;
+    public void setBabyTransport(boolean babyTransport) {
+        this.babyTransport = babyTransport;
     }
 
-    public boolean isPetsAllowed() {
-        return petsAllowed;
+    public boolean isPetTransport() {
+        return petTransport;
     }
 
-    public void setPetsAllowed(boolean petsAllowed) {
-        this.petsAllowed = petsAllowed;
+    public void setPetTransport(boolean petTransport) {
+        this.petTransport = petTransport;
     }
 
     @Override
@@ -98,11 +98,11 @@ public class Vehicle {
                 "id=" + id +
                 ", type=" + type +
                 ", model='" + model + '\'' +
-                ", licensePlate='" + licensePlate + '\'' +
-                ", numberOfSeats=" + numberOfSeats +
+                ", licenseNumber='" + licenseNumber + '\'' +
+                ", passengerSeats=" + passengerSeats +
                 ", currentLocation=" + currentLocation +
-                ", babiesAllowed=" + babiesAllowed +
-                ", petsAllowed=" + petsAllowed +
+                ", babyTransport=" + babyTransport +
+                ", petTransport=" + petTransport +
                 '}';
     }
 }
