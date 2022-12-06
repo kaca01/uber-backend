@@ -4,16 +4,16 @@ import com.example.test.domain.business.WorkingHour;
 
 import java.util.ArrayList;
 
-public class WorkingHoursDTO {
+public class AllWorkingHoursDTO {
 
     private int totalCount;
     private ArrayList<WorkingHour> results;
 
-    public WorkingHoursDTO() {
+    public AllWorkingHoursDTO() {
     }
 
     // response
-    public WorkingHoursDTO(int totalCount, ArrayList<WorkingHour> results) {
+    public AllWorkingHoursDTO(int totalCount, ArrayList<WorkingHour> results) {
         super();
         this.totalCount = totalCount;
         this.results = results;
