@@ -3,6 +3,25 @@ package com.example.test.dto;
 import java.util.ArrayList;
 
 public class AllRideReviewsDTO {
+    
+    private ArrayList<RideReview> rideReviews;
+
+    // response
+    public AllRideReviewsDTO() {
+
+    }
+
+    public AllRideReviewsDTO(ArrayList<RideReview> rideReviews) {
+        this.rideReviews = rideReviews;
+    }
+
+    public ArrayList<RideReview> getRideReviews() {
+        return rideReviews;
+    }
+
+    public void setRideReviews(ArrayList<RideReview> rideReviews) {
+        this.rideReviews = rideReviews;
+    }
 
     private class RideReview {
         private ReviewDTO vehicleReview;
@@ -28,26 +47,5 @@ public class AllRideReviewsDTO {
         public void setDriverReview(ReviewDTO driverReview) {
             this.driverReview = driverReview;
         }
-
-
-    }
-
-    private ArrayList<RideReview> rideReviews;
-
-    // response
-    public AllRideReviewsDTO() {
-
-    }
-
-    public AllRideReviewsDTO(ArrayList<RideReview> rideReviews) {
-        this.rideReviews = rideReviews;
-    }
-
-    public ArrayList<RideReview> getRideReviews() {
-        return rideReviews;
-    }
-
-    public void setRideReviews(ArrayList<RideReview> rideReviews) {
-        this.rideReviews = rideReviews;
     }
 }
