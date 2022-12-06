@@ -8,6 +8,7 @@ public class AllPanicsDTO {
 
     public AllPanicsDTO(){}
 
+    //response
     public AllPanicsDTO(int totalCount, ArrayList<PanicDTO> results) {
         this.totalCount = totalCount;
         this.results = results;

@@ -12,6 +12,7 @@ public class AllMessagesDTO {
 
     }
 
+    //response
     public AllMessagesDTO(Long totalCount, ArrayList<MessageDTO> results) {
         this.totalCount = totalCount;
         this.results = results;

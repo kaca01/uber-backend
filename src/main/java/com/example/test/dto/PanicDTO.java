@@ -10,10 +10,12 @@ public class PanicDTO {
 
     public PanicDTO(){}
 
+    //request
     public PanicDTO(String reason) {
         this.reason = reason;
     }
 
+    //response
     public PanicDTO(String reason, Long id, UserDTO user, RideDTO ride, String time) {
         this.reason = reason;
         this.id = id;

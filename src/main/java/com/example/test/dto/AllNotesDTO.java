@@ -8,6 +8,7 @@ public class AllNotesDTO {
 
     public AllNotesDTO(){}
 
+    //response
     public AllNotesDTO(int totalCount, ArrayList<Note> results) {
         this.totalCount = totalCount;
         this.results = results;
