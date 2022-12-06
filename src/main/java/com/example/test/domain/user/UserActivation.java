@@ -3,7 +3,7 @@ package com.example.test.domain.user;
 import java.time.LocalDate;
 
 public class UserActivation {
-    private int id;
+    private Long id;
     private User user;
     private LocalDate date;
     private int life;
@@ -13,18 +13,18 @@ public class UserActivation {
 
     }
 
-    public UserActivation(int id, User user, LocalDate date, int life) {
+    public UserActivation(Long id, User user, LocalDate date, int life) {
         this.id = id;
         this.user = user;
         this.date = date;
         this.life = life;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

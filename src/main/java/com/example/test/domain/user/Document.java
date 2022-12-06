@@ -1,19 +1,18 @@
 package com.example.test.domain.user;
 
 
-import java.util.Arrays;
-
-public class DriverDocument {
+public class Document {
+    private Long id;
     private String name;
-    private byte[] documentImage;
+    private String documentImage;
     private Driver driver;
 
-    public DriverDocument()
+    public Document()
     {
 
     }
 
-    public DriverDocument(String name, byte[] documentImage, Driver driver) {
+    public Document(String name, String documentImage, Driver driver) {
         this.name = name;
         this.documentImage = documentImage;
         this.driver = driver;
@@ -27,11 +26,11 @@ public class DriverDocument {
         this.name = name;
     }
 
-    public byte[] getDocumentImage() {
+    public String getDocumentImage() {
         return documentImage;
     }
 
-    public void setDocumentImage(byte[] documentImage) {
+    public void setDocumentImage(String documentImage) {
         this.documentImage = documentImage;
     }
 
@@ -46,8 +45,9 @@ public class DriverDocument {
     @Override
     public String toString() {
         return "DriverDocument{" +
-                "name='" + name + '\'' +
-                ", documentImage=" + Arrays.toString(documentImage) +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", documentImage='" + documentImage + '\'' +
                 ", driver=" + driver +
                 '}';
     }

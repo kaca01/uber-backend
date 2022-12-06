@@ -3,7 +3,7 @@ package com.example.test.domain.vehicle;
 import com.example.test.enumeration.VehicleTypeName;
 
 public class VehicleType {
-    private int id;
+    private Long id;
     private VehicleTypeName name;
     private double pricePerKm;
 
@@ -11,17 +11,17 @@ public class VehicleType {
 
     }
 
-    public VehicleType(int id, VehicleTypeName name, double pricePerKm) {
+    public VehicleType(Long id, VehicleTypeName name, double pricePerKm) {
         this.id = id;
         this.name = name;
         this.pricePerKm = pricePerKm;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

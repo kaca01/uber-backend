@@ -1,62 +1,50 @@
 package com.example.test.domain.ride;
 
 public class Route {
-    private int id;
-    private Location startingPoint;
-    private Location endingPoint;
-    private double distance;
+    private Long id;
+    private Location departure;
+    private Location destination;
 
     public Route() {
 
     }
 
-    public Route(int id, Location startingPoint, Location endingPoint, double distance) {
+    public Route(Long id, Location departure, Location destination) {
         this.id = id;
-        this.startingPoint = startingPoint;
-        this.endingPoint = endingPoint;
-        this.distance = distance;
+        this.departure = departure;
+        this.destination = destination;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Location getStartingPoint() {
-        return startingPoint;
+    public Location getDeparture() {
+        return departure;
     }
 
-    public void setStartingPoint(Location startingPoint) {
-        this.startingPoint = startingPoint;
+    public void setDeparture(Location departure) {
+        this.departure = departure;
     }
 
-    public Location getEndingPoint() {
-        return endingPoint;
+    public Location getDestination() {
+        return destination;
     }
 
-    public void setEndingPoint(Location endingPoint) {
-        this.endingPoint = endingPoint;
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
 
     @Override
     public String toString() {
         return "Route{" +
                 "id=" + id +
-                ", startingPoint=" + startingPoint +
-                ", endingPoint=" + endingPoint +
-                ", distance=" + distance +
+                ", startingPoint=" + departure +
+                ", endingPoint=" + destination +
                 '}';
     }
 }

@@ -15,9 +15,10 @@ public class Passenger extends User {
 
     }
 
-    public Passenger(int id, String name, String phone, String email, String address, String password, boolean blocked,
-                     boolean active, ArrayList<Location> favoriteLocations) {
-        super(id, name, phone, email, address, password, blocked, active);
+    public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                     String address, String password, boolean blocked, boolean active,
+                     ArrayList<Location> favoriteLocations) {
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
         this.favoriteLocations = favoriteLocations;
     }
 
