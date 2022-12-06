@@ -13,8 +13,8 @@ public class VehicleDTO {
     private String licenseNumber;
     private ArrayList<Location> currentLocation;
     private int passengerSeats;
-    private Boolean babyTransport;
-    private Boolean petTransport;
+    private boolean babyTransport;
+    private boolean petTransport;
 
 
     public VehicleDTO() {
@@ -104,19 +104,19 @@ public class VehicleDTO {
         this.passengerSeats = passengerSeats;
     }
 
-    public Boolean getBabyTransport() {
+    public boolean getBabyTransport() {
         return babyTransport;
     }
 
-    public void setBabyTransport(Boolean babyTransport) {
+    public void setBabyTransport(boolean babyTransport) {
         this.babyTransport = babyTransport;
     }
 
-    public Boolean getPetTransport() {
+    public boolean getPetTransport() {
         return petTransport;
     }
 
-    public void setPetTransport(Boolean petTransport) {
+    public void setPetTransport(boolean petTransport) {
         this.petTransport = petTransport;
     }
 }
