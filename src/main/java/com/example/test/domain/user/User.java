@@ -9,12 +9,13 @@ abstract public class User {
     private String address;
     private String password;
     private boolean blocked;
+    private boolean active;
 
     public User() {
 
     }
 
-    public User(int id, String name, String phone, String email, String address, String password, boolean blocked) {
+    public User(int id, String name, String phone, String email, String address, String password, boolean blocked, boolean active) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -22,6 +23,7 @@ abstract public class User {
         this.address = address;
         this.password = password;
         this.blocked = blocked;
+        this.active = active;
     }
 
     public int getId() {
@@ -80,6 +82,14 @@ abstract public class User {
         this.blocked = blocked;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -90,6 +100,7 @@ abstract public class User {
                 ", address='" + address + '\'' +
                 ", password='" + password + '\'' +
                 ", blocked=" + blocked +
+                ", active=" + active +
                 '}';
     }
 }
