@@ -1,5 +1,11 @@
 package com.example.test.dto;
 
+import com.example.test.domain.communication.Rejection;
+import com.example.test.domain.ride.Route;
+import com.example.test.domain.user.Driver;
+import com.example.test.domain.user.Passenger;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -9,15 +15,15 @@ public class RideDTO {
     private Date startTime;
     private Date endTime;
     private double totalCost;
-    //private ArrayList<Location> locations;
-    //private ArrayList<User> passengers;
+    private ArrayList<Route> locations;
+    private ArrayList<Passenger> passengers;
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
     private int estimatedTimeInMinutes;
     private String status;
-    //private User driver;
-    //private Rejection rejection;
+    private Driver driver;
+    private Rejection rejection;
 
 
     public RideDTO() {
@@ -25,10 +31,10 @@ public class RideDTO {
     }
 
     // request
-    public RideDTO(String vehicleType,
+    public RideDTO(ArrayList<Route> locations, ArrayList<Passenger> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
-        //this.locations = locations;
-        //this.passengers = passengers;
+        this.locations = locations;
+        this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
@@ -36,39 +42,41 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, Date startTime, Date endTime, double totalCost, String vehicleType, boolean babyTransport,
-                   boolean petTransport, int estimatedTimeInMinutes) {
+    public RideDTO(Long id, Date startTime, Date endTime, double totalCost, ArrayList<Route> locations,
+                   ArrayList<Passenger> passengers , String vehicleType, boolean babyTransport,
+                   boolean petTransport, int estimatedTimeInMinutes, String status, Driver driver,
+                   Rejection rejection) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalCost = totalCost;
-        //this.locations = locations;
-        //this.passengers = passengers;
+        this.locations = locations;
+        this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
         this.estimatedTimeInMinutes = estimatedTimeInMinutes;
         this.status = status;
-        //this.driver = driver;
-        //this.rejection = rejection;
+        this.driver = driver;
+        this.rejection = rejection;
     }
 
-   /* public ArrayList<Location> getLocations() {
+    public ArrayList<Route> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<Location> locations) {
+    public void setLocations(ArrayList<Route> locations) {
         this.locations = locations;
     }
 
-    public ArrayList<User> getPassengers() {
+    public ArrayList<Passenger> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(ArrayList<User> passengers) {
+    public void setPassengers(ArrayList<Passenger> passengers) {
         this.passengers = passengers;
     }
-*/
+
     public String getVehicleType() {
         return vehicleType;
     }
@@ -140,12 +148,12 @@ public class RideDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-    /*
-    public User getDriver() {
+
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(User driver) {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
@@ -155,5 +163,5 @@ public class RideDTO {
 
     public void setRejection(Rejection rejection) {
         this.rejection = rejection;
-    }*/
+    }
 }
