@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class AllReviewsDTO {
     private int totalCount;
-    private ArrayList<ReviewDTO> reviews;
+    private ArrayList<ReviewDTO> results;
 
     public AllReviewsDTO() {
 
     }
 
     // response
-    public AllReviewsDTO(int totalCount, ArrayList<ReviewDTO> reviews) {
+    public AllReviewsDTO(int totalCount, ArrayList<ReviewDTO> results) {
         this.totalCount = totalCount;
-        this.reviews = reviews;
+        this.results = results;
     }
 
     public int getTotalCount() {
@@ -24,11 +24,11 @@ public class AllReviewsDTO {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<ReviewDTO> getReviews() {
-        return reviews;
+    public ArrayList<ReviewDTO> getResults() {
+        return results;
     }
 
-    public void setReviews(ArrayList<ReviewDTO> reviews) {
-        this.reviews = reviews;
+    public void setResults(ArrayList<ReviewDTO> results) {
+        this.results = results;
     }
 }

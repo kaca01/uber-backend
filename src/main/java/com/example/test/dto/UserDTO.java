@@ -1,5 +1,7 @@
 package com.example.test.dto;
 
+import com.example.test.domain.user.Driver;
+import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 
 public class UserDTO {
@@ -23,6 +25,14 @@ public class UserDTO {
                 user.getEmail(), user.getAddress());
     }
 
+    public UserDTO(Driver driver) {
+        this(driver.getId(), driver.getEmail());
+    }
+
+    public UserDTO(Passenger passenger) {
+        this(passenger.getId(), passenger.getEmail());
+    }
+
     // response
     public UserDTO(Long id, String name, String surname, String profilePicture, String telephoneNumber,
                    String email, String address) {
@@ -34,6 +44,12 @@ public class UserDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    // response
+    public UserDTO(Long id, String email) {
+        this.id = id;
+        this.email = email;
     }
 
     // request

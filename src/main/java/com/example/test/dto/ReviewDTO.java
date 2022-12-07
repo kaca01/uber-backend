@@ -7,14 +7,14 @@ public class ReviewDTO {
     private Long id;
     private int rating;
     private String comment;
-    private Passenger passenger;
+    private UserDTO passenger;
 
     public ReviewDTO() {
 
     }
 
     public ReviewDTO(Review review) {
-        this(review.getId(), review.getRating(), review.getComment(), review.getPassenger());
+        this(review.getId(), review.getRating(), review.getComment(), new UserDTO(review.getPassenger()));
     }
 
     // request
@@ -25,7 +25,7 @@ public class ReviewDTO {
 
 
     // response
-    public ReviewDTO(Long id, int rating, String comment, Passenger passenger) {
+    public ReviewDTO(Long id, int rating, String comment, UserDTO passenger) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
@@ -56,11 +56,11 @@ public class ReviewDTO {
         this.comment = comment;
     }
 
-    public Passenger getPassenger() {
+    public UserDTO getPassenger() {
         return passenger;
     }
 
-    public void setPassenger(Passenger passenger) {
+    public void setPassenger(UserDTO passenger) {
         this.passenger = passenger;
     }
 }
