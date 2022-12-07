@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class AllNotesDTO {
     private int totalCount;
-    private ArrayList<Note> results;
+    private ArrayList<NoteDTO> results;
 
     public AllNotesDTO(){}
 
     //response
-    public AllNotesDTO(int totalCount, ArrayList<Note> results) {
+    public AllNotesDTO(int totalCount, ArrayList<NoteDTO> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
@@ -22,11 +22,11 @@ public class AllNotesDTO {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<Note> getResults() {
+    public ArrayList<NoteDTO> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<Note> results) {
+    public void setResults(ArrayList<NoteDTO> results) {
         this.results = results;
     }
 
@@ -36,54 +36,5 @@ public class AllNotesDTO {
                 "totalCount=" + totalCount +
                 ", results=" + results +
                 '}';
-    }
-
-    private static class Note
-    {
-        private Long id;
-        private String date;
-        private String message;
-
-        public Note(){};
-
-        public Note(Long id, String date, String message)
-        {
-            this.id=id;
-            this.date=date;
-            this.message=message;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        @Override
-        public String toString() {
-            return "Note{" +
-                    "id=" + id +
-                    ", date='" + date + '\'' +
-                    ", message='" + message + '\'' +
-                    '}';
-        }
     }
 }

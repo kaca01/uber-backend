@@ -7,7 +7,6 @@ import java.util.Date;
 public class Note {
 
     private Long id;
-
     private Date date;
     private String message;
     private User user;
@@ -15,6 +14,13 @@ public class Note {
     public Note()
     {
 
+    }
+
+    public Note(Long id, Date date, String message) {
+        this.id = id;
+        this.date = date;
+        this.message = message;
+        this.user = null;
     }
 
     public Note(Long id, Date date, String message, User user) {

@@ -1,5 +1,7 @@
 package com.example.test.dto;
 
+import com.example.test.domain.communication.Message;
+
 public class PanicDTO {
 
     private String reason;
@@ -13,6 +15,15 @@ public class PanicDTO {
     //request
     public PanicDTO(String reason) {
         this.reason = reason;
+    }
+
+    public PanicDTO(Message message)
+    {
+        this.id = message.getId();
+        this.user = new UserDTO(message.getSender());
+        this.ride = new RideDTO(message.getRide());
+        this.time = message.getTimeOfSending().toString();
+        this.reason = message.getMessage();
     }
 
     //response
