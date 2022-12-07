@@ -25,14 +25,6 @@ public class UserDTO {
                 user.getEmail(), user.getAddress());
     }
 
-    public UserDTO(Driver driver) {
-        this(driver.getId(), driver.getEmail());
-    }
-
-    public UserDTO(Passenger passenger) {
-        this(passenger.getId(), passenger.getEmail());
-    }
-
     // response
     public UserDTO(Long id, String name, String surname, String profilePicture, String telephoneNumber,
                    String email, String address) {

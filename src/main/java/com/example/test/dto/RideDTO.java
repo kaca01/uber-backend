@@ -37,7 +37,7 @@ public class RideDTO {
         new RideDTO(ride.getId(), ride.getStartTime().toString(), ride.getEndTime().toString(), ride.getTotalCost(),
                 ride.getLocations(), convertPassengersToUsersDTO(ride), ride.getVehicle().getType().getName().toString(),
                 ride.isBabyTransport(), ride.isPetTransport(), ride.getEstimatedTimeInMinutes(),
-                ride.getStatus().toString(), new UserDTO(ride.getDriver()), new RejectionDTO(ride.getRejection()));
+                ride.getStatus().toString(), new UserDTO(ride.getDriver().getId(), ride.getDriver().getEmail()), new RejectionDTO(ride.getRejection()));
     }
 
     // request
@@ -74,7 +74,7 @@ public class RideDTO {
     public ArrayList<UserDTO> convertPassengersToUsersDTO(Ride ride) {
         ArrayList<UserDTO> users = new ArrayList<UserDTO>();
         for (Passenger passenger: ride.getPassengers()) {
-            users.add(new UserDTO(passenger));
+            users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
         }
         return users;
     }
