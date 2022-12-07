@@ -6,10 +6,11 @@ public class AllRideReviewsDTO {
     
     private ArrayList<RideReview> rideReviews;
 
-    // response
     public AllRideReviewsDTO() {
 
     }
+
+    // response
 
     public AllRideReviewsDTO(ArrayList<RideReview> rideReviews) {
         this.rideReviews = rideReviews;

@@ -6,6 +6,9 @@ public class AllReviewsDTO {
     private int totalCount;
     private ArrayList<ReviewDTO> reviews;
 
+    public AllReviewsDTO() {
+
+    }
 
     // response
     public AllReviewsDTO(int totalCount, ArrayList<ReviewDTO> reviews) {

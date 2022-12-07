@@ -1,5 +1,6 @@
 package com.example.test.dto;
 
+import com.example.test.domain.communication.Review;
 import com.example.test.domain.user.Passenger;
 
 public class ReviewDTO {
@@ -10,6 +11,10 @@ public class ReviewDTO {
 
     public ReviewDTO() {
 
+    }
+
+    public ReviewDTO(Review review) {
+        this(review.getId(), review.getRating(), review.getComment(), review.getPassenger());
     }
 
     // request

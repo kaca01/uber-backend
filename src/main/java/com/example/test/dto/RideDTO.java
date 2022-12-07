@@ -1,6 +1,7 @@
 package com.example.test.dto;
 
 import com.example.test.domain.communication.Rejection;
+import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
@@ -28,6 +29,13 @@ public class RideDTO {
 
     public RideDTO() {
 
+    }
+
+    public RideDTO(Ride ride) {
+        this(ride.getId(), ride.getStartTime(), ride.getEndTime(), ride.getTotalCost(), ride.getLocations(),
+                ride.getPassengers(), ride.getVehicle().getType().getName().toString(), ride.isBabyTransport(),
+                ride.isPetTransport(), ride.getEstimatedTimeInMinutes(), ride.getStatus().toString(), ride.getDriver(),
+                ride.getRejection());
     }
 
     // request
