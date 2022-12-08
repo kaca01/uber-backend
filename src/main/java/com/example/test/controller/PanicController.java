@@ -20,7 +20,8 @@ public class PanicController {
 
     @Autowired
     IPanicService service;
-
+    
+    //Overview of all panic notifications
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<Message>> getPanicMessages()
     {

@@ -2,83 +2,107 @@ package com.example.test.controller;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.User;
+import com.example.test.dto.*;
 import com.example.test.service.interfaces.IPassengerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {
+
+    private static ModelMapper modelMapper;
     @Autowired
     IPassengerService service;
 
-    //izgenerisati id unutra
+    // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Passenger> insert(@RequestBody Passenger passenger) throws Exception
+    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
     {
-        Passenger newPassenger = service.insert(passenger);
-        if (newPassenger == null)
-            return new ResponseEntity<Passenger>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Passenger>(newPassenger, HttpStatus.CREATED);
+        Passenger passenger = modelMapper.map(passengerDTO, Passenger.class);
+        passenger = service.insert(passenger);  // returns passenger with set id
+        if (passenger == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.CREATED);
     }
 
+    //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Passenger>> getPassengers()
+    public ResponseEntity<AllUsersDTO> getPassengers(int page, int size)
     {
-        Collection<Passenger> passengers = service.getAll();
-        return new ResponseEntity<Collection<Passenger>>(passengers, HttpStatus.OK);
+        List<Passenger> passengers = service.getAll(page, size);
+
+        // convert passengers to DTOs
+        ArrayList<UserDTO> passengersDTO = new ArrayList<>();
+        for (Passenger p : passengers) {
+            passengersDTO.add(new UserDTO(p));
+        }
+
+        return new ResponseEntity<AllUsersDTO>(new AllUsersDTO(passengersDTO.size(), passengersDTO), HttpStatus.OK);
     }
 
-    //treba da ako nije isteklo vrijeme, da user-u prebacim aktivnost na active
-    @PostMapping(value = "/{activationId}")
-    public ResponseEntity<Boolean> activatePassenger(@PathVariable Long activationId) throws Exception
+    //activate passenger account
+    @GetMapping(value = "/activate/{activationId}")
+    public ResponseEntity<Boolean> activatePassenger(@PathVariable int activationId) throws Exception
     {
-        Boolean flag = service.activatePassenger(activationId);
+        Boolean flag = service.activatePassenger((long) activationId);
         if (!flag) {
             return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
         }
         //TODO add error 400 (bad request=invalid data)
-        return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
+        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
+    //get passsenger details
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Passenger> findUserById(@PathVariable Long id)
+    public ResponseEntity<UserDTO> findUserById(@PathVariable int id)
     {
-        Passenger passenger = service.findUserById(id);
+        Passenger passenger = service.findUserById((long) id);
 
         if (passenger == null) {
-            return new ResponseEntity<Passenger>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<Passenger>(passenger, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
     }
 
+    //Update existing passenger
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Passenger> update(@RequestBody Passenger passenger, @PathVariable Long id) throws Exception
+    public ResponseEntity<UserDTO> update(@RequestBody UserDTO passengerDTO, @PathVariable int id) throws Exception
     {
-        Passenger newPassenger = service.update(passenger, id);
+        Passenger passenger = modelMapper.map(passengerDTO, Passenger.class);
+        passenger = service.update(passenger, (long) id);
 
-        if (newPassenger == null) {
-            return new ResponseEntity<Passenger>(HttpStatus.NOT_FOUND);
+        if (passenger == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<Passenger>(newPassenger, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
     }
 
-    //todo paginatorske voznje ??
+    //get passenger rides
+    //todo PAGINATED RIDES
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Ride>> getRidesByPassenger(@PathVariable Long id)
+    public ResponseEntity<AllRidesDTO> getRidesByPassenger(@PathVariable int id)
     {
-        Collection<Ride> rides = service.getRidesByPassenger(id);
-        if (rides == null) {
-            return new ResponseEntity<Collection<Ride>>(HttpStatus.NOT_FOUND);
+        List<Ride> rides = service.getRidesByPassenger((long)id);
+
+        // convert rides to DTOs
+        ArrayList<RideDTO> ridesDTO = new ArrayList<>();
+        for (Ride r : rides) {
+            ridesDTO.add(new RideDTO(r));
         }
-        //TODO error 400
-        return new ResponseEntity<Collection<Ride>>(rides, HttpStatus.OK);
+
+        //TODO error 400 and 404
+        return new ResponseEntity<AllRidesDTO>(new AllRidesDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
     }
 }

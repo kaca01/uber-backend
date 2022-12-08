@@ -6,12 +6,13 @@ import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class PassengerService implements IPassengerService {
 
     @Override
-    public Collection<Passenger> getAll() {
+    public List<Passenger> getAll(Integer page, Integer size) {
         return null;
     }
 
@@ -26,7 +27,7 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public Collection<Ride> getRidesByPassenger(Long passengerId) {
+    public List<Ride> getRidesByPassenger(Long passengerId) {
         return null;
     }
 
@@ -35,6 +36,8 @@ public class PassengerService implements IPassengerService {
         return null;
     }
 
+    //activationId == id of the passenger
+    //treba da ako nije isteklo vrijeme, da user-u prebacim aktivnost na active
     @Override
     public Boolean activatePassenger(Long activationId) {
         return false;
