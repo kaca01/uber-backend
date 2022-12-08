@@ -28,8 +28,7 @@ public class PassengerController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
     {
-        Passenger passenger = modelMapper.map(passengerDTO, Passenger.class);
-        System.out.println(passenger);
+        Passenger passenger = new Passenger(passengerDTO);
         passenger = service.insert(passenger);  // returns passenger with set id
         if (passenger == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
