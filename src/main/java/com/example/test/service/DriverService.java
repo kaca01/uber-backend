@@ -76,7 +76,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Collection<Ride> getRides(Long id) {
+    public AllRidesDTO getRides(Long id) {
         return null;
     }
 

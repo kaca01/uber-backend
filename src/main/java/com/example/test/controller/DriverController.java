@@ -153,13 +153,13 @@ public class DriverController {
 
     // TODO is here missing AllRidesDTO?
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Ride>> getRides(@PathVariable Long id) throws Exception {
-        Collection<Ride> rides = service.getRides(id);
+    public ResponseEntity<AllRidesDTO> getRides(@PathVariable Long id) throws Exception {
+        AllRidesDTO rides = service.getRides(id);
         // TOD : add 400 status
         if (rides == null) {
-            return new ResponseEntity<Collection<Ride>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<AllRidesDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Collection<Ride>>(rides, HttpStatus.OK);
+        return new ResponseEntity<AllRidesDTO>(rides, HttpStatus.OK);
     }
 
     @GetMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)

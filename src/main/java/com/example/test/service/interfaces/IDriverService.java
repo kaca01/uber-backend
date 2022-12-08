@@ -35,7 +35,7 @@ public interface IDriverService {
 
     public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour);
 
-    public Collection<Ride> getRides(Long id);
+    public AllRidesDTO getRides(Long id);
 
     public WorkingHourDTO getWorkTime(Long workTimeId, boolean flag);
 
