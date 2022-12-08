@@ -12,7 +12,6 @@ import java.util.Date;
 
 
 public class RideDTO {
-    // TODO add necessary dtos
     private Long id;
     private String startTime;
     private String endTime;

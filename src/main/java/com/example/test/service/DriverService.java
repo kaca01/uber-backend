@@ -5,6 +5,7 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.*;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +15,28 @@ import java.util.Collection;
 public class DriverService implements IDriverService {
 
     @Override
-    public Driver insert(Driver driver) {
+    public UserDTO insert(UserDTO driver) {
+        // TODO create and add to the database and after that return UserDTO
         return null;
     }
 
     @Override
-    public Collection<Driver> getAll() {
+    public AllUsersDTO getAll() {
         return null;
     }
 
     @Override
-    public Driver get(Long id) {
+    public UserDTO get(Long id) {
         return null;
     }
 
     @Override
-    public Driver update(Long id, Driver driver) {
+    public UserDTO update(Long id, UserDTO driver) {
         return null;
     }
 
     @Override
-    public Collection<Document> getDriverDocuments(Long id) {
+    public Collection<DocumentDTO> getDriverDocuments(Long id) {
         return null;
     }
 
@@ -44,32 +46,32 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public Collection<Document> insertDriverDocuments(Long id, Collection<Document> driverDocuments) {
+    public DocumentDTO insertDriverDocument(Long id, DocumentDTO document) {
         return null;
     }
 
     @Override
-    public Vehicle getVehicle(Long id) {
+    public VehicleDTO getVehicle(Long id) {
         return null;
     }
 
     @Override
-    public Vehicle insertVehicle(Long id, Vehicle vehicle) {
+    public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle) {
         return null;
     }
 
     @Override
-    public Vehicle updateVehicle(Long id, Vehicle vehicle) {
+    public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle) {
         return null;
     }
 
     @Override
-    public WorkingHour getWorkTime(Long id) {
+    public AllWorkingHoursDTO getWorkTime(Long id) {
         return null;
     }
 
     @Override
-    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour) {
+    public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour) {
         return null;
     }
 
@@ -79,12 +81,12 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public WorkingHour getWorkTime(Long id, Long workTimeId) {
+    public WorkingHourDTO getWorkTime(Long workTimeId, boolean flag) {
         return null;
     }
 
     @Override
-    public WorkingHour updateWorkTime(Long id, Long workTimeId) {
+    public WorkingHourDTO updateWorkTime(Long workTimeId) {
         return null;
     }
 }

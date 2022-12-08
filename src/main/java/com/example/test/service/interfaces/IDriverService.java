@@ -2,43 +2,43 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.*;
 
 import java.util.Collection;
 
 public interface IDriverService {
 
-    public Driver insert(Driver driver);
+    public UserDTO insert(UserDTO driver);
 
     // TODO : check this later (paginated drivers???)
-    public Collection<Driver> getAll();
+    public AllUsersDTO getAll();
 
-    public Driver get(Long id);
+    public UserDTO get(Long id);
 
-    public Driver update(Long id, Driver driver);
+    public UserDTO update(Long id, UserDTO driver);
 
-    public Collection<Document> getDriverDocuments(Long id);
+    public Collection<DocumentDTO> getDriverDocuments(Long id);
 
     public Boolean deleteDriverDocument(Long id);
 
-    public Collection<Document> insertDriverDocuments(Long id, Collection<Document> driverDocument);
+    public DocumentDTO insertDriverDocument(Long id, DocumentDTO document);
 
-    public Vehicle getVehicle(Long id);
+    public VehicleDTO getVehicle(Long id);
 
-    public Vehicle insertVehicle(Long id, Vehicle vehicle);
+    public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle);
 
-    public Vehicle updateVehicle(Long id, Vehicle vehicle);
+    public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle);
 
-    public WorkingHour getWorkTime(Long id);
+    public AllWorkingHoursDTO getWorkTime(Long id);
 
-    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
+    public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour);
 
     public Collection<Ride> getRides(Long id);
 
-    public WorkingHour getWorkTime(Long id, Long workTimeId);
+    public WorkingHourDTO getWorkTime(Long workTimeId, boolean flag);
 
-    public WorkingHour updateWorkTime(Long id, Long workTimeId);
+    public WorkingHourDTO updateWorkTime(Long workTimeId);
 
 }
