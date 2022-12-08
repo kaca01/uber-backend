@@ -29,6 +29,7 @@ public class PassengerController {
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
     {
         Passenger passenger = modelMapper.map(passengerDTO, Passenger.class);
+        System.out.println(passenger);
         passenger = service.insert(passenger);  // returns passenger with set id
         if (passenger == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -37,9 +38,9 @@ public class PassengerController {
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllUsersDTO> getPassengers(int page, int size)
+    public ResponseEntity<AllUsersDTO> getPassengers()
     {
-        List<Passenger> passengers = service.getAll(page, size);
+        List<Passenger> passengers = service.getAll(0, 0);
 
         // convert passengers to DTOs
         ArrayList<UserDTO> passengersDTO = new ArrayList<>();
@@ -79,7 +80,8 @@ public class PassengerController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO passengerDTO, @PathVariable int id) throws Exception
     {
-        Passenger passenger = modelMapper.map(passengerDTO, Passenger.class);
+        Passenger passenger = new Passenger(passengerDTO);
+
         passenger = service.update(passenger, (long) id);
 
         if (passenger == null) {
