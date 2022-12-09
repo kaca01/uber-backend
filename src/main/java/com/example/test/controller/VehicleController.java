@@ -22,10 +22,10 @@ public class VehicleController {
 
         Boolean updatedLocation = service.update((long) id, location);
 
-        if (updatedLocation == null) {
+        if (!updatedLocation) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // todo 400
-        return new ResponseEntity<>(updatedLocation, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }
