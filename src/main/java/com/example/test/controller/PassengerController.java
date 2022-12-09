@@ -2,10 +2,8 @@ package com.example.test.controller;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
-import com.example.test.domain.user.User;
 import com.example.test.dto.*;
 import com.example.test.service.interfaces.IPassengerService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,14 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {
 
-    private static ModelMapper modelMapper;
     @Autowired
     IPassengerService service;
 

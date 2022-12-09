@@ -25,14 +25,13 @@ public class Passenger extends User {
 
     public Passenger(UserDTO passengerDTO)
     {
-        this.setId(passengerDTO.getId());
         this.setName(passengerDTO.getName());
         this.setSurname(passengerDTO.getSurname());
         this.setEmail(passengerDTO.getEmail());
         this.setProfilePicture(passengerDTO.getProfilePicture());
         this.setAddress(passengerDTO.getAddress());
         this.setTelephoneNumber(passengerDTO.getTelephoneNumber());
-
+        this.setPassword(passengerDTO.getPassword());
     }
 
     public ArrayList<Location> getFavoriteLocations() {
