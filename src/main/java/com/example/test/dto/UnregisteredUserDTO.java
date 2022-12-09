@@ -1,11 +1,12 @@
 package com.example.test.dto;
 
+import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Route;
 
 import java.util.ArrayList;
 
 public class UnregisteredUserDTO {
-    private ArrayList<Route> locations;
+    private ArrayList<Location> locations;
     private String vehicleType;
     private boolean petTransport;
     private boolean babyTransport;
@@ -18,7 +19,7 @@ public class UnregisteredUserDTO {
     }
 
     //request
-    public UnregisteredUserDTO(ArrayList<Route> locations, String vehicleType, boolean petTransport,
+    public UnregisteredUserDTO(ArrayList<Location> locations, String vehicleType, boolean petTransport,
                                boolean babyTransport) {
         this.locations = locations;
         this.vehicleType = vehicleType;
@@ -48,11 +49,11 @@ public class UnregisteredUserDTO {
         this.estimatedCost = estimatedCost;
     }
 
-    public ArrayList<Route> getLocations() {
+    public ArrayList<Location> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<Route> locations) {
+    public void setLocations(ArrayList<Location> locations) {
         this.locations = locations;
     }
 
