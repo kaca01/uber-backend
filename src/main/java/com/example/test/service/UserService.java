@@ -5,20 +5,24 @@ import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
 import com.example.test.service.interfaces.IUserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.awt.print.Pageable;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {
 
     @Override
-    public Collection<Ride> getRides(Long id) {
+    public List<Ride> getRides(Long id, Pageable page, String from, String to) {
+        // prvo se dobave sve voznje za datog korisnika, funkciji se prosledjuje page
+        // svaka voznja se uporedjuje sa from, to
         return null;
     }
 
     @Override
-    public User get() {
+    public Page<User> get(Pageable pageable) {
         return null;
     }
 
@@ -28,7 +32,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Collection<Message> getMessages(Long id) {
+    public List<Message> getMessages(Long id) {
         return null;
     }
 
@@ -53,7 +57,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Collection<Note> getNotes(Long id) {
+    public List<Note> getNotes(Long id, Pageable pageable) {
         return null;
     }
 }
