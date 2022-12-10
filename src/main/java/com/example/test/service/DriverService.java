@@ -116,26 +116,34 @@ public class DriverService implements IDriverService {
 
     @Override
     public List<WorkingHour> getWorkTime(Long id) {
-        return null;
+        Driver driver = get(id);
+        if (driver == null) return null;
+        return driver.getWorkingHours();
     }
 
     @Override
     public WorkingHour insertWorkTime(Long id, WorkingHour workingHour) {
-        return null;
+        Driver driver = get(id);
+        if (driver == null) return null;
+        driver.getWorkingHours().add(workingHour);
+        return workingHour;
     }
 
     @Override
     public List<Ride> getRides(Long id) {
+        // TODO implement this
         return null;
     }
 
     @Override
     public WorkingHour getWorkTime(Long workTimeId, boolean flag) {
+        // TODO implement this
         return null;
     }
 
     @Override
     public WorkingHour updateWorkTime(Long workTimeId) {
+        // TODO implement this
         return null;
     }
 

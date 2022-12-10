@@ -168,13 +168,14 @@ public class DriverController {
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllWorkingHoursDTO> getWorkTimes(@PathVariable Long id) throws Exception{
         List<WorkingHour> workingHours = service.getWorkTime(id);
-        ArrayList<WorkingHourDTO> workingHourDTOS = new ArrayList<>();
-        for (WorkingHour workingHour : workingHours) workingHourDTOS.add(new WorkingHourDTO(workingHour));
-        AllWorkingHoursDTO allWorkingHoursDTO = new AllWorkingHoursDTO(workingHours.size(), workingHourDTOS);
         // TODO : add 400 status
         if (workingHours == null) {
             return new ResponseEntity<AllWorkingHoursDTO>(HttpStatus.NOT_FOUND);
         }
+        ArrayList<WorkingHourDTO> workingHourDTOS = new ArrayList<>();
+        for (WorkingHour workingHour : workingHours) workingHourDTOS.add(new WorkingHourDTO(workingHour));
+        AllWorkingHoursDTO allWorkingHoursDTO = new AllWorkingHoursDTO(workingHours.size(), workingHourDTOS);
+
         return new ResponseEntity<AllWorkingHoursDTO>(allWorkingHoursDTO, HttpStatus.OK);
     }
 
@@ -185,46 +186,50 @@ public class DriverController {
         Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getEnd());
         WorkingHour workingHour = new WorkingHour(workingHourDTO.getId(), start, end);
         WorkingHour updatedWorkingHour = service.insertWorkTime(id, workingHour);
-        workingHourDTO = new WorkingHourDTO(updatedWorkingHour);
         // TODO : add 400 status
         if (updatedWorkingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.CREATED);
+        workingHourDTO = new WorkingHourDTO(updatedWorkingHour);
+
+        return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllRidesDTO> getRides(@PathVariable Long id) throws Exception {
         List<Ride> rides = service.getRides(id);
-        ArrayList<RideDTO> rideDTOS = new ArrayList<RideDTO>();
-        for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
-        AllRidesDTO allRidesDTO = new AllRidesDTO(rideDTOS.size(), rideDTOS);
-        // TOD : add 400 status
+        // TODO : add 400 status
         if (rides == null) {
             return new ResponseEntity<AllRidesDTO>(HttpStatus.NOT_FOUND);
         }
+        ArrayList<RideDTO> rideDTOS = new ArrayList<RideDTO>();
+        for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
+        AllRidesDTO allRidesDTO = new AllRidesDTO(rideDTOS.size(), rideDTOS);
+
         return new ResponseEntity<AllRidesDTO>(allRidesDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long workTimeId) throws Exception {
         WorkingHour workingHour = service.getWorkTime(workTimeId, true);
-        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
+        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
+
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> updateWorkTime(@PathVariable Long workTimeId) throws Exception {
         WorkingHour workingHour = service.updateWorkTime(workTimeId);
-        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
+        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
+
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
