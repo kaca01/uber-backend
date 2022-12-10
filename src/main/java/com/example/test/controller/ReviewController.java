@@ -92,21 +92,17 @@ public class ReviewController {
         List<RideReviewDTO> rideReviewDTO = new ArrayList<>();
 
         for (int i=0; i< reviews.size(); i++) {
-            System.out.println(reviews.get(i).getComment());
             if((i+1)< reviews.size() && Objects.equals(reviews.get(i).getPassengerId(), reviews.get(i + 1).getPassengerId())) {
-                if(reviews.get(i).getType() == ReviewType.DRIVER) {
+                if(reviews.get(i).getType() == ReviewType.DRIVER)
                     rideReviewDTO.add(new RideReviewDTO(new ReviewDTO(reviews.get(i+1)), new ReviewDTO(reviews.get(i))));
-                } else {
+                else
                     rideReviewDTO.add(new RideReviewDTO(new ReviewDTO(reviews.get(i)), new ReviewDTO(reviews.get(i+1))));
-                }
                 i = i+1;
             } else {
-                System.out.println(reviews.get(i).getPassengerId());
-                if(reviews.get(i).getType() == ReviewType.DRIVER) {
+                if(reviews.get(i).getType() == ReviewType.DRIVER)
                     rideReviewDTO.add(new RideReviewDTO(null, new ReviewDTO(reviews.get(i))));
-                } else {
+                else
                     rideReviewDTO.add(new RideReviewDTO(new ReviewDTO(reviews.get(i)), null));
-                }
             }
         }
         return new ResponseEntity<>(rideReviewDTO, HttpStatus.OK);
