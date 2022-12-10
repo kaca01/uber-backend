@@ -1,20 +1,24 @@
 package com.example.test.domain.ride;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Location {
+    @JsonIgnore
     private Long id;
+    private String address;
     private double latitude;
     private double longitude;
-    private String address;
+
 
     public Location() {
 
     }
 
-    public Location(Long id, double latitude, double longitude, String address) {
+    public Location(Long id, String address, double latitude, double longitude) {
         this.id = id;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.address = address;
     }
 
     public Long getId() {

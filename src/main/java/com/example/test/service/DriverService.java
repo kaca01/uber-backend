@@ -66,22 +66,26 @@ public class DriverService implements IDriverService {
 
     @Override
     public List<Document> getDriverDocuments(Long id) {
+        // TODO implement this
         return null;
     }
 
     @Override
     public Boolean deleteDriverDocument(Long id) {
+        // TODO implement this
         return false;
     }
 
     @Override
     public Document insertDriverDocument(Long id, Document document) {
+        // TODO implement this
         return null;
     }
 
     @Override
     public Vehicle getVehicle(Long id) {
-        return null;
+        Driver driver = get(id);
+        return driver.getVehicle();
     }
 
     @Override
@@ -121,7 +125,7 @@ public class DriverService implements IDriverService {
 
     public ArrayList<Driver> createDrivers() throws ParseException {
         VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
-        Location location = new Location(1L, 544, 546, "adresa");
+        Location location = new Location(1L, "adresa", 544, 546);
         Vehicle v1 = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
         WorkingHour workingHour = new WorkingHour(1L,
                 new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-10T20:55:16.868Z"),
