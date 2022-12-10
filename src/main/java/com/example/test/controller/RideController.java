@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
+import com.example.test.dto.PanicDTO;
 import com.example.test.dto.RideDTO;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class RideController {
     @Autowired
     IRideService service;
 
+    //creating a ride
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> insert(@RequestBody RideDTO rideDTO) throws Exception
     {
@@ -30,98 +32,106 @@ public class RideController {
         return new ResponseEntity<RideDTO>(new RideDTO(newRide), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/active/{driverId}/driver", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> findDriversActiveRide(@PathVariable Long id)
+    //active ride for driver
+    @GetMapping(value = "/driver/{driverId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
-        Ride ride = service.findDriversActiveRide(id);
+        Ride ride = service.findDriversActiveRide(driverId);
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/active/{passengerId}/passenger", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> findPassengersActiveRide(@PathVariable Long id)
+    //active ride for passenger
+    @GetMapping(value = "/passenger/{passengerId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> findPassengersActiveRide(@PathVariable Long passengerId)
     {
-        Ride ride = service.findPassengersActiveRide(id);
-
+        Ride ride = service.findPassengersActiveRide(passengerId);
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
+    //ride details
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> findRideById(@PathVariable Long id)
+    public ResponseEntity<RideDTO> findRideById(@PathVariable Long id)
     {
         Ride ride = service.findRideById(id);
 
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
+    // cancel existing ride (perspective of passenger - before the driver has arrived at the destination)
     // promijeniti status voznje
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> cancelExistingRide(@PathVariable Long id) throws Exception
+    @PutMapping(value = "/{id}/withdraw")
+    public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id) throws Exception
     {
-        Boolean flag = service.cancelExistingRide(id);  //PRIJE NEGO VOZAC DODJE NA DESTINACIJU (to PASSENGER moze)
+        Ride ride = service.cancelExistingRide(id);
 
-        if (!flag) {
-            return new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+        if (ride == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
+    //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Message> setPanic(@RequestBody String reason, @PathVariable Long id) throws Exception
+    public ResponseEntity<PanicDTO> setPanic(@RequestBody String reason, @PathVariable Long id) throws Exception
     {
         Message message = service.setPanic(reason, id);
 
         if (message == null) {
-            return new ResponseEntity<Message>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<Message>(message, HttpStatus.OK);
+        return new ResponseEntity<PanicDTO>(new PanicDTO(message), HttpStatus.OK);
     }
 
+    //accept the ride
     @PutMapping(value = "/{id}/accept", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> acceptRide(@PathVariable Long id) throws Exception
+    public ResponseEntity<RideDTO> acceptRide(@PathVariable Long id) throws Exception
     {
         Ride ride = service.acceptRide(id);
 
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //todo error 400
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
+    //end the ride
     @PutMapping(value = "/{id}/end", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> endRide(@PathVariable Long id) throws Exception
+    public ResponseEntity<RideDTO> endRide(@PathVariable Long id) throws Exception
     {
         Ride ride = service.endRide(id);
 
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //todo error 400
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 
+    //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> cancelRide(@RequestBody String reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@RequestBody String reason, @PathVariable Long id)
     {
-        Ride ride = service.cancelRide(reason, id);  //VOZAC moze da canceluje
+        Ride ride = service.cancelRide(reason, id);
+
         if (ride == null) {
-            return new ResponseEntity<Ride>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //todo error 400
-        return new ResponseEntity<Ride>(ride, HttpStatus.OK);
+        return new ResponseEntity<RideDTO>(new RideDTO(ride), HttpStatus.OK);
     }
 }

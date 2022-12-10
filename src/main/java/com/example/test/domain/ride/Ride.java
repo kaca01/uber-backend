@@ -26,7 +26,7 @@ public class Ride {
     private ArrayList<Review> reviews;
     private RideStatus status;
     private Rejection rejection;
-    private Message panic;
+    //private Message panic;          bidirectional relation!!!
     private boolean babyTransport;
     private boolean petTransport;
     private ArrayList<Route> locations;
@@ -37,7 +37,7 @@ public class Ride {
 
     public Ride(Long id, Date startTime, Date endTime, double totalCost, double estimatedTimeInMinutes, Vehicle vehicle,
                 Driver driver, ArrayList<Passenger> passengers, ArrayList<Review> reviews, RideStatus status,
-                Rejection rejection, Message panic, boolean babyTransport, boolean petTransport,
+                Rejection rejection, boolean babyTransport, boolean petTransport,
                 ArrayList<Route> locations) {
         this.id = id;
         this.startTime = startTime;
@@ -50,7 +50,6 @@ public class Ride {
         this.reviews = reviews;
         this.status = status;
         this.rejection = rejection;
-        this.panic = panic;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
         this.locations = locations;
@@ -151,14 +150,6 @@ public class Ride {
         this.rejection = rejection;
     }
 
-    public Message getPanic() {
-        return panic;
-    }
-
-    public void setPanic(Message panic) {
-        this.panic = panic;
-    }
-
     public boolean isBabyTransport() {
         return babyTransport;
     }
@@ -197,7 +188,6 @@ public class Ride {
                 ", reviews=" + reviews +
                 ", ride=" + status +
                 ", rejection=" + rejection +
-                ", panic=" + panic +
                 ", babyTransport=" + babyTransport +
                 ", petTransport=" + petTransport +
                 ", locations=" + locations +
