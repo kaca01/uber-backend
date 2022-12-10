@@ -55,24 +55,26 @@ public class DriverController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         Driver driver = service.get(id);
-        UserDTO driverDTO = new UserDTO(driver);
-        // TODO : add 400 status
         if (driver == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
+        UserDTO driverDTO = new UserDTO(driver);
+        // TODO : add 400 status
+
         return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update (@PathVariable Long id, @RequestBody UserDTO driverDTO) throws Exception {
-        Driver driver = mapper.map(driverDTO, Driver.class);
+        Driver driver = new Driver(driverDTO);
         Driver returnedDriver = service.update(id, driver);
+        if (returnedDriver == null) {
+            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+        }
         driverDTO = new UserDTO(returnedDriver);
         // TODO : add 400 status
-        if (returnedDriver == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
         return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.OK);
     }
 

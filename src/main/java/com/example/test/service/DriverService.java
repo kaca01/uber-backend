@@ -16,9 +16,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DriverService implements IDriverService {
+
+    private ArrayList<Driver> drivers;
+
+    {
+        try {
+            drivers = createDrivers();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public Driver insert(Driver driver) {
@@ -27,21 +38,30 @@ public class DriverService implements IDriverService {
 
     @Override
     public List<Driver> getAll() {
-        try {
-            return createDrivers();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        return drivers;
     }
 
     @Override
     public Driver get(Long id) {
+        for (Driver driver : drivers) {
+            if (driver.getId().equals(id)) return driver;
+        }
         return null;
     }
 
     @Override
     public Driver update(Long id, Driver driver) {
-        return null;
+        Driver oldDriver = get(id);
+        if (oldDriver == null) return null;
+        oldDriver.setName(driver.getName());
+        oldDriver.setSurname(driver.getSurname());
+        oldDriver.setProfilePicture(driver.getProfilePicture());
+        oldDriver.setTelephoneNumber(driver.getTelephoneNumber());
+        oldDriver.setEmail(driver.getEmail());
+        oldDriver.setAddress(driver.getAddress());
+        oldDriver.setPassword(driver.getPassword());
+
+        return oldDriver;
     }
 
     @Override

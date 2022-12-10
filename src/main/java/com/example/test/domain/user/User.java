@@ -17,6 +17,18 @@ abstract public class User {
     }
 
     public User(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                String address, String password) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.profilePicture = profilePicture;
+        this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+    }
+
+    public User(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                 String address, String password, boolean blocked, boolean active) {
         this.id = id;
         this.name = name;
