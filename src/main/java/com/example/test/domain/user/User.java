@@ -1,7 +1,5 @@
 package com.example.test.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 abstract public class User {
     private Long id;
     private String name;

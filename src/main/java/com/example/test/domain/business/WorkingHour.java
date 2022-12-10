@@ -8,7 +8,7 @@ public class WorkingHour {
     private Date start;
     private Date end;
 
-    public WorkingHour(long l, Date parse) {
+    public WorkingHour() {
 
     }
 
