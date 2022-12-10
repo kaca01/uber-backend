@@ -2,16 +2,23 @@ package com.example.test.controller;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Document;
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.*;
 import com.example.test.service.interfaces.IDriverService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -21,67 +28,80 @@ public class DriverController {
     @Autowired
     IDriverService service;
 
+    private ModelMapper mapper;
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO driver) throws Exception{
-        UserDTO returnedDriver = service.insert(driver);
+    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO driverDTO) throws Exception{
+        Driver driver = mapper.map(driverDTO, Driver.class);
+        Driver returnedDriver = service.insert(driver);
+        driverDTO = new UserDTO(returnedDriver);
         if (returnedDriver == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.CREATED);
+        return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.CREATED);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllUsersDTO> getAll() throws Exception{
-        AllUsersDTO drivers =  service.getAll();
+        List<Driver> drivers =  service.getAll();
+        List<UserDTO> driversDTO = new ArrayList<UserDTO>();
+        for (Driver driver : drivers) driversDTO.add(new UserDTO(driver));
+        AllUsersDTO allUsersDTO = new AllUsersDTO(driversDTO.size(), driversDTO);
         if (drivers == null) {
             return new ResponseEntity<AllUsersDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<AllUsersDTO>(drivers, HttpStatus.OK);
+        return new ResponseEntity<AllUsersDTO>(allUsersDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
-        UserDTO driver = service.get(id);
+        Driver driver = service.get(id);
+        UserDTO driverDTO = new UserDTO(driver);
         // TODO : add 400 status
         if (driver == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<UserDTO>(driver, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> update (@PathVariable Long id, @RequestBody UserDTO driver) throws Exception {
-        UserDTO returnedDriver = service.update(id, driver);
+    public ResponseEntity<UserDTO> update (@PathVariable Long id, @RequestBody UserDTO driverDTO) throws Exception {
+        Driver driver = mapper.map(driverDTO, Driver.class);
+        Driver returnedDriver = service.update(id, driver);
+        driverDTO = new UserDTO(returnedDriver);
         // TODO : add 400 status
         if (returnedDriver == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/documents", produces = MediaType.APPLICATION_JSON_VALUE)
-    // TODO discuss this with team
-    public ResponseEntity<Collection<DocumentDTO>> getDriverDocuments(@PathVariable Long id) throws Exception {
-        Collection<DocumentDTO> driverDocuments = service.getDriverDocuments(id);
+    public ResponseEntity<List<DocumentDTO>> getDriverDocuments(@PathVariable Long id) throws Exception {
+        List<Document> driverDocuments = service.getDriverDocuments(id);
+        List<DocumentDTO> documentDTOS = new ArrayList<>();
+        for (Document document : driverDocuments)  documentDTOS.add(new DocumentDTO(document));
         // TODO : add 400 status
         if (driverDocuments == null) {
-            return new ResponseEntity<Collection<DocumentDTO>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<DocumentDTO>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Collection<DocumentDTO>>(driverDocuments, HttpStatus.OK);
+        return new ResponseEntity<List<DocumentDTO>>(documentDTOS, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/documents", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DocumentDTO> insertDriverDocuments(@PathVariable Long id,
-                                                                      @RequestBody DocumentDTO document)
+                                                                      @RequestBody DocumentDTO documentDTO)
             throws Exception{
-        DocumentDTO returnedDriverDocuments = service.insertDriverDocument(id, document);
+        Document document = mapper.map(documentDTO, Document.class);
+        Document returnedDriverDocument = service.insertDriverDocument(id, document);
+        documentDTO = new DocumentDTO(returnedDriverDocument);
         // TODO : add 400 status
-        if (returnedDriverDocuments == null) {
+        if (returnedDriverDocument == null) {
             return new ResponseEntity<DocumentDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<DocumentDTO>(returnedDriverDocuments, HttpStatus.CREATED);
+        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping(value = "/document/{document-id}")
@@ -93,93 +113,112 @@ public class DriverController {
         } else if (isDeleted == Boolean.FALSE) {
             return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Boolean>(isDeleted, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> getVehicle(@PathVariable Long id) throws Exception {
-        VehicleDTO vehicle = service.getVehicle(id);
+        Vehicle vehicle = service.getVehicle(id);
+        Driver driver = service.get(id);
+        VehicleDTO vehicleDTO = new VehicleDTO(driver, vehicle);
         // TODO : add 400 status
         if (vehicle == null) {
             return new ResponseEntity<VehicleDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<VehicleDTO>(vehicle, HttpStatus.OK);
+        return new ResponseEntity<VehicleDTO>(vehicleDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> insertVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicle)
+    public ResponseEntity<VehicleDTO> insertVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
             throws Exception {
-        VehicleDTO returnedVehicle = service.insertVehicle(id, vehicle);
+        Vehicle vehicle = new Vehicle(vehicleDTO);
+        Vehicle returnedVehicle = service.insertVehicle(id, vehicle);
+        Driver driver = service.get(id);
+        vehicleDTO = new VehicleDTO(driver, vehicle);
         // TODO : add 400 status
         if (returnedVehicle == null) {
             return new ResponseEntity<VehicleDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<VehicleDTO>(returnedVehicle, HttpStatus.CREATED);
+        return new ResponseEntity<VehicleDTO>(vehicleDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicle)
+    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
             throws Exception {
-        VehicleDTO updatedVehicle = service.updateVehicle(id, vehicle);
+        Vehicle vehicle = new Vehicle(vehicleDTO);
+        Vehicle updatedVehicle = service.updateVehicle(id, vehicle);
+        Driver driver = service.get(id);
+        vehicleDTO = new VehicleDTO(driver, updatedVehicle);
         // TODO : add 400 status
         if (updatedVehicle == null) {
             return new ResponseEntity<VehicleDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<VehicleDTO>(updatedVehicle, HttpStatus.OK);
+        return new ResponseEntity<VehicleDTO>(vehicleDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllWorkingHoursDTO> getWorkTimes(@PathVariable Long id) throws Exception{
-        AllWorkingHoursDTO workingHour = service.getWorkTime(id);
+        List<WorkingHour> workingHours = service.getWorkTime(id);
+        ArrayList<WorkingHourDTO> workingHourDTOS = new ArrayList<>();
+        for (WorkingHour workingHour : workingHours) workingHourDTOS.add(new WorkingHourDTO(workingHour));
+        AllWorkingHoursDTO allWorkingHoursDTO = new AllWorkingHoursDTO(workingHours.size(), workingHourDTOS);
         // TODO : add 400 status
-        if (workingHour == null) {
+        if (workingHours == null) {
             return new ResponseEntity<AllWorkingHoursDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<AllWorkingHoursDTO>(workingHour, HttpStatus.OK);
+        return new ResponseEntity<AllWorkingHoursDTO>(allWorkingHoursDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id, @RequestBody WorkingHourDTO workingHour)
-                                                    throws Exception {
-        WorkingHourDTO updatedWorkingHour = service.insertWorkTime(id, workingHour);
+    public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
+                                                         @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
+        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getStart());
+        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getEnd());
+        WorkingHour workingHour = new WorkingHour(workingHourDTO.getId(), start, end);
+        WorkingHour updatedWorkingHour = service.insertWorkTime(id, workingHour);
+        workingHourDTO = new WorkingHourDTO(updatedWorkingHour);
         // TODO : add 400 status
         if (updatedWorkingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkingHourDTO>(updatedWorkingHour, HttpStatus.CREATED);
+        return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.CREATED);
     }
 
-    // TODO is here missing AllRidesDTO?
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllRidesDTO> getRides(@PathVariable Long id) throws Exception {
-        AllRidesDTO rides = service.getRides(id);
+        List<Ride> rides = service.getRides(id);
+        ArrayList<RideDTO> rideDTOS = new ArrayList<RideDTO>();
+        for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
+        AllRidesDTO allRidesDTO = new AllRidesDTO(rideDTOS.size(), rideDTOS);
         // TOD : add 400 status
         if (rides == null) {
             return new ResponseEntity<AllRidesDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<AllRidesDTO>(rides, HttpStatus.OK);
+        return new ResponseEntity<AllRidesDTO>(allRidesDTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long workTimeId) throws Exception {
-        WorkingHourDTO workingHour = service.getWorkTime(workTimeId, true);
+        WorkingHour workingHour = service.getWorkTime(workTimeId, true);
+        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkingHourDTO>(workingHour, HttpStatus.OK);
+        return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> updateWorkTime(@PathVariable Long workTimeId) throws Exception {
-        WorkingHourDTO workingHour = service.updateWorkTime(workTimeId);
+        WorkingHour workingHour = service.updateWorkTime(workTimeId);
+        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<WorkingHourDTO>(workingHour, HttpStatus.OK);
+        return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
 }

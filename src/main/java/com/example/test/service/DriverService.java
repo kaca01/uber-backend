@@ -5,38 +5,37 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
-import com.example.test.dto.*;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class DriverService implements IDriverService {
 
     @Override
-    public UserDTO insert(UserDTO driver) {
-        // TODO create and add to the database and after that return UserDTO
+    public Driver insert(Driver driver) {
         return null;
     }
 
     @Override
-    public AllUsersDTO getAll() {
+    public List<Driver> getAll() {
         return null;
     }
 
     @Override
-    public UserDTO get(Long id) {
+    public Driver get(Long id) {
         return null;
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO driver) {
+    public Driver update(Long id, Driver driver) {
         return null;
     }
 
     @Override
-    public Collection<DocumentDTO> getDriverDocuments(Long id) {
+    public List<Document> getDriverDocuments(Long id) {
         return null;
     }
 
@@ -46,47 +45,47 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public DocumentDTO insertDriverDocument(Long id, DocumentDTO document) {
+    public Document insertDriverDocument(Long id, Document document) {
         return null;
     }
 
     @Override
-    public VehicleDTO getVehicle(Long id) {
+    public Vehicle getVehicle(Long id) {
         return null;
     }
 
     @Override
-    public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle) {
+    public Vehicle insertVehicle(Long id, Vehicle vehicle) {
         return null;
     }
 
     @Override
-    public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle) {
+    public Vehicle updateVehicle(Long id, Vehicle vehicle) {
         return null;
     }
 
     @Override
-    public AllWorkingHoursDTO getWorkTime(Long id) {
+    public List<WorkingHour> getWorkTime(Long id) {
         return null;
     }
 
     @Override
-    public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour) {
+    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour) {
         return null;
     }
 
     @Override
-    public AllRidesDTO getRides(Long id) {
+    public List<Ride> getRides(Long id) {
         return null;
     }
 
     @Override
-    public WorkingHourDTO getWorkTime(Long workTimeId, boolean flag) {
+    public WorkingHour getWorkTime(Long workTimeId, boolean flag) {
         return null;
     }
 
     @Override
-    public WorkingHourDTO updateWorkTime(Long workTimeId) {
+    public WorkingHour updateWorkTime(Long workTimeId) {
         return null;
     }
 }

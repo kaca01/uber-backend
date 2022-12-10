@@ -1,6 +1,7 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.dto.VehicleDTO;
 
 public class Vehicle {
     private Long id;
@@ -12,9 +13,17 @@ public class Vehicle {
     private boolean babyTransport;
     private boolean petTransport;
 
-    private Vehicle() {
+    public Vehicle() {
 
     }
+
+    public Vehicle(VehicleDTO vehicleDTO) {
+        new Vehicle(vehicleDTO.getId(), findVehicleTypeByName(vehicleDTO.getVehicleType()), vehicleDTO.getModel(),
+                vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
+                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
+    }
+
+
 
     public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
                    Location currentLocation, boolean babyTransport, boolean petTransport) {
@@ -104,5 +113,11 @@ public class Vehicle {
                 ", babyTransport=" + babyTransport +
                 ", petTransport=" + petTransport +
                 '}';
+    }
+
+    // TODO move this to service
+    VehicleType findVehicleTypeByName(String name) {
+        // TODO not implemented yet
+        return null;
     }
 }

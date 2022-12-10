@@ -2,43 +2,44 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
-import com.example.test.dto.*;
+import com.example.test.dto.DocumentDTO;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface IDriverService {
 
-    public UserDTO insert(UserDTO driver);
+    public Driver insert(Driver driver);
 
     // TODO : check this later (paginated drivers???)
-    public AllUsersDTO getAll();
+    public List<Driver> getAll();
 
-    public UserDTO get(Long id);
+    public Driver get(Long id);
 
-    public UserDTO update(Long id, UserDTO driver);
+    public Driver update(Long id, Driver driver);
 
-    public Collection<DocumentDTO> getDriverDocuments(Long id);
+    public List<Document> getDriverDocuments(Long id);
 
     public Boolean deleteDriverDocument(Long id);
 
-    public DocumentDTO insertDriverDocument(Long id, DocumentDTO document);
+    public Document insertDriverDocument(Long id, Document driverDocument);
 
-    public VehicleDTO getVehicle(Long id);
+    public Vehicle getVehicle(Long id);
 
-    public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle);
+    public Vehicle insertVehicle(Long id, Vehicle vehicle);
 
-    public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle);
+    public Vehicle updateVehicle(Long id, Vehicle vehicle);
 
-    public AllWorkingHoursDTO getWorkTime(Long id);
+    public List<WorkingHour> getWorkTime(Long id);
 
-    public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour);
+    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
 
-    public AllRidesDTO getRides(Long id);
+    public List<Ride> getRides(Long id);
 
-    public WorkingHourDTO getWorkTime(Long workTimeId, boolean flag);
+    public WorkingHour getWorkTime(Long workTimeId, boolean flag);
 
-    public WorkingHourDTO updateWorkTime(Long workTimeId);
-
+    public WorkingHour updateWorkTime(Long workTimeId);
 }
