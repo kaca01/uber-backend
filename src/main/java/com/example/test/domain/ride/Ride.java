@@ -6,7 +6,10 @@ import com.example.test.domain.communication.Review;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.RideDTO;
+import com.example.test.dto.UserDTO;
 import com.example.test.enumeration.RideStatus;
+import com.example.test.service.PassengerService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +54,13 @@ public class Ride {
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
         this.locations = locations;
+    }
+
+    public Ride(RideDTO rideDTO)
+    {
+        this.setLocations(rideDTO.getLocations());
+        this.setBabyTransport(rideDTO.isBabyTransport());
+        this.setPetTransport(rideDTO.isPetTransport());
     }
 
     public Long getId() {

@@ -2,12 +2,11 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
-
-import java.util.Collection;
+import com.example.test.dto.RideDTO;
 
 public interface IRideService {
 
-    Ride insert(Ride ride);
+    Ride insert(Ride ride, RideDTO vehicleType);
 
     Ride findDriversActiveRide(Long id);
 

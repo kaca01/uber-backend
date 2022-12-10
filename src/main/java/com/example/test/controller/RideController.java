@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
+import com.example.test.dto.RideDTO;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,15 @@ public class RideController {
     IRideService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Ride> insert(@RequestBody Ride ride) throws Exception
+    public ResponseEntity<RideDTO> insert(@RequestBody RideDTO rideDTO) throws Exception
     {
-        Ride newRide = service.insert(ride);
+        Ride newRide = new Ride(rideDTO);
+        newRide = service.insert(newRide, rideDTO);  // returns ride with set id and other data
+
         if (newRide == null)
-            return new ResponseEntity<Ride>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Ride>(newRide, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        // todo newRide will never be null. This  request should be sent when there is invalid data
+        return new ResponseEntity<RideDTO>(new RideDTO(newRide), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/active/{driverId}/driver", produces = MediaType.APPLICATION_JSON_VALUE)

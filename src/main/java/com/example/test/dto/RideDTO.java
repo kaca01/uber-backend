@@ -33,11 +33,19 @@ public class RideDTO {
     }
 
     public RideDTO(Ride ride) {
-
-        new RideDTO(ride.getId(), ride.getStartTime().toString(), ride.getEndTime().toString(), ride.getTotalCost(),
-                ride.getLocations(), convertPassengersToUsersDTO(ride), ride.getVehicle().getType().getName().toString(),
-                ride.isBabyTransport(), ride.isPetTransport(), ride.getEstimatedTimeInMinutes(),
-                ride.getStatus().toString(), new UserDTO(ride.getDriver().getId(), ride.getDriver().getEmail()), new RejectionDTO(ride.getRejection()));
+        this.id = ride.getId();
+        this.startTime = ride.getStartTime().toString();
+        this.endTime = ride.getEndTime().toString();
+        this.totalCost = ride.getTotalCost();
+        this.locations = ride.getLocations();
+        this.passengers = convertPassengersToUsersDTO(ride);
+        this.vehicleType = ride.getVehicle().getType().getName().toString();
+        this.babyTransport = ride.isBabyTransport();
+        this.petTransport = ride.isPetTransport();
+        this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
+        this.status = ride.getStatus().toString();
+        this.driver = new UserDTO(ride.getDriver());
+        this.rejection = new RejectionDTO(ride.getRejection());
     }
 
     // request
