@@ -69,6 +69,10 @@ public class Review {
         this.type = type;
     }
 
+    public Long getPassengerId() {
+        return passenger.getId();
+    }
+
     @Override
     public String toString() {
         return "Review{" +
