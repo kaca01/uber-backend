@@ -90,12 +90,28 @@ public class DriverService implements IDriverService {
 
     @Override
     public Vehicle insertVehicle(Long id, Vehicle vehicle) {
-        return null;
+        // TODO new id is always the same (this will be implemented after database is added)
+        Driver driver = get(id);
+        if (driver == null) return null;
+        vehicle.setId(123L);
+        driver.setVehicle(vehicle);
+        return vehicle;
     }
 
     @Override
     public Vehicle updateVehicle(Long id, Vehicle vehicle) {
-        return null;
+        Driver driver = get(id);
+        if (driver == null) return null;
+        Vehicle oldVehicle = driver.getVehicle();
+        oldVehicle.setType(vehicle.getType());
+        oldVehicle.setModel(vehicle.getModel());
+        oldVehicle.setLicenseNumber(vehicle.getLicenseNumber());
+        oldVehicle.setPassengerSeats(vehicle.getPassengerSeats());
+        oldVehicle.setCurrentLocation(vehicle.getCurrentLocation());
+        oldVehicle.setBabyTransport(vehicle.isBabyTransport());
+        oldVehicle.setPetTransport(vehicle.isPetTransport());
+
+        return oldVehicle;
     }
 
     @Override

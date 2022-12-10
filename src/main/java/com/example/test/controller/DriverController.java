@@ -5,7 +5,9 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.domain.vehicle.VehicleType;
 import com.example.test.dto.*;
+import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.service.interfaces.IDriverService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,22 +135,26 @@ public class DriverController {
                  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> insertVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
             throws Exception {
-        Vehicle vehicle = new Vehicle(vehicleDTO);
+        Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
+                vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
+                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
         Vehicle returnedVehicle = service.insertVehicle(id, vehicle);
-        Driver driver = service.get(id);
-        vehicleDTO = new VehicleDTO(driver, vehicle);
         // TODO : add 400 status
         if (returnedVehicle == null) {
             return new ResponseEntity<VehicleDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<VehicleDTO>(vehicleDTO, HttpStatus.CREATED);
+        Driver driver = service.get(id);
+        vehicleDTO = new VehicleDTO(driver, vehicle);
+        return new ResponseEntity<VehicleDTO>(vehicleDTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
             throws Exception {
-        Vehicle vehicle = new Vehicle(vehicleDTO);
+        Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
+                vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
+                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
         Vehicle updatedVehicle = service.updateVehicle(id, vehicle);
         Driver driver = service.get(id);
         vehicleDTO = new VehicleDTO(driver, updatedVehicle);

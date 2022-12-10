@@ -17,14 +17,6 @@ public class Vehicle {
 
     }
 
-    public Vehicle(VehicleDTO vehicleDTO) {
-        new Vehicle(vehicleDTO.getId(), findVehicleTypeByName(vehicleDTO.getVehicleType()), vehicleDTO.getModel(),
-                vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
-                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
-    }
-
-
-
     public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
                    Location currentLocation, boolean babyTransport, boolean petTransport) {
         this.id = id;
