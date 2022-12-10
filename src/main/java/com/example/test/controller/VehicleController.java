@@ -26,6 +26,6 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // todo 400
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
     }
 }

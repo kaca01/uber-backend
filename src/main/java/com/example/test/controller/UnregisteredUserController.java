@@ -28,6 +28,6 @@ public class UnregisteredUserController {
         if(estimatedValues == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new UnregisteredUserDTO(estimatedValues.get(0), estimatedValues.get(1)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new UnregisteredUserDTO(estimatedValues.get(0), estimatedValues.get(1)), HttpStatus.OK);
     }
 }
