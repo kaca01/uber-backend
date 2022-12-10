@@ -19,6 +19,8 @@ public class PassengerService implements IPassengerService {
         return passengers;
     }
 
+    // kako funkcionise oko cekanja na mail? Da se ovdje doda u bazu i stavi activation=false,
+    // pa dole kad se aktivira prebaci se na activation true
     @Override
     public Passenger insert(Passenger passenger)
     {
@@ -43,8 +45,11 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public List<Ride> getRidesByPassenger(Long passengerId) {
-        return null;
+    public List<Ride> getRidesByPassenger(Long passengerId)
+    {
+        Passenger p = findUserById(passengerId);
+        if (p == null) return null;
+        return new ArrayList<Ride>();
     }
 
     @Override
@@ -61,7 +66,8 @@ public class PassengerService implements IPassengerService {
     //treba da ako nije isteklo vrijeme, da user-u prebacim aktivnost na active
     @Override
     public Boolean activatePassenger(Long activationId) {
-        return false;
+        Passenger p = findUserById(activationId);
+        return p != null;
     }
 
     private ArrayList<Passenger> createPassengers()

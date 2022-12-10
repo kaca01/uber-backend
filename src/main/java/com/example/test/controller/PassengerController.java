@@ -28,6 +28,7 @@ public class PassengerController {
         passenger = service.insert(passenger);  // returns passenger with set id
         if (passenger == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            // todo passenger will never be null. This request should be sent when there is invalid data
         return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.CREATED);
     }
 
@@ -93,13 +94,18 @@ public class PassengerController {
     {
         List<Ride> rides = service.getRidesByPassenger((long)id);
 
+        // ako ne postoji korisnik. Ako postoji korisnik a nema voznji, vraca praznu listu
+        if (rides == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         // convert rides to DTOs
         ArrayList<RideDTO> ridesDTO = new ArrayList<>();
         for (Ride r : rides) {
             ridesDTO.add(new RideDTO(r));
         }
 
-        //TODO error 400 and 404
+        //TODO error 400
         return new ResponseEntity<AllRidesDTO>(new AllRidesDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
     }
 }
