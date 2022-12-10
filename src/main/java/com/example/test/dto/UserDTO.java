@@ -14,6 +14,7 @@ public class UserDTO {
     private String telephoneNumber;
     private String email;
     private String address;
+    @JsonIgnore
     private String password;
 
 
