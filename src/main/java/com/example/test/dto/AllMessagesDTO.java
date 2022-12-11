@@ -1,11 +1,12 @@
 package com.example.test.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllMessagesDTO {
 
-    private Long totalCount;
-    private ArrayList<MessageDTO> results;
+    private int totalCount;
+    private List<MessageDTO> results;
 
     public AllMessagesDTO()
     {
@@ -13,24 +14,24 @@ public class AllMessagesDTO {
     }
 
     //response
-    public AllMessagesDTO(Long totalCount, ArrayList<MessageDTO> results) {
+    public AllMessagesDTO(int totalCount, List<MessageDTO> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
 
-    public Long getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Long totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<MessageDTO> getResults() {
+    public List<MessageDTO> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<MessageDTO> results) {
+    public void setResults(List<MessageDTO> results) {
         this.results = results;
     }
 

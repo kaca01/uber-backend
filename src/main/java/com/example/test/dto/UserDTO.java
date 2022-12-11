@@ -1,7 +1,5 @@
 package com.example.test.dto;
 
-import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

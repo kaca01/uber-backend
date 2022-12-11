@@ -12,7 +12,12 @@ public class RejectionDTO {
     }
 
     public RejectionDTO(Rejection rejection) {
-        this(rejection.getReason(), rejection.getTimeOfRejection().toString());
+        this.reason = rejection.getReason();
+        if (rejection.getTimeOfRejection() == null){
+            this.timeOfRejection = null;
+        }
+        else
+            this.timeOfRejection = rejection.getTimeOfRejection().toString();
     }
 
     public RejectionDTO(String reason, String timeOfRejection) {

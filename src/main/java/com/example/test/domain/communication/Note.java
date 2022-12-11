@@ -1,6 +1,7 @@
 package com.example.test.domain.communication;
 
 import com.example.test.domain.user.User;
+import com.example.test.dto.NoteDTO;
 
 import java.util.Date;
 
@@ -21,6 +22,10 @@ public class Note {
         this.date = date;
         this.message = message;
         this.user = null;
+    }
+
+    public Note(NoteDTO noteDTO) {
+        this.setMessage(noteDTO.getMessage());
     }
 
     public Note(Long id, Date date, String message, User user) {

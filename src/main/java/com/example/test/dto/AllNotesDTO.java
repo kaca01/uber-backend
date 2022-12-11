@@ -1,15 +1,16 @@
 package com.example.test.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllNotesDTO {
     private int totalCount;
-    private ArrayList<NoteDTO> results;
+    private List<NoteDTO> results;
 
     public AllNotesDTO(){}
 
     //response
-    public AllNotesDTO(int totalCount, ArrayList<NoteDTO> results) {
+    public AllNotesDTO(int totalCount, List<NoteDTO> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
@@ -22,11 +23,11 @@ public class AllNotesDTO {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<NoteDTO> getResults() {
+    public List<NoteDTO> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<NoteDTO> results) {
+    public void setResults(List<NoteDTO> results) {
         this.results = results;
     }
 

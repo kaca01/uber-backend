@@ -45,11 +45,42 @@ public class RideDTO {
         this.babyTransport = ride.isBabyTransport();
         this.petTransport = ride.isPetTransport();
         this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
-        this.driver = new UserDTO(ride.getDriver().getId(), ride.getDriver().getEmail());
-        this.rejection = new RejectionDTO(ride.getRejection());
         this.status = ride.getStatus().toString();
+        this.driver = new UserDTO(ride.getDriver());
+        this.rejection = new RejectionDTO(ride.getRejection());
     }
-    
+
+    // request
+    public RideDTO(ArrayList<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
+                   boolean babyTransport, boolean petTransport) {
+        this.locations = locations;
+        this.passengers = passengers;
+        this.vehicleType = vehicleType;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+    }
+
+
+    // response
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, ArrayList<Route> locations,
+                   ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
+                   boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
+                   RejectionDTO rejection) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalCost = totalCost;
+        this.locations = locations;
+        this.passengers = passengers;
+        this.vehicleType = vehicleType;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
+        this.status = status;
+        this.driver = driver;
+        this.rejection = rejection;
+    }
+
     public ArrayList<UserDTO> convertPassengersToUsersDTO(Ride ride) {
         ArrayList<UserDTO> users = new ArrayList<UserDTO>();
         for (Passenger passenger: ride.getPassengers()) {

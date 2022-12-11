@@ -2,6 +2,7 @@ package com.example.test.domain.communication;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
+import com.example.test.dto.MessageDTO;
 import com.example.test.enumeration.MessageType;
 
 import java.util.Date;
@@ -27,6 +28,13 @@ public class Message {
         this.timeOfSending = timeOfSending;
         this.type = type;
         this.ride = ride;
+    }
+
+    public Message(MessageDTO messageDTO) {
+        this.receiver.setId(messageDTO.getId());
+        this.setMessage(messageDTO.getMessage());
+        this.setType(MessageType.valueOf(messageDTO.getType().toUpperCase()));
+        this.ride.setId(messageDTO.getId());
     }
 
     public Long getId() {

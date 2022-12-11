@@ -14,7 +14,8 @@ public class Vehicle {
     private boolean petTransport;
 
     public Vehicle() {
-
+        this.type = new VehicleType();
+        this.currentLocation = new Location();
     }
 
     public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
@@ -37,7 +38,9 @@ public class Vehicle {
         this.id = id;
     }
 
-    public VehicleType getType() {
+    public VehicleType getType()
+    {
+        if (this.type == null) this.type = new VehicleType();
         return type;
     }
 
@@ -69,7 +72,9 @@ public class Vehicle {
         this.passengerSeats = passengerSeats;
     }
 
-    public Location getCurrentLocation() {
+    public Location getCurrentLocation()
+    {
+        if (this.currentLocation == null) this.currentLocation = new Location();
         return currentLocation;
     }
 
