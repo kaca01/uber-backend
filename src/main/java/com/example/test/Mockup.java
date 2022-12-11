@@ -26,9 +26,9 @@ public class Mockup {
     public final ArrayList<Passenger> passengers = createPassenger();
     public final ArrayList<Driver> drivers = createDrivers();
     public final ArrayList<Rejection> rejections = createRejection();
+    public final ArrayList<Review> reviews = createReview();
     public final ArrayList<Ride> rides = createRide();
     public final ArrayList<Message> messages = createMessages();
-    public final ArrayList<Review> reviews = createReview();
 
     private ArrayList<User> createUsers()
     {
@@ -116,11 +116,28 @@ public class Mockup {
         n.add(n4);
         return n;
     }
+
+    private ArrayList<Review> createReview()
+    {
+        Review v1 = new Review(1L, 3, "dirty vehicle", passengers.get(0), ReviewType.VEHICLE);
+        Review v2 = new Review(2L, 5, "great vehicle", passengers.get(3), ReviewType.VEHICLE);
+        Review v3 = new Review(3L, 1, "rude driver", passengers.get(2), ReviewType.DRIVER);
+        Review v4 = new Review(4L, 5, "kind driver", passengers.get(1), ReviewType.DRIVER);
+        Review v5 = new Review(5L, 5, "lovely ride", passengers.get(1), ReviewType.VEHICLE);
+        ArrayList<Review> ps = new ArrayList<>();
+        ps.add(v1);
+        ps.add(v2);
+        ps.add(v3);
+        ps.add(v4);
+        ps.add(v5);
+        return ps;
+    }
+
     private ArrayList<Ride> createRide()
     {
-        Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, null, RideStatus.ACCEPTED, rejections.get(0), null, true, false, null);
-        Ride v2 = new Ride(2L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(1), passengers, null, RideStatus.ACCEPTED, rejections.get(1), null, false, false, null);
-        Ride v3 = new Ride(123L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(2), passengers, null, RideStatus.ACCEPTED, rejections.get(0), null, false, false, null);
+        Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), null, true, false, null);
+        Ride v2 = new Ride(2L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(1), passengers, reviews, RideStatus.ACCEPTED, rejections.get(1), null, false, false, null);
+        Ride v3 = new Ride(123L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(2), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), null, false, false, null);
         ArrayList<Ride> ps = new ArrayList<>();
         ps.add(v1);
         ps.add(v2);
@@ -140,21 +157,5 @@ public class Mockup {
         messages.add(m3);
         messages.add(m4);
         return messages;
-    }
-
-    private ArrayList<Review> createReview()
-    {
-        Review v1 = new Review(1L, 3, "dirty vehicle", passengers.get(0), ReviewType.VEHICLE);
-        Review v2 = new Review(2L, 5, "great vehicle", passengers.get(3), ReviewType.VEHICLE);
-        Review v3 = new Review(3L, 1, "rude driver", passengers.get(2), ReviewType.DRIVER);
-        Review v4 = new Review(4L, 5, "kind driver", passengers.get(1), ReviewType.DRIVER);
-        Review v5 = new Review(5L, 5, "lovely ride", passengers.get(1), ReviewType.VEHICLE);
-        ArrayList<Review> ps = new ArrayList<>();
-        ps.add(v1);
-        ps.add(v2);
-        ps.add(v3);
-        ps.add(v4);
-        ps.add(v5);
-        return ps;
     }
 }
