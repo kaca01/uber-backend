@@ -53,6 +53,10 @@ public class Ride {
         this.locations = locations;
     }
 
+    public Ride(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
