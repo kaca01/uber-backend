@@ -1,6 +1,5 @@
-package com.example.test.dto;
+package com.example.test.dto.user;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllUsersDTO {

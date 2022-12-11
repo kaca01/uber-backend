@@ -1,7 +1,7 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
 
 import com.example.test.domain.communication.Review;
-import com.example.test.domain.user.Passenger;
+import com.example.test.dto.user.UserDTO;
 
 public class ReviewDTO {
     private Long id;

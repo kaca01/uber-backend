@@ -1,6 +1,4 @@
-package com.example.test.dto;
-
-import com.example.test.domain.business.WorkingHour;
+package com.example.test.dto.business;
 
 import java.util.ArrayList;
 

@@ -1,16 +1,14 @@
-package com.example.test.dto;
+package com.example.test.dto.ride;
 
-import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
-import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
-import com.example.test.domain.user.User;
+import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.communication.RejectionDTO;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class RideDTO {

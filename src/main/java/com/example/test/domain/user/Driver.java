@@ -2,7 +2,7 @@ package com.example.test.domain.user;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
-import com.example.test.dto.UserDTO;
+import com.example.test.dto.user.UserDTO;
 
 import java.util.ArrayList;
 

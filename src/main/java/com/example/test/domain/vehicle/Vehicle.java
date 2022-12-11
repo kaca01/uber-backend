@@ -1,7 +1,6 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
-import com.example.test.dto.VehicleDTO;
 
 public class Vehicle {
     private Long id;

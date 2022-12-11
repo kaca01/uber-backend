@@ -1,15 +1,12 @@
 package com.example.test.domain.ride;
 
-import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.communication.Review;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
-import com.example.test.dto.RideDTO;
-import com.example.test.dto.UserDTO;
+import com.example.test.dto.ride.RideDTO;
 import com.example.test.enumeration.RideStatus;
-import com.example.test.service.PassengerService;
 
 import java.util.ArrayList;
 import java.util.Date;

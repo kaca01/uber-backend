@@ -6,7 +6,7 @@ import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
-import com.example.test.dto.MessageDTO;
+import com.example.test.dto.communication.MessageDTO;
 import com.example.test.enumeration.MessageType;
 import com.example.test.service.interfaces.IUserService;
 import lombok.SneakyThrows;

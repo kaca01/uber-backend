@@ -1,8 +1,7 @@
 package com.example.test.domain.communication;
 
 import com.example.test.domain.user.Passenger;
-import com.example.test.dto.ReviewDTO;
-import com.example.test.enumeration.Grade;
+import com.example.test.dto.communication.ReviewDTO;
 import com.example.test.enumeration.ReviewType;
 
 public class Review {

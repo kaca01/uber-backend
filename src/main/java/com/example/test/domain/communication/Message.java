@@ -2,7 +2,7 @@ package com.example.test.domain.communication;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
-import com.example.test.dto.MessageDTO;
+import com.example.test.dto.communication.MessageDTO;
 import com.example.test.enumeration.MessageType;
 
 import java.util.Date;

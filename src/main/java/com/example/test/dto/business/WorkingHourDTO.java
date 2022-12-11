@@ -1,4 +1,4 @@
-package com.example.test.dto;
+package com.example.test.dto.business;
 
 import com.example.test.domain.business.WorkingHour;
 

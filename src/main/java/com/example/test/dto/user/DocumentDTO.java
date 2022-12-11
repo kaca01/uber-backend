@@ -1,4 +1,4 @@
-package com.example.test.dto;
+package com.example.test.dto.user;
 
 import com.example.test.domain.user.Document;
 

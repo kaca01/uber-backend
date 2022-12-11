@@ -2,8 +2,8 @@ package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
-import com.example.test.dto.PanicDTO;
-import com.example.test.dto.RideDTO;
+import com.example.test.dto.communication.PanicDTO;
+import com.example.test.dto.ride.RideDTO;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

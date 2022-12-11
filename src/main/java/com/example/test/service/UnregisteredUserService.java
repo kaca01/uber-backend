@@ -1,6 +1,6 @@
 package com.example.test.service;
 
-import com.example.test.dto.UnregisteredUserDTO;
+import com.example.test.dto.user.UnregisteredUserDTO;
 import com.example.test.service.interfaces.IUnregisteredUserService;
 import org.springframework.stereotype.Service;
 

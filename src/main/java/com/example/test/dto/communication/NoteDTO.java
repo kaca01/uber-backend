@@ -1,4 +1,4 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
 
 import com.example.test.domain.communication.Note;
 

@@ -2,7 +2,10 @@ package com.example.test.controller;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
-import com.example.test.dto.*;
+import com.example.test.dto.ride.AllRidesDTO;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.AllUsersDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

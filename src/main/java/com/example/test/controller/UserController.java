@@ -4,18 +4,22 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
-import com.example.test.dto.*;
+import com.example.test.dto.communication.AllMessagesDTO;
+import com.example.test.dto.communication.AllNotesDTO;
+import com.example.test.dto.communication.MessageDTO;
+import com.example.test.dto.communication.NoteDTO;
+import com.example.test.dto.ride.AllRidesDTO;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.AllUsersDTO;
+import com.example.test.dto.user.LoginDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 

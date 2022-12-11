@@ -1,6 +1,6 @@
 package com.example.test.controller;
 
-import com.example.test.dto.UnregisteredUserDTO;
+import com.example.test.dto.user.UnregisteredUserDTO;
 import com.example.test.service.interfaces.IUnregisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

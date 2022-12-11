@@ -1,13 +1,9 @@
 package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
-import com.example.test.domain.user.Passenger;
-import com.example.test.dto.AllPanicsDTO;
-import com.example.test.dto.AllUsersDTO;
-import com.example.test.dto.PanicDTO;
-import com.example.test.dto.UserDTO;
+import com.example.test.dto.communication.AllPanicsDTO;
+import com.example.test.dto.communication.PanicDTO;
 import com.example.test.service.interfaces.IPanicService;
-import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController

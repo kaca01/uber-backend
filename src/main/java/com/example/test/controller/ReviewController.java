@@ -1,10 +1,9 @@
 package com.example.test.controller;
 
 import com.example.test.domain.communication.Review;
-import com.example.test.dto.AllReviewsDTO;
-import com.example.test.dto.AllRideReviewsDTO;
-import com.example.test.dto.ReviewDTO;
-import com.example.test.dto.RideReviewDTO;
+import com.example.test.dto.communication.AllReviewsDTO;
+import com.example.test.dto.communication.ReviewDTO;
+import com.example.test.dto.ride.RideReviewDTO;
 import com.example.test.enumeration.ReviewType;
 import com.example.test.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

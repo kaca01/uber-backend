@@ -2,7 +2,7 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
-import com.example.test.dto.RideDTO;
+import com.example.test.dto.ride.RideDTO;
 
 public interface IRideService {
 

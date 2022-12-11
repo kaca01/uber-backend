@@ -1,20 +1,17 @@
-package com.example.test.dto;
+package com.example.test.dto.ride;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class AllMessagesDTO {
+public class AllRidesDTO {
 
     private int totalCount;
-    private List<MessageDTO> results;
+    private ArrayList<RideDTO> results;
 
-    public AllMessagesDTO()
-    {
+    public AllRidesDTO() {
 
     }
 
-    //response
-    public AllMessagesDTO(int totalCount, List<MessageDTO> results) {
+    public AllRidesDTO(int totalCount, ArrayList<RideDTO> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
@@ -27,17 +24,17 @@ public class AllMessagesDTO {
         this.totalCount = totalCount;
     }
 
-    public List<MessageDTO> getResults() {
+    public ArrayList<RideDTO> getResults() {
         return results;
     }
 
-    public void setResults(List<MessageDTO> results) {
+    public void setResults(ArrayList<RideDTO> results) {
         this.results = results;
     }
 
     @Override
     public String toString() {
-        return "AllMessagesDTO{" +
+        return "AllRidesDTO{" +
                 "totalCount=" + totalCount +
                 ", results=" + results +
                 '}';

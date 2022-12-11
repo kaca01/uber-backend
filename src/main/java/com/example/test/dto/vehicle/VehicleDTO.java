@@ -1,4 +1,4 @@
-package com.example.test.dto;
+package com.example.test.dto.vehicle;
 
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.user.Driver;

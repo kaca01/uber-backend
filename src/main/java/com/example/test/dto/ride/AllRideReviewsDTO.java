@@ -1,4 +1,6 @@
-package com.example.test.dto;
+package com.example.test.dto.ride;
+
+import com.example.test.dto.ride.RideReviewDTO;
 
 import java.util.ArrayList;
 

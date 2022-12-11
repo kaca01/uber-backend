@@ -1,7 +1,7 @@
 package com.example.test.domain.communication;
 
 import com.example.test.domain.user.User;
-import com.example.test.dto.NoteDTO;
+import com.example.test.dto.communication.NoteDTO;
 
 import java.util.Date;
 

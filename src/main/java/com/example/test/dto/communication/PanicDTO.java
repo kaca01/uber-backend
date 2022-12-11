@@ -1,6 +1,8 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
 
 import com.example.test.domain.communication.Message;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 
 public class PanicDTO {
 

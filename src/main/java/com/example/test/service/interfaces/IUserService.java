@@ -4,10 +4,8 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
-import com.example.test.dto.MessageDTO;
-import org.springframework.data.domain.Page;
+import com.example.test.dto.communication.MessageDTO;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface IUserService {
