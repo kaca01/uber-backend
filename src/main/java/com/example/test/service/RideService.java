@@ -28,13 +28,9 @@ public class RideService implements IRideService {
         setRideData(ride);
         ArrayList<Passenger> passengers = new ArrayList<>();
 
-        PassengerService passengerService = new PassengerService();
+        // metoda treba da pronalazi postojeceg passengera u bazi i stvalja ga u ride, a ne kreira novog
         for (UserDTO u : rideDTO.getPassengers()) {
-            Passenger p = passengerService.findUserById(u.getId());
-            if (p == null)
-            {
-                return null;
-            }
+            Passenger p = new Passenger(u);
             passengers.add(p);
         }
         ride.setPassengers(passengers);

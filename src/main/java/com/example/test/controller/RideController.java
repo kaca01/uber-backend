@@ -26,10 +26,8 @@ public class RideController {
         Ride newRide = new Ride(rideDTO);
         newRide = service.insert(newRide, rideDTO);  // returns ride with set id and other data
 
-        if (newRide == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        // todo newRide will never be null. This  request should be sent when there is invalid data
-        return new ResponseEntity<RideDTO>(new RideDTO(newRide), HttpStatus.CREATED);
+        // todo newRide will never be null. Error 404 should be sent when there is invalid data
+        return new ResponseEntity<RideDTO>(new RideDTO(newRide), HttpStatus.OK);
     }
 
     //active ride for driver

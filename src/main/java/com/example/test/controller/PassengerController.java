@@ -29,7 +29,7 @@ public class PassengerController {
         if (passenger == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             // todo passenger will never be null. This request should be sent when there is invalid data
-        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.CREATED);
+        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
     }
 
     //getting passengers
