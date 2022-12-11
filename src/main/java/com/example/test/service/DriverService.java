@@ -138,7 +138,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public List<WorkingHour> getWorkTime(Long id) {
+    public List<WorkingHour> getWorkTimes(Long id) {
         Driver driver = get(id);
         if (driver == null) return null;
         return driver.getWorkingHours();
@@ -164,7 +164,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public WorkingHour getWorkTime(Long workTimeId, boolean flag) {
+    public WorkingHour getWorkTime(Long workTimeId) {
         for (WorkingHour workTime : workTimes) {
             if (workTime.getId().equals(workTimeId)) return workTime;
         }
