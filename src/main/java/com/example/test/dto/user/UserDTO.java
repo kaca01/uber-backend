@@ -1,6 +1,7 @@
-package com.example.test.dto;
+package com.example.test.dto.user;
 
 import com.example.test.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDTO {
 
@@ -11,6 +12,7 @@ public class UserDTO {
     private String telephoneNumber;
     private String email;
     private String address;
+    @JsonIgnore
     private String password;
 
 
@@ -34,6 +36,12 @@ public class UserDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    // response
+    public UserDTO(Long id, String email) {
+        this.id = id;
+        this.email = email;
     }
 
     // request

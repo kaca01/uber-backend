@@ -2,6 +2,7 @@ package com.example.test.domain.user;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.user.UserDTO;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,16 @@ public class Driver extends User {
 
     public Driver() {
 
+    }
+
+    public Driver(UserDTO driverDTO) {
+        this(driverDTO.getId(), driverDTO.getName(), driverDTO.getSurname(), driverDTO.getProfilePicture(),
+                driverDTO.getTelephoneNumber(), driverDTO.getEmail(), driverDTO.getAddress(), driverDTO.getPassword());
+    }
+
+    public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                  String address, String password) {
+        super(id, name, surname, profilePicture,telephoneNumber,email,address, password);
     }
 
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,

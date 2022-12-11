@@ -1,15 +1,19 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class AllPanicsDTO {
+public class AllMessagesDTO {
+
     private int totalCount;
-    private ArrayList<PanicDTO> results;
+    private List<MessageDTO> results;
 
-    public AllPanicsDTO(){}
+    public AllMessagesDTO()
+    {
+
+    }
 
     //response
-    public AllPanicsDTO(int totalCount, ArrayList<PanicDTO> results) {
+    public AllMessagesDTO(int totalCount, List<MessageDTO> results) {
         this.totalCount = totalCount;
         this.results = results;
     }
@@ -22,17 +26,17 @@ public class AllPanicsDTO {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<PanicDTO> getResults() {
+    public List<MessageDTO> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<PanicDTO> results) {
+    public void setResults(List<MessageDTO> results) {
         this.results = results;
     }
 
     @Override
     public String toString() {
-        return "AllPanicsDTO{" +
+        return "AllMessagesDTO{" +
                 "totalCount=" + totalCount +
                 ", results=" + results +
                 '}';

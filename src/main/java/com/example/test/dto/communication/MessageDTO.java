@@ -1,4 +1,7 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
+
+
+import com.example.test.domain.communication.Message;
 
 public class MessageDTO {
 
@@ -13,6 +16,17 @@ public class MessageDTO {
     public MessageDTO()
     {
 
+    }
+
+    public MessageDTO(Message message)
+    {
+        this.id = message.getId();
+        this.timeOfSending = message.getTimeOfSending().toString();
+        this.senderId = message.getSender().getId();
+        this.receiverId = message.getReceiver().getId();
+        this.message = message.getMessage();
+        this.type = message.getType().toString();
+        this.rideId = message.getRide().getId();
     }
 
     //request

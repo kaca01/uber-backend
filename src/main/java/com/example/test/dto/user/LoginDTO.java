@@ -1,7 +1,11 @@
-package com.example.test.dto;
+package com.example.test.dto.user;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class LoginDTO {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
     private String accessToken;
     private String refreshToken;

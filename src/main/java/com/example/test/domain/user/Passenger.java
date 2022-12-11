@@ -1,12 +1,9 @@
 package com.example.test.domain.user;
 
-import com.example.test.domain.communication.Review;
 import com.example.test.domain.ride.Location;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.User;
+import com.example.test.dto.user.UserDTO;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Passenger extends User {
     private ArrayList<Location> favoriteLocations;
@@ -20,6 +17,17 @@ public class Passenger extends User {
                      ArrayList<Location> favoriteLocations) {
         super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
         this.favoriteLocations = favoriteLocations;
+    }
+
+    public Passenger(UserDTO passengerDTO)
+    {
+        this.setName(passengerDTO.getName());
+        this.setSurname(passengerDTO.getSurname());
+        this.setEmail(passengerDTO.getEmail());
+        this.setProfilePicture(passengerDTO.getProfilePicture());
+        this.setAddress(passengerDTO.getAddress());
+        this.setTelephoneNumber(passengerDTO.getTelephoneNumber());
+        this.setPassword(passengerDTO.getPassword());
     }
 
     public ArrayList<Location> getFavoriteLocations() {

@@ -15,14 +15,17 @@ public class VehicleController {
     @Autowired
     private IVehicleService service;
 
+    // Change location of the vehicle
     @PutMapping(value = "/{id}/location", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> update(@PathVariable Long id, @RequestBody Location location)
+    public ResponseEntity<Boolean> update(@PathVariable int id, @RequestBody Location location)
             throws Exception {
-        Boolean updatedLocation = service.update(id, location);
-        // TODO : add 400 status
-        if (updatedLocation == null) {
-            return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
+
+        Boolean updatedLocation = service.update((long) id, location);
+
+        if (!updatedLocation) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Boolean>(updatedLocation, HttpStatus.OK);
+        // todo 400
+        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
     }
 }

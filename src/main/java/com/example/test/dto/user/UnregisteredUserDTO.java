@@ -1,11 +1,15 @@
-package com.example.test.dto;
+package com.example.test.dto.user;
 
+import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Route;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 
 public class UnregisteredUserDTO {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ArrayList<Route> locations;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String vehicleType;
     private boolean petTransport;
     private boolean babyTransport;

@@ -1,4 +1,8 @@
-package com.example.test.dto;
+package com.example.test.dto.communication;
+
+import com.example.test.domain.communication.Message;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 
 public class PanicDTO {
 
@@ -13,6 +17,15 @@ public class PanicDTO {
     //request
     public PanicDTO(String reason) {
         this.reason = reason;
+    }
+
+    public PanicDTO(Message message)
+    {
+        this.id = message.getId();
+        this.user = new UserDTO(message.getSender());
+        this.ride = new RideDTO(message.getRide());
+        this.time = message.getTimeOfSending().toString();
+        this.reason = message.getMessage();
     }
 
     //response

@@ -1,19 +1,17 @@
-package com.example.test.dto;
-
-import com.example.test.domain.business.WorkingHour;
+package com.example.test.dto.business;
 
 import java.util.ArrayList;
 
 public class AllWorkingHoursDTO {
 
     private int totalCount;
-    private ArrayList<WorkingHour> results;
+    private ArrayList<WorkingHourDTO> results;
 
     public AllWorkingHoursDTO() {
     }
 
     // response
-    public AllWorkingHoursDTO(int totalCount, ArrayList<WorkingHour> results) {
+    public AllWorkingHoursDTO(int totalCount, ArrayList<WorkingHourDTO> results) {
         super();
         this.totalCount = totalCount;
         this.results = results;
@@ -27,11 +25,11 @@ public class AllWorkingHoursDTO {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<WorkingHour> getResults() {
+    public ArrayList<WorkingHourDTO> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<WorkingHour> results) {
+    public void setResults(ArrayList<WorkingHourDTO> results) {
         this.results = results;
     }
 }

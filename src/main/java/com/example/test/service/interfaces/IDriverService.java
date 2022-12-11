@@ -6,24 +6,24 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface IDriverService {
 
     public Driver insert(Driver driver);
 
     // TODO : check this later (paginated drivers???)
-    public Collection<Driver> getAll();
+    public List<Driver> getAll();
 
     public Driver get(Long id);
 
     public Driver update(Long id, Driver driver);
 
-    public Collection<Document> getDriverDocuments(Long id);
+    public List<Document> getDriverDocuments(Long id);
 
-    public Boolean deleteDriverDocument(Long id);
+    public Document insertDriverDocument(Long id, Document driverDocument);
 
-    public Collection<Document> insertDriverDocuments(Long id, Collection<Document> driverDocument);
+    public Document deleteDriverDocument(Long id);
 
     public Vehicle getVehicle(Long id);
 
@@ -31,14 +31,13 @@ public interface IDriverService {
 
     public Vehicle updateVehicle(Long id, Vehicle vehicle);
 
-    public WorkingHour getWorkTime(Long id);
+    public List<WorkingHour> getWorkTimes(Long id);
 
     public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
 
-    public Collection<Ride> getRides(Long id);
+    public List<Ride> getRides(Long id);
 
-    public WorkingHour getWorkTime(Long id, Long workTimeId);
+    public WorkingHour getWorkTime(Long workTimeId);
 
-    public WorkingHour updateWorkTime(Long id, Long workTimeId);
-
+    public WorkingHour updateWorkTime(Long workTimeId, WorkingHour workingHour);
 }

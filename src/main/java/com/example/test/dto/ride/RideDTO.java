@@ -1,37 +1,55 @@
-package com.example.test.dto;
+package com.example.test.dto.ride;
 
-import com.example.test.domain.communication.Rejection;
+import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
-import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
+import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.communication.RejectionDTO;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class RideDTO {
-    // TODO add necessary dtos
     private Long id;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
     private double totalCost;
     private ArrayList<Route> locations;
-    private ArrayList<Passenger> passengers;
+    private ArrayList<UserDTO> passengers;
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
     private double estimatedTimeInMinutes;
     private String status;
-    private Driver driver;
-    private Rejection rejection;
+    private UserDTO driver;
+    private RejectionDTO rejection;
 
 
     public RideDTO() {
 
     }
 
+    public RideDTO(Ride ride) {
+        this.id = ride.getId();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        this.startTime = format.format(ride.getStartTime());
+        this.endTime = format.format(ride.getEndTime());
+        this.totalCost = ride.getTotalCost();
+        this.locations = ride.getLocations();
+        this.passengers = convertPassengersToUsersDTO(ride);
+        this.vehicleType = ride.getVehicle().getType().getName().toString();
+        this.babyTransport = ride.isBabyTransport();
+        this.petTransport = ride.isPetTransport();
+        this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
+        this.status = ride.getStatus().toString();
+        this.driver = new UserDTO(ride.getDriver());
+        this.rejection = new RejectionDTO(ride.getRejection());
+    }
+
     // request
-    public RideDTO(ArrayList<Route> locations, ArrayList<Passenger> passengers, String vehicleType,
+    public RideDTO(ArrayList<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
         this.locations = locations;
         this.passengers = passengers;
@@ -42,10 +60,10 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, Date startTime, Date endTime, double totalCost, ArrayList<Route> locations,
-                   ArrayList<Passenger> passengers , String vehicleType, boolean babyTransport,
-                   boolean petTransport, double estimatedTimeInMinutes, String status, Driver driver,
-                   Rejection rejection) {
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, ArrayList<Route> locations,
+                   ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
+                   boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
+                   RejectionDTO rejection) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -61,6 +79,14 @@ public class RideDTO {
         this.rejection = rejection;
     }
 
+    public ArrayList<UserDTO> convertPassengersToUsersDTO(Ride ride) {
+        ArrayList<UserDTO> users = new ArrayList<UserDTO>();
+        for (Passenger passenger: ride.getPassengers()) {
+            users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
+        }
+        return users;
+    }
+
     public ArrayList<Route> getLocations() {
         return locations;
     }
@@ -69,11 +95,11 @@ public class RideDTO {
         this.locations = locations;
     }
 
-    public ArrayList<Passenger> getPassengers() {
+    public ArrayList<UserDTO> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(ArrayList<Passenger> passengers) {
+    public void setPassengers(ArrayList<UserDTO> passengers) {
         this.passengers = passengers;
     }
 
@@ -109,19 +135,19 @@ public class RideDTO {
         this.id = id;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -149,19 +175,19 @@ public class RideDTO {
         this.status = status;
     }
 
-    public Driver getDriver() {
+    public UserDTO getDriver() {
         return driver;
     }
 
-    public void setDriver(Driver driver) {
+    public void setDriver(UserDTO driver) {
         this.driver = driver;
     }
 
-    public Rejection getRejection() {
+    public RejectionDTO getRejection() {
         return rejection;
     }
 
-    public void setRejection(Rejection rejection) {
+    public void setRejection(RejectionDTO rejection) {
         this.rejection = rejection;
     }
 }

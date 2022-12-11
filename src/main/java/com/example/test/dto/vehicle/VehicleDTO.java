@@ -1,6 +1,8 @@
-package com.example.test.dto;
+package com.example.test.dto.vehicle;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.domain.user.Driver;
+import com.example.test.domain.vehicle.Vehicle;
 
 import java.util.ArrayList;
 
@@ -11,7 +13,7 @@ public class VehicleDTO {
     private String vehicleType;
     private String model;
     private String licenseNumber;
-    private ArrayList<Location> currentLocation;
+    private Location currentLocation;
     private int passengerSeats;
     private boolean babyTransport;
     private boolean petTransport;
@@ -20,9 +22,14 @@ public class VehicleDTO {
     public VehicleDTO() {
     }
 
+    public VehicleDTO(Driver driver, Vehicle vehicle) {
+        this(vehicle.getId(), driver.getId(), vehicle.getType().getName().toString(), vehicle.getModel(), vehicle.getLicenseNumber(),
+                vehicle.getCurrentLocation(), vehicle.getPassengerSeats(), vehicle.isBabyTransport(), vehicle.isPetTransport());
+    }
+
     // response
     public VehicleDTO(Long id, Long driverId, String vehicleType, String model, String licenseNumber,
-                      ArrayList<Location> currentLocation, int passengerSeats, Boolean babyTransport, Boolean petTransport) {
+                      Location currentLocation, int passengerSeats, Boolean babyTransport, Boolean petTransport) {
         super();
         this.id = id;
         this.driverId = driverId;
@@ -37,7 +44,7 @@ public class VehicleDTO {
 
     // request
     public VehicleDTO(String vehicleType, String model, String licenseNumber,
-                      ArrayList<Location> currentLocation, int passengerSeats, Boolean babyTransport, Boolean petTransport) {
+                      Location currentLocation, int passengerSeats, Boolean babyTransport, Boolean petTransport) {
         super();
         this.vehicleType = vehicleType;
         this.model = model;
@@ -88,11 +95,11 @@ public class VehicleDTO {
         this.licenseNumber = licenseNumber;
     }
 
-    public ArrayList<Location> getCurrentLocation() {
+    public Location getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(ArrayList<Location> currentLocation) {
+    public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
     }
 

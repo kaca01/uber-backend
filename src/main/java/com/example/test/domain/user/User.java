@@ -1,6 +1,12 @@
 package com.example.test.domain.user;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 abstract public class User {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String surname;
@@ -17,6 +23,18 @@ abstract public class User {
     }
 
     public User(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                String address, String password) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.profilePicture = profilePicture;
+        this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+    }
+
+    public User(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                 String address, String password, boolean blocked, boolean active) {
         this.id = id;
         this.name = name;
@@ -28,6 +46,10 @@ abstract public class User {
         this.password = password;
         this.blocked = blocked;
         this.active = active;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
