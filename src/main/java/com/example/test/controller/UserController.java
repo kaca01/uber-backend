@@ -28,12 +28,14 @@ public class UserController {
 
     // Rides of the user
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllRidesDTO> getRides(@PathVariable int id, @RequestParam int page, @RequestParam int size,
-                                                @RequestParam String sort, @RequestParam String from,
+    public ResponseEntity<AllRidesDTO> getRides(@PathVariable int id,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam String sort,
+                                                @RequestParam String from,
                                                 @RequestParam String to) {
 
-        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by(sort));
-        List<Ride> rides = service.getRides((long) id, pageable, from, to);
+        List<Ride> rides = service.getRides((long) id, page, size, sort, from, to);
 
         if(rides == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,10 +51,10 @@ public class UserController {
 
     // Getting multiple of them for the reason of showing a list
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllUsersDTO> get(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<AllUsersDTO> get(@RequestParam(defaultValue = "1") int page,
+                                           @RequestParam(defaultValue = "10") int size) {
 
-        Pageable pageable = (Pageable) PageRequest.of(page, size);
-        Page<User> users = service.get(pageable);
+        List<User> users = service.get(page, size);
 
         List<UserDTO> usersDTO = new ArrayList<>();
         for(User user : users) {
@@ -61,17 +63,16 @@ public class UserController {
         return new ResponseEntity<>(new AllUsersDTO(usersDTO.size(), usersDTO), HttpStatus.OK);
     }
 
-    // TODO
     // login
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> login(@RequestBody LoginDTO loginDTO) throws Exception {
+    @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) throws Exception {
 
-        Boolean success = service.login(loginDTO.getEmail(), loginDTO.getPassword());
+        List<String> tokens = service.login(loginDTO.getEmail(), loginDTO.getPassword());
 
-        if(success == null) {
+        if(tokens == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Boolean>(success, HttpStatus.CREATED);
+        return new ResponseEntity<>(new LoginDTO(tokens.get(0), tokens.get(1), true), HttpStatus.OK);
     }
 
     // Returns a list of user messages
@@ -88,7 +89,6 @@ public class UserController {
         for(Message message : messages) {
             messagesDTO.add(new MessageDTO(message));
         }
-
         // todo za 400
         return new ResponseEntity<>(new AllMessagesDTO(messagesDTO.size(), messagesDTO), HttpStatus.OK);
     }
@@ -97,39 +97,38 @@ public class UserController {
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO) throws Exception {
 
-        Message message = new Message(messageDTO);
-        message = service.insertMessage((long) id, message);
+        Message message = service.insertMessage((long) id, messageDTO);
 
         if(message == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         // todo za 400
-        return new ResponseEntity<>(new MessageDTO(message), HttpStatus.CREATED);
+        return new ResponseEntity<>(new MessageDTO(message), HttpStatus.OK);
     }
 
     // Blocking the user from the part of the administrator
-    @PutMapping(value = "/user/{id}/block", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user/{id}/block", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> block(@PathVariable int id) throws Exception {
 
         Boolean blockedUser = service.block((long) id);
-
-        if (blockedUser == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!blockedUser) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(blockedUser, HttpStatus.OK);
+        // todo 400
+        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
     }
 
     // Unblocking user from the administrator
-    @PutMapping(value = "/user/{id}/unblock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user/{id}/unblock", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> unblock(@PathVariable int id) throws Exception {
 
         Boolean unblockedUser = service.unblock((long) id);
 
-        if (unblockedUser == null) {
-            return new ResponseEntity<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!unblockedUser) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Boolean>(unblockedUser, HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
     }
 
     // Creating note
@@ -143,7 +142,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // todo za 400
-        return new ResponseEntity<>(new NoteDTO(note), HttpStatus.CREATED);
+        return new ResponseEntity<>(new NoteDTO(note), HttpStatus.OK);
     }
 
     // Getting notes for the user
@@ -151,8 +150,7 @@ public class UserController {
     public ResponseEntity<AllNotesDTO> getNotes(@PathVariable int id, @RequestParam int page,
                                                 @RequestParam int size) {
 
-        Pageable pageable = (Pageable) PageRequest.of(page, size);
-        List<Note> notes = service.getNotes((long) id, pageable);
+        List<Note> notes = service.getNotes((long) id, page, size);
 
         if(notes == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
