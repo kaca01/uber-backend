@@ -12,9 +12,9 @@ public class AllRidesDTO {
     }
 
     public AllRidesDTO(int totalCount, ArrayList<RideDTO> results) {
-            this.totalCount = totalCount;
-            this.results = results;
-        }
+        this.totalCount = totalCount;
+        this.results = results;
+    }
 
     public int getTotalCount() {
         return totalCount;

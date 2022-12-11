@@ -2,8 +2,8 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.communication.Message;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface IPanicService {
-    public Collection<Message> getAll();
+    public List<Message> getAll();
 }
