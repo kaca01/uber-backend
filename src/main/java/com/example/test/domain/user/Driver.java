@@ -20,12 +20,7 @@ public class Driver extends User {
         this(driverDTO.getId(), driverDTO.getName(), driverDTO.getSurname(), driverDTO.getProfilePicture(),
                 driverDTO.getTelephoneNumber(), driverDTO.getEmail(), driverDTO.getAddress(), driverDTO.getPassword());
     }
-
-    public Driver(String name, String surname, String profilePicture, String telephoneNumber, String email,
-                  String address, String password) {
-
-    }
-
+    
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                   String address, String password) {
         super(id, name, surname, profilePicture,telephoneNumber,email,address, password);
