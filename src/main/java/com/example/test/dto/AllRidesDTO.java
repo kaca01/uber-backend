@@ -1,21 +1,20 @@
 package com.example.test.dto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AllRidesDTO {
 
     private int totalCount;
-    private List<RideDTO> results;
+    private ArrayList<RideDTO> results;
 
     public AllRidesDTO() {
 
     }
 
-    public AllRidesDTO(int totalCount, List<RideDTO> results) {
-        this.totalCount = totalCount;
-        this.results = results;
-    }
+    public AllRidesDTO(int totalCount, ArrayList<RideDTO> results) {
+            this.totalCount = totalCount;
+            this.results = results;
+        }
 
     public int getTotalCount() {
         return totalCount;
@@ -25,11 +24,11 @@ public class AllRidesDTO {
         this.totalCount = totalCount;
     }
 
-    public List<RideDTO> getResults() {
+    public ArrayList<RideDTO> getResults() {
         return results;
     }
 
-    public void setResults(List<RideDTO> results) {
+    public void setResults(ArrayList<RideDTO> results) {
         this.results = results;
     }
 

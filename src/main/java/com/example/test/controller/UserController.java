@@ -41,7 +41,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        List<RideDTO> ridesDTO = new ArrayList<>();
+        ArrayList<RideDTO> ridesDTO = new ArrayList<>();
         for (Ride ride : rides) {
             ridesDTO.add(new RideDTO(ride));
         }
