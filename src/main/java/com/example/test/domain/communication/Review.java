@@ -1,6 +1,7 @@
 package com.example.test.domain.communication;
 
 import com.example.test.domain.user.Passenger;
+import com.example.test.dto.ReviewDTO;
 import com.example.test.enumeration.Grade;
 import com.example.test.enumeration.ReviewType;
 
@@ -21,6 +22,11 @@ public class Review {
         this.comment = comment;
         this.passenger = passenger;
         this.type = type;
+    }
+
+    public Review(ReviewDTO reviewDTO) {
+        this.setRating(reviewDTO.getRating());
+        this.setComment(reviewDTO.getComment());
     }
 
     public Long getId() {
@@ -61,6 +67,10 @@ public class Review {
 
     public void setType(ReviewType type) {
         this.type = type;
+    }
+
+    public Long getPassengerId() {
+        return passenger.getId();
     }
 
     @Override

@@ -55,6 +55,9 @@ public class Ride {
         this.locations = locations;
     }
 
+    public Ride(Long id) {
+        this.id = id;
+   }
     public Ride(RideDTO rideDTO)
     {
         this.setLocations(rideDTO.getLocations());
