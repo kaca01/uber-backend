@@ -135,9 +135,9 @@ public class Mockup {
 
     private ArrayList<Ride> createRide()
     {
-        Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), null, true, false, null);
-        Ride v2 = new Ride(2L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(1), passengers, reviews, RideStatus.ACCEPTED, rejections.get(1), null, false, false, null);
-        Ride v3 = new Ride(123L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(2), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), null, false, false, null);
+        Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), true, false, null);
+        Ride v2 = new Ride(2L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(1), passengers, reviews, RideStatus.ACCEPTED, rejections.get(1), false, false, null);
+        Ride v3 = new Ride(123L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(2), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), false, false, null);
         ArrayList<Ride> ps = new ArrayList<>();
         ps.add(v1);
         ps.add(v2);
