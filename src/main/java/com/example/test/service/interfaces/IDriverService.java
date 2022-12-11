@@ -23,9 +23,9 @@ public interface IDriverService {
 
     public List<Document> getDriverDocuments(Long id);
 
-    public Boolean deleteDriverDocument(Long id);
-
     public Document insertDriverDocument(Long id, Document driverDocument);
+
+    public Document deleteDriverDocument(Long id);
 
     public Vehicle getVehicle(Long id);
 

@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,13 +34,14 @@ public class DriverController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO driverDTO) throws Exception{
-        Driver driver = mapper.map(driverDTO, Driver.class);
+        Driver driver = new Driver(driverDTO);
         Driver returnedDriver = service.insert(driver);
-        driverDTO = new UserDTO(returnedDriver);
         if (returnedDriver == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.CREATED);
+        driverDTO = new UserDTO(returnedDriver);
+
+        return new ResponseEntity<UserDTO>(driverDTO, HttpStatus.OK);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,40 +85,39 @@ public class DriverController {
     @GetMapping(value = "/{id}/documents", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<DocumentDTO>> getDriverDocuments(@PathVariable Long id) throws Exception {
         List<Document> driverDocuments = service.getDriverDocuments(id);
-        List<DocumentDTO> documentDTOS = new ArrayList<>();
-        for (Document document : driverDocuments)  documentDTOS.add(new DocumentDTO(document));
         // TODO : add 400 status
         if (driverDocuments == null) {
             return new ResponseEntity<List<DocumentDTO>>(HttpStatus.NOT_FOUND);
         }
+        List<DocumentDTO> documentDTOS = new ArrayList<>();
+        for (Document document : driverDocuments)  documentDTOS.add(new DocumentDTO(document));
         return new ResponseEntity<List<DocumentDTO>>(documentDTOS, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{id}/documents", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DocumentDTO> insertDriverDocuments(@PathVariable Long id,
-                                                                      @RequestBody DocumentDTO documentDTO)
+                                                             @RequestBody DocumentDTO documentDTO)
             throws Exception{
-        Document document = mapper.map(documentDTO, Document.class);
+        Document document = new Document(documentDTO.getName(), documentDTO.getDocumentImage(), null);
         Document returnedDriverDocument = service.insertDriverDocument(id, document);
-        documentDTO = new DocumentDTO(returnedDriverDocument);
         // TODO : add 400 status
         if (returnedDriverDocument == null) {
             return new ResponseEntity<DocumentDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.CREATED);
+        documentDTO = new DocumentDTO(returnedDriverDocument);
+        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/document/{document-id}")
-    public ResponseEntity<Boolean> deleteDriverDocument(@PathVariable Long id) throws Exception {
-        Boolean isDeleted = service.deleteDriverDocument(id);
+    public ResponseEntity<DocumentDTO> deleteDriverDocument(@PathVariable Long id) throws Exception {
+        Document document = service.deleteDriverDocument(id);
         // TODO : add 400 status
-        if (isDeleted == null) {
-            return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
-        } else if (isDeleted == Boolean.FALSE) {
-            return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+        if (document == null) {
+            return new ResponseEntity<DocumentDTO>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Boolean>(HttpStatus.NO_CONTENT);
+        DocumentDTO documentDTO = new DocumentDTO(document);
+        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -179,7 +180,7 @@ public class DriverController {
         return new ResponseEntity<AllWorkingHoursDTO>(allWorkingHoursDTO, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
                                                          @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
         Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getStart());
@@ -193,7 +194,7 @@ public class DriverController {
         workingHourDTO = new WorkingHourDTO(updatedWorkingHour);
 
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllRidesDTO> getRides(@PathVariable Long id) throws Exception {

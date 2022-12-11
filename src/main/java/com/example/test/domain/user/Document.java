@@ -18,6 +18,13 @@ public class Document {
         this.driver = driver;
     }
 
+    public Document(Long id, String name, String documentImage, Driver driver) {
+        this.id = id;
+        this.name = name;
+        this.documentImage = documentImage;
+        this.driver = driver;
+    }
+
     public Long getId() {
         return id;
     }

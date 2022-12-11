@@ -14,18 +14,18 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class DriverService implements IDriverService {
 
     private ArrayList<Driver> drivers;
+    private ArrayList<Document> documents;
 
     {
         try {
             drivers = createDrivers();
+            documents = createDocuments();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -33,7 +33,9 @@ public class DriverService implements IDriverService {
 
     @Override
     public Driver insert(Driver driver) {
-        return null;
+        driver.setId(123L);  // TODO implement this
+        drivers.add(driver);
+        return driver;
     }
 
     @Override
@@ -66,19 +68,32 @@ public class DriverService implements IDriverService {
 
     @Override
     public List<Document> getDriverDocuments(Long id) {
-        // TODO implement this
-        return null;
-    }
-
-    @Override
-    public Boolean deleteDriverDocument(Long id) {
-        // TODO implement this
-        return false;
+        if (get(id) == null) return null;
+        List<Document> driversDocuments = new ArrayList<>();
+        for (Document document : documents) {
+            if (document.getDriver().getId().equals(id)) driversDocuments.add(document);
+        }
+        return driversDocuments;
     }
 
     @Override
     public Document insertDriverDocument(Long id, Document document) {
-        // TODO implement this
+        Driver driver = get(id);
+        if (driver == null) return null;
+        document.setDriver(driver);
+        document.setId(123L);  // TODO implement this
+        documents.add(document);
+        return document;
+    }
+
+    @Override
+    public Document deleteDriverDocument(Long id) {
+        for (Document document : documents) {
+            if (document.getId().equals(id)) {
+                documents.remove(document);
+                return document;
+            }
+        }
         return null;
     }
 
@@ -171,5 +186,22 @@ public class DriverService implements IDriverService {
         drivers.add(d3);
         drivers.add(d4);
         return drivers;
+    }
+
+    public ArrayList<Document> createDocuments() {
+        ArrayList<Document> documents = new ArrayList<>();
+        assert drivers != null;
+        assert drivers.size() > 3;
+        Document d1 = new Document(1L, "vozacka", "U3dhZ2dlciByb2Nrcw==", drivers.get(0));
+        Document d2 = new Document(2L, "vozacka", "U3dhZ2dlciByb2Nrcw==", drivers.get(1));
+        Document d3 = new Document(3L, "vozacka", "U3dhZ2dlciByb2Nrcw==", drivers.get(2));
+        Document d4 = new Document(4L, "vozacka", "U3dhZ2dlciByb2Nrcw==", drivers.get(3));
+        Document d5 = new Document(5L, "licna", "U3dhZ2dlciByb2Nrcw==", drivers.get(0));
+        documents.add(d1);
+        documents.add(d2);
+        documents.add(d3);
+        documents.add(d4);
+        documents.add(d5);
+        return documents;
     }
 }
