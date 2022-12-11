@@ -1,6 +1,7 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.dto.VehicleDTO;
 
 public class Vehicle {
     private Long id;
@@ -109,5 +110,11 @@ public class Vehicle {
                 ", babyTransport=" + babyTransport +
                 ", petTransport=" + petTransport +
                 '}';
+    }
+
+    // TODO move this to service
+    VehicleType findVehicleTypeByName(String name) {
+        // TODO not implemented yet
+        return null;
     }
 }

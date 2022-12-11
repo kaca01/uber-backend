@@ -7,12 +7,13 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 
 public class RideDTO {
-    // TODO add necessary dtos
     private Long id;
     private String startTime;
     private String endTime;
@@ -34,8 +35,9 @@ public class RideDTO {
 
     public RideDTO(Ride ride) {
         this.id = ride.getId();
-        this.startTime = ride.getStartTime().toString();
-        this.endTime = ride.getEndTime().toString();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        this.startTime = format.format(ride.getStartTime());
+        this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
         this.locations = ride.getLocations();
         this.passengers = convertPassengersToUsersDTO(ride);

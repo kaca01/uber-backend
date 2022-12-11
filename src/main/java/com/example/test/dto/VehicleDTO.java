@@ -23,7 +23,7 @@ public class VehicleDTO {
     }
 
     public VehicleDTO(Driver driver, Vehicle vehicle) {
-        this(vehicle.getId(), driver.getId(), vehicle.getType().toString(), vehicle.getModel(), vehicle.getLicenseNumber(),
+        this(vehicle.getId(), driver.getId(), vehicle.getType().getName().toString(), vehicle.getModel(), vehicle.getLicenseNumber(),
                 vehicle.getCurrentLocation(), vehicle.getPassengerSeats(), vehicle.isBabyTransport(), vehicle.isPetTransport());
     }
 
