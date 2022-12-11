@@ -16,10 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -109,15 +106,14 @@ public class DriverController {
         return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/document/{document-id}")
-    public ResponseEntity<DocumentDTO> deleteDriverDocument(@PathVariable Long id) throws Exception {
+    @DeleteMapping(value = "/document/{id}")
+    public ResponseEntity<Void> deleteDriverDocument(@PathVariable Long id) throws Exception {
         Document document = service.deleteDriverDocument(id);
         // TODO : add 400 status
         if (document == null) {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        DocumentDTO documentDTO = new DocumentDTO(document);
-        return new ResponseEntity<DocumentDTO>(documentDTO, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
