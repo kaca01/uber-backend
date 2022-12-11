@@ -2,6 +2,8 @@ package com.example.test.dto;
 
 import com.example.test.domain.business.WorkingHour;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class WorkingHourDTO {
@@ -15,9 +17,10 @@ public class WorkingHourDTO {
     }
 
     public WorkingHourDTO(WorkingHour wh) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.id = wh.getId();
-        this.start = wh.getStart().toString();
-        this.end = wh.getEnd().toString();
+        this.start = format.format(wh.getStart());
+        this.end = format.format(wh.getEnd());
     }
 
     //response and request

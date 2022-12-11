@@ -1,12 +1,15 @@
 package com.example.test.service;
 
 import com.example.test.domain.business.WorkingHour;
+import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
+import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.domain.vehicle.VehicleType;
+import com.example.test.enumeration.RideStatus;
 import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,11 +25,15 @@ public class DriverService implements IDriverService {
 
     private ArrayList<Driver> drivers;
     private ArrayList<Document> documents;
+    private ArrayList<WorkingHour> workTimes;
+    private ArrayList<Ride> rides;
 
     {
         try {
             drivers = createDrivers();
             documents = createDocuments();
+            workTimes = createWorkTimes();
+            rides = createRides();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -146,31 +154,40 @@ public class DriverService implements IDriverService {
 
     @Override
     public List<Ride> getRides(Long id) {
-        // TODO implement this
-        return null;
+        Driver d = get(id);
+        if (d == null) return null;
+        List<Ride> foundRides = new ArrayList<>();
+        for (Ride ride : rides) {
+            if (ride.getDriver().getId().equals(id)) foundRides.add(ride);
+        }
+        return foundRides;
     }
 
     @Override
     public WorkingHour getWorkTime(Long workTimeId, boolean flag) {
-        // TODO implement this
+        for (WorkingHour workTime : workTimes) {
+            if (workTime.getId().equals(workTimeId)) return workTime;
+        }
         return null;
     }
 
     @Override
-    public WorkingHour updateWorkTime(Long workTimeId) {
-        // TODO implement this
+    public WorkingHour updateWorkTime(Long workTimeId, WorkingHour workingHour) {
+        for (WorkingHour workTime : workTimes) {
+            if (workTime.getId().equals(workTimeId)) {
+                workTime.setStart(workingHour.getStart());
+                workTime.setEnd(workingHour.getEnd());
+                return workTime;
+            }
+        }
         return null;
     }
 
-    public ArrayList<Driver> createDrivers() throws ParseException {
+    private ArrayList<Driver> createDrivers() throws ParseException {
         VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
         Location location = new Location(1L, "adresa", 544, 546);
         Vehicle v1 = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
-        WorkingHour workingHour = new WorkingHour(1L,
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-10T20:55:16.868Z"),
-                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-10T23:55:16.868Z"));
-        ArrayList<WorkingHour> workingHours = new ArrayList<WorkingHour>();
-        workingHours.add(workingHour);
+        ArrayList<WorkingHour> workingHours = createWorkTimes();
 
         Driver d1 = new Driver(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
                 "Nikole Pasica 25", "sifra123", false, true, 1245678, workingHours, v1);
@@ -188,7 +205,7 @@ public class DriverService implements IDriverService {
         return drivers;
     }
 
-    public ArrayList<Document> createDocuments() {
+    private ArrayList<Document> createDocuments() {
         ArrayList<Document> documents = new ArrayList<>();
         assert drivers != null;
         assert drivers.size() > 3;
@@ -203,5 +220,46 @@ public class DriverService implements IDriverService {
         documents.add(d4);
         documents.add(d5);
         return documents;
+    }
+
+    private ArrayList<WorkingHour> createWorkTimes() throws ParseException{
+        ArrayList<WorkingHour> workingHours = new ArrayList<WorkingHour>();
+
+        WorkingHour w1 = new WorkingHour(1L,
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-10T20:55:16.868Z"),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-10T23:55:16.868Z"));
+        WorkingHour w2 = new WorkingHour(2L,
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-08T20:55:16.868Z"),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2022-12-08T23:55:16.868Z"));
+        WorkingHour w3 = new WorkingHour(3L,
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z"),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T23:55:16.868Z"));
+        WorkingHour w4 = new WorkingHour(10L,
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2020-12-08T20:55:16.868Z"),
+                new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2020-12-08T23:55:16.868Z"));
+        workingHours.add(w1);
+        workingHours.add(w2);
+        workingHours.add(w3);
+        workingHours.add(w4);
+        return workingHours;
+    }
+
+    private ArrayList<Ride> createRides() throws ParseException{
+        ArrayList<Ride> rides = new ArrayList<>();
+        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z");
+        Date end =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T22:55:16.868Z");
+        Passenger passenger = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
+                "Nikole Pasica 25", "sifra123", false, true, null);
+        ArrayList<Passenger> passengers = new ArrayList<>();
+        passengers.add(passenger);
+        Location location = new Location(1L, "adresa", 544, 546);
+        VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
+        Vehicle v = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
+        Rejection rejection = new Rejection(1L, "", passenger, start);
+        Ride r1 = new Ride(1L, start, end, 250, 15, v, drivers.get(0), passengers, null,
+                RideStatus.ACTIVE, rejection, null, true, true, null);
+        rides.add(r1);
+
+        return rides;
     }
 }

@@ -41,5 +41,5 @@ public interface IDriverService {
 
     public WorkingHour getWorkTime(Long workTimeId, boolean flag);
 
-    public WorkingHour updateWorkTime(Long workTimeId);
+    public WorkingHour updateWorkTime(Long workTimeId, WorkingHour workingHour);
 }

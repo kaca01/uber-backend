@@ -16,7 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -176,11 +178,11 @@ public class DriverController {
         return new ResponseEntity<AllWorkingHoursDTO>(allWorkingHoursDTO, HttpStatus.OK);
     }
 
-    /*@PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
                                                          @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
-        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getStart());
-        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getEnd());
+        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
         WorkingHour workingHour = new WorkingHour(workingHourDTO.getId(), start, end);
         WorkingHour updatedWorkingHour = service.insertWorkTime(id, workingHour);
         // TODO : add 400 status
@@ -190,7 +192,7 @@ public class DriverController {
         workingHourDTO = new WorkingHourDTO(updatedWorkingHour);
 
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
-    }*/
+    }
 
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllRidesDTO> getRides(@PathVariable Long id) throws Exception {
@@ -206,9 +208,9 @@ public class DriverController {
         return new ResponseEntity<AllRidesDTO>(allRidesDTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long workTimeId) throws Exception {
-        WorkingHour workingHour = service.getWorkTime(workTimeId, true);
+    @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long id) throws Exception {
+        WorkingHour workingHour = service.getWorkTime(id, true);
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
@@ -218,14 +220,17 @@ public class DriverController {
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/working-hour/{working-hour-id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WorkingHourDTO> updateWorkTime(@PathVariable Long workTimeId) throws Exception {
-        WorkingHour workingHour = service.updateWorkTime(workTimeId);
+    @PutMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WorkingHourDTO> updateWorkTime(@PathVariable Long id,
+                                                         @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
+        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
+        WorkingHour workingHour = service.updateWorkTime(id, new WorkingHour(id, start, end));
         // TODO : add 400 status
         if (workingHour == null) {
             return new ResponseEntity<WorkingHourDTO>(HttpStatus.NOT_FOUND);
         }
-        WorkingHourDTO workingHourDTO = new WorkingHourDTO(workingHour);
+        workingHourDTO = new WorkingHourDTO(workingHour);
 
         return new ResponseEntity<WorkingHourDTO>(workingHourDTO, HttpStatus.OK);
     }
