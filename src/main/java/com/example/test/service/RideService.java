@@ -41,7 +41,7 @@ public class RideService implements IRideService {
 
     @Override
     public Ride findDriversActiveRide(Long id) {
-        if(id > 5) return null;
+        //if(id > 5) return null;
 
         Ride ride = new Ride();
         setRideData(ride);
@@ -51,7 +51,7 @@ public class RideService implements IRideService {
 
     @Override
     public Ride findPassengersActiveRide(Long id) {
-        if(id > 4) return null;
+        //if(id > 4) return null;
 
         Ride ride = new Ride();
         setRideData(ride);
