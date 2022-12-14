@@ -3,13 +3,20 @@ package com.example.test.domain.communication;
 import com.example.test.domain.user.User;
 import com.example.test.dto.communication.NoteDTO;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Note {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "date", nullable = false)
     private Date date;
+    @Column(name = "message", nullable = false)
     private String message;
+    @ManyToOne
     private User user;
 
     public Note()

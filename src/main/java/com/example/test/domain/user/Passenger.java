@@ -3,10 +3,18 @@ package com.example.test.domain.user;
 import com.example.test.domain.ride.Location;
 import com.example.test.dto.user.UserDTO;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 public class Passenger extends User {
-    private ArrayList<Location> favoriteLocations;
+    @OneToMany()
+    private Set<Location> favoriteLocations = new HashSet<>();
 
     public Passenger() {
 
@@ -14,7 +22,7 @@ public class Passenger extends User {
 
     public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                      String address, String password, boolean blocked, boolean active,
-                     ArrayList<Location> favoriteLocations) {
+                     Set<Location> favoriteLocations) {
         super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
         this.favoriteLocations = favoriteLocations;
     }
@@ -30,11 +38,11 @@ public class Passenger extends User {
         this.setPassword(passengerDTO.getPassword());
     }
 
-    public ArrayList<Location> getFavoriteLocations() {
+    public Set<Location> getFavoriteLocations() {
         return favoriteLocations;
     }
 
-    public void setFavoriteLocations(ArrayList<Location> favoriteLocations) {
+    public void setFavoriteLocations(Set<Location> favoriteLocations) {
         this.favoriteLocations = favoriteLocations;
     }
 

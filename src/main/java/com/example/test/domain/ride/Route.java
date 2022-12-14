@@ -1,8 +1,14 @@
 package com.example.test.domain.ride;
 
+import javax.persistence.*;
+
+@Entity
 public class Route {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
     private Location departure;
+    @ManyToOne
     private Location destination;
 
     public Route() {

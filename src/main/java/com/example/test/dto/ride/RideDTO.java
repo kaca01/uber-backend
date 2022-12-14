@@ -9,6 +9,8 @@ import com.example.test.dto.communication.RejectionDTO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class RideDTO {
@@ -16,7 +18,7 @@ public class RideDTO {
     private String startTime;
     private String endTime;
     private double totalCost;
-    private ArrayList<Route> locations;
+    private Set<Route> locations = new HashSet<>();
     private ArrayList<UserDTO> passengers;
     private String vehicleType;
     private boolean babyTransport;
@@ -49,7 +51,7 @@ public class RideDTO {
     }
 
     // request
-    public RideDTO(ArrayList<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
+    public RideDTO(Set<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
         this.locations = locations;
         this.passengers = passengers;
@@ -60,7 +62,7 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, String startTime, String endTime, double totalCost, ArrayList<Route> locations,
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, Set<Route> locations,
                    ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
                    RejectionDTO rejection) {
@@ -87,11 +89,11 @@ public class RideDTO {
         return users;
     }
 
-    public ArrayList<Route> getLocations() {
+    public Set<Route> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<Route> locations) {
+    public void setLocations(Set<Route> locations) {
         this.locations = locations;
     }
 

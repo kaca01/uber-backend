@@ -2,12 +2,18 @@ package com.example.test.domain.communication;
 
 import com.example.test.domain.user.User;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Rejection {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "reason", nullable = false)
     private String reason;
+    @ManyToOne
     private User user;
+    @Column(name = "timeOfRejection", nullable = false)
     private Date timeOfRejection;
 
     public Rejection() {

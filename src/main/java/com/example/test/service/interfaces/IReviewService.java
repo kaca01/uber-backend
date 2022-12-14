@@ -2,8 +2,8 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.communication.Review;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface IReviewService {
 
@@ -15,5 +15,5 @@ public interface IReviewService {
 
     public List<Review> getReviewByDriver(Long driverId);
 
-    public List<Review> getReviewByRide(Long rideId);
+    public Set<Review> getReviewByRide(Long rideId);
 }

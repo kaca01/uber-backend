@@ -1,10 +1,17 @@
 package com.example.test.domain.user;
 
+import javax.persistence.*;
 
+@Entity
 public class Document {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "documentImage", nullable = false)
     private String documentImage;
+    @ManyToOne
     private Driver driver;
 
     public Document()

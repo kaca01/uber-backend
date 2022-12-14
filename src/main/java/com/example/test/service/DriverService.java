@@ -244,7 +244,7 @@ public class DriverService implements IDriverService {
 
     private ArrayList<Ride> createRides() throws ParseException{
         ArrayList<Ride> rides = new ArrayList<>();
-        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z");
+        /*Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z");
         Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T22:55:16.868Z");
         Passenger passenger = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
                 "Nikole Pasica 25", "sifra123", false, true, null);
@@ -256,7 +256,7 @@ public class DriverService implements IDriverService {
         Rejection rejection = new Rejection(1L, "", passenger, start);
         Ride r1 = new Ride(1L, start, end, 22.555, 15.748, v, drivers.get(0), passengers, null,
                 RideStatus.ACTIVE, rejection, true, true, null);
-        rides.add(r1);
+        rides.add(r1);*/
 
         return rides;
     }

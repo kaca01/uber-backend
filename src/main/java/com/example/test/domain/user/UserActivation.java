@@ -1,11 +1,17 @@
 package com.example.test.domain.user;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
 public class UserActivation {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne
     private User user;
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+    @Column(name = "life", nullable = false)
     private int life;
 
     public UserActivation()

@@ -4,12 +4,22 @@ import com.example.test.domain.user.Passenger;
 import com.example.test.dto.communication.ReviewDTO;
 import com.example.test.enumeration.ReviewType;
 
+import javax.persistence.*;
+
+@Entity
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "rating", nullable = false)
     private int rating;
+    @Column(name = "comment")
     private String comment;
+    @ManyToOne
     private Passenger passenger;
+    @Column(name = "type", nullable = false)
     private ReviewType type;
+
 
     public Review() {
 

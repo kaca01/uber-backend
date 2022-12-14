@@ -28,7 +28,7 @@ public class RideService implements IRideService {
     public Ride insert(Ride ride, RideDTO rideDTO) {
 
         setRideData(ride);
-        ArrayList<Passenger> passengers = new ArrayList<>();
+        Set<Passenger> passengers = new HashSet<>();
 
         // metoda treba da pronalazi postojeceg passengera u bazi i stvalja ga u ride, a ne kreira novog
         for (UserDTO u : rideDTO.getPassengers()) {
@@ -118,7 +118,7 @@ public class RideService implements IRideService {
 
     private Ride setRideData(Ride ride)
     {
-        ArrayList<Passenger> passengers = new ArrayList<>();
+        Set<Passenger> passengers = new HashSet<>();
         Passenger p1 = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
         Passenger p2 = new Passenger(2L, "Pera", "Peric", "U3dhZ2dlciByb2Nrcw==", "+381123123", "pera.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
         passengers.add(p1);

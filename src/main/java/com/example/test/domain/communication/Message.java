@@ -5,15 +5,28 @@ import com.example.test.domain.user.User;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.enumeration.MessageType;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne
     private User sender;
+    @OneToOne
     private User receiver;
+    @Column(name = "message", nullable = false)
     private String message;
+
+    @Column(name = "timeOfSending", nullable = false)
     private Date timeOfSending;
+
+    @Column(name = "type", nullable = false)
     private MessageType type;
+
+    @ManyToOne
     private Ride ride;
 
     public Message() {
