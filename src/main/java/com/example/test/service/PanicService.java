@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class PanicService implements IPanicService{
         Vehicle v = new Vehicle();
         ride.setDriver(new Driver((long)123, "Vozac", "Vozacevic", "jkavajnvan",
                 "+381 789456","email", "Neka adresa", "sifra", false,
-                true, 567, new ArrayList<WorkingHour>(), v));
+                true, 567, new HashSet<>(), v));
         ride.setVehicle(v);
         v.getType().setName(VehicleTypeName.STANDARD);  //todo dont hardcode this
         ride.setEstimatedTimeInMinutes(5);

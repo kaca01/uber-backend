@@ -2,15 +2,29 @@ package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
 
+import javax.persistence.*;
+
+@Entity
 public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    //todo RAZMISLITI TREBA LI joinColumn
     private VehicleType type;
+    @Column(name = "model", nullable = false)
     private String model;
+    @Column(name = "licenseNumber", nullable = false)
     private String licenseNumber;
+    @Column(name = "passengerSeats", nullable = false)
     private int passengerSeats;
+    @ManyToOne(fetch = FetchType.EAGER)
     private Location currentLocation;
+    @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;
+    @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
+
 
     public Vehicle() {
         this.type = new VehicleType();

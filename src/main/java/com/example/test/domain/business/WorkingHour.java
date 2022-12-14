@@ -1,11 +1,16 @@
 package com.example.test.domain.business;
 
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class WorkingHour {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "start", nullable = false)
     private Date start;
+    @Column(name = "end", nullable = false)
     private Date end;
 
     public WorkingHour() {

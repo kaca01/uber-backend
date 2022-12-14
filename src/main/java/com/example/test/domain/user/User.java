@@ -1,21 +1,32 @@
 package com.example.test.domain.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 abstract public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name", nullable=false)
     private String name;
+    @Column(name = "surname", nullable=false)
     private String surname;
+    @Column(name = "profilePicture")
     private String profilePicture;
+    @Column(name = "telephoneNumber")
     private String telephoneNumber;
+    @Column(name = "email", nullable = true, unique = true)
     private String email;
+    @Column(name = "address")
     private String address;
+    @Column(name = "password", nullable=false)
     private String password;
+    @Column(name = "blocked", nullable=false)
     private boolean blocked;
+    @Column(name = "active", nullable=false)
     private boolean active;
 
     public User() {

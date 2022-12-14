@@ -4,12 +4,21 @@ import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.user.UserDTO;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+@Entity
 public class Driver extends User {
     // TODO add documents to upload
+
+    @Column(name = "drivingLicense", nullable = false)
     private int drivingLicense;
-    private ArrayList<WorkingHour> workingHours;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkingHour> workingHours = new HashSet<>();
+    @OneToOne
     private Vehicle vehicle;
 
     public Driver() {
@@ -28,7 +37,7 @@ public class Driver extends User {
 
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                   String address, String password, boolean blocked, boolean active,
-                  int drivingLicense, ArrayList<WorkingHour> workingHours, Vehicle vehicle) {
+                  int drivingLicense, Set<WorkingHour> workingHours, Vehicle vehicle) {
         super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
         this.drivingLicense = drivingLicense;
         this.workingHours = workingHours;
@@ -43,11 +52,11 @@ public class Driver extends User {
         this.drivingLicense = drivingLicense;
     }
 
-    public ArrayList<WorkingHour> getWorkingHours() {
+    public Set<WorkingHour> getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(ArrayList<WorkingHour> workingHours) {
+    public void setWorkingHours(Set<WorkingHour> workingHours) {
         this.workingHours = workingHours;
     }
 

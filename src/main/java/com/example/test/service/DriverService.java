@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DriverService implements IDriverService {
@@ -138,7 +136,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public List<WorkingHour> getWorkTimes(Long id) {
+    public Set<WorkingHour> getWorkTimes(Long id) {
         Driver driver = get(id);
         if (driver == null) return null;
         return driver.getWorkingHours();
@@ -187,7 +185,7 @@ public class DriverService implements IDriverService {
         VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
         Location location = new Location(1L, 544, 546, "adresa");
         Vehicle v1 = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
-        ArrayList<WorkingHour> workingHours = createWorkTimes();
+        Set<WorkingHour> workingHours = new HashSet<>();
 
         Driver d1 = new Driver(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
                 "Nikole Pasica 25", "sifra123", false, true, 1245678, workingHours, v1);

@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -173,7 +174,7 @@ public class DriverController {
 
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllWorkingHoursDTO> getWorkTimes(@PathVariable Long id) throws Exception{
-        List<WorkingHour> workingHours = service.getWorkTimes(id);
+        Set<WorkingHour> workingHours = service.getWorkTimes(id);
         // TODO : add 400 status
         if (workingHours == null) {
             return new ResponseEntity<AllWorkingHoursDTO>(HttpStatus.NOT_FOUND);
