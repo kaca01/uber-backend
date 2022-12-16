@@ -7,7 +7,9 @@ import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.enumeration.RideStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,8 +17,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-public @Data class Ride {
+public class Ride {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "startTime", nullable = false)
@@ -47,14 +52,6 @@ public @Data class Ride {
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
     private Set<Route> locations = new HashSet<>();
 
-    public Ride() {
-
-    }
-
-
-    public Ride(Long id) {
-        this.id = id;
-   }
     public Ride(RideDTO rideDTO)
     {
         this.setLocations(rideDTO.getLocations());
@@ -62,4 +59,7 @@ public @Data class Ride {
         this.setPetTransport(rideDTO.isPetTransport());
     }
 
+    public Ride(Long id) {
+        this.id = id;
+    }
 }

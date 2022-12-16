@@ -81,10 +81,10 @@ public class Mockup {
 
     private ArrayList<Vehicle> createVehicle()
     {
-        Vehicle v1 = new Vehicle(1L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v2 = new Vehicle(2L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v3 = new Vehicle(3L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v4 = new Vehicle(4L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
+        Vehicle v1 = new Vehicle(1L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27 ), true, false);
+        Vehicle v2 = new Vehicle(2L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
+        Vehicle v3 = new Vehicle(3L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
+        Vehicle v4 = new Vehicle(4L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
         ArrayList<Vehicle> ps = new ArrayList<>();
         ps.add(v1);
         ps.add(v2);

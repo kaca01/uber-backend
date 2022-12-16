@@ -183,7 +183,7 @@ public class DriverService implements IDriverService {
 
     private ArrayList<Driver> createDrivers() throws ParseException {
         VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
-        Location location = new Location(1L, 544, 546, "adresa");
+        Location location = new Location(1L, "adresa", 544, 546 );
         Vehicle v1 = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
         Set<WorkingHour> workingHours = new HashSet<>();
 
