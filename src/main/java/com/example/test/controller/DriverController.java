@@ -144,7 +144,7 @@ public class DriverController {
             throws Exception {
         Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
                 vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
-                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
+                vehicleDTO.isBabyTransport(), vehicleDTO.isPetTransport());
         Vehicle returnedVehicle = service.insertVehicle(id, vehicle);
         // TODO : add 400 status
         if (returnedVehicle == null) {
@@ -161,7 +161,7 @@ public class DriverController {
             throws Exception {
         Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
                 vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
-                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
+                vehicleDTO.isBabyTransport(), vehicleDTO.isPetTransport());
         Vehicle updatedVehicle = service.updateVehicle(id, vehicle);
         Driver driver = service.get(id);
         vehicleDTO = new VehicleDTO(driver, updatedVehicle);

@@ -4,7 +4,9 @@ import com.example.test.domain.ride.Location;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.vehicle.Vehicle;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
