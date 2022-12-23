@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -21,7 +19,7 @@ public class RideDTO {
     private String startTime;
     private String endTime;
     private double totalCost;
-    private Set<Route> locations = new HashSet<>();
+    private Route route;
     private ArrayList<UserDTO> passengers;
     private String vehicleType;
     private boolean babyTransport;
@@ -38,7 +36,7 @@ public class RideDTO {
         this.startTime = format.format(ride.getStartTime());
         this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
-        this.locations = ride.getLocations();
+        this.route = ride.getRoute();
         this.passengers = convertPassengersToUsersDTO(ride);
         this.vehicleType = ride.getVehicle().getType().getName().toString();
         this.babyTransport = ride.isBabyTransport();
@@ -50,9 +48,9 @@ public class RideDTO {
     }
 
     // request
-    public RideDTO(Set<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
+    public RideDTO(Route route, ArrayList<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
-        this.locations = locations;
+        this.route = route;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
@@ -61,7 +59,7 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, String startTime, String endTime, double totalCost, Set<Route> locations,
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, Route route,
                    ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
                    RejectionDTO rejection) {
@@ -69,7 +67,7 @@ public class RideDTO {
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalCost = totalCost;
-        this.locations = locations;
+        this.route = route;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;

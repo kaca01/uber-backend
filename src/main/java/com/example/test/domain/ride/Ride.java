@@ -49,12 +49,12 @@ public class Ride {
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-    private Set<Route> locations = new HashSet<>();
+    @ManyToOne
+    private Route route;
 
     public Ride(RideDTO rideDTO)
     {
-        this.setLocations(rideDTO.getLocations());
+        this.setRoute(rideDTO.getRoute());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
     }
