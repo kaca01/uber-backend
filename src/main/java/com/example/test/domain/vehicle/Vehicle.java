@@ -1,9 +1,7 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class Vehicle {
     private Long id;
     private VehicleType type;
@@ -13,6 +11,11 @@ public class Vehicle {
     private Location currentLocation;
     private boolean babyTransport;
     private boolean petTransport;
+
+    public Vehicle() {
+        this.type = new VehicleType();
+        this.currentLocation = new Location();
+    }
 
     public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
                    Location currentLocation, boolean babyTransport, boolean petTransport) {

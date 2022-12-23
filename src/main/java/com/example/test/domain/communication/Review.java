@@ -3,19 +3,17 @@ package com.example.test.domain.communication;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.communication.ReviewDTO;
 import com.example.test.enumeration.ReviewType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
 public class Review {
     private Long id;
     private int rating;
     private String comment;
     private Passenger passenger;
     private ReviewType type;
+
+    public Review() {
+
+    }
 
     public Review(Long id, int rating, String comment, Passenger passenger, ReviewType type) {
         this.id = id;
@@ -28,6 +26,46 @@ public class Review {
     public Review(ReviewDTO reviewDTO) {
         this.setRating(reviewDTO.getRating());
         this.setComment(reviewDTO.getComment());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
+    }
+
+    public ReviewType getType() {
+        return type;
+    }
+
+    public void setType(ReviewType type) {
+        this.type = type;
     }
 
     public Long getPassengerId() {
