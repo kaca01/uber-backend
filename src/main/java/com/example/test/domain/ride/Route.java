@@ -1,41 +1,20 @@
 package com.example.test.domain.ride;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class Route {
     private Long id;
     private Location departure;
     private Location destination;
 
-    public Route() {
-
-    }
-
     public Route(Long id, Location departure, Location destination) {
         this.id = id;
         this.departure = departure;
-        this.destination = destination;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Location getDeparture() {
-        return departure;
-    }
-
-    public void setDeparture(Location departure) {
-        this.departure = departure;
-    }
-
-    public Location getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Location destination) {
         this.destination = destination;
     }
 

@@ -4,9 +4,15 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.enumeration.MessageType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Message {
     private Long id;
     private User sender;
@@ -15,10 +21,6 @@ public class Message {
     private Date timeOfSending;
     private MessageType type;
     private Ride ride;
-
-    public Message() {
-
-    }
 
     public Message(Long id, User sender, User receiver, String message, Date timeOfSending, MessageType type, Ride ride) {
         this.id = id;
@@ -35,62 +37,6 @@ public class Message {
         this.setMessage(messageDTO.getMessage());
         this.setType(MessageType.valueOf(messageDTO.getType().toUpperCase()));
         this.ride.setId(messageDTO.getId());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Date getTimeOfSending() {
-        return timeOfSending;
-    }
-
-    public void setTimeOfSending(Date timeOfSending) {
-        this.timeOfSending = timeOfSending;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    public void setType(MessageType type) {
-        this.type = type;
-    }
-
-    public Ride getRide() {
-        return ride;
-    }
-
-    public void setRide(Ride ride) {
-        this.ride = ride;
     }
 
     @Override
