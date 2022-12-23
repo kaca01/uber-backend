@@ -3,6 +3,7 @@ package com.example.test.domain.user;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.user.UserDTO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor
+@Data
+@ToString(callSuper=true)
+@EqualsAndHashCode(callSuper=true)
 @Entity
 public class Driver extends User {
     // TODO add documents to upload
@@ -20,10 +25,6 @@ public class Driver extends User {
     private Set<WorkingHour> workingHours = new HashSet<>();
     @OneToOne
     private Vehicle vehicle;
-
-    public Driver() {
-
-    }
 
     public Driver(UserDTO driverDTO) {
         this(driverDTO.getId(), driverDTO.getName(), driverDTO.getSurname(), driverDTO.getProfilePicture(),
@@ -42,38 +43,5 @@ public class Driver extends User {
         this.drivingLicense = drivingLicense;
         this.workingHours = workingHours;
         this.vehicle = vehicle;
-    }
-
-    public int getDrivingLicense() {
-        return drivingLicense;
-    }
-
-    public void setDrivingLicense(int drivingLicense) {
-        this.drivingLicense = drivingLicense;
-    }
-
-    public Set<WorkingHour> getWorkingHours() {
-        return workingHours;
-    }
-
-    public void setWorkingHours(Set<WorkingHour> workingHours) {
-        this.workingHours = workingHours;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    @Override
-    public String toString() {
-        return "Driver{" +
-                "drivingLicense=" + drivingLicense +
-                ", workingHours=" + workingHours +
-                ", vehicle=" + vehicle +
-                '}';
     }
 }
