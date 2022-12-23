@@ -1,15 +1,16 @@
 package com.example.test.dto.communication;
 
 import com.example.test.domain.communication.Rejection;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Data
 public class RejectionDTO {
 
     private String reason;
     private String timeOfRejection;
 
-    public RejectionDTO() {
-
-    }
 
     public RejectionDTO(Rejection rejection) {
         this.reason = rejection.getReason();
@@ -25,19 +26,4 @@ public class RejectionDTO {
         this.timeOfRejection = timeOfRejection;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public String getTimeOfRejection() {
-        return timeOfRejection;
-    }
-
-    public void setTimeOfRejection(String timeOfRejection) {
-        this.timeOfRejection = timeOfRejection;
-    }
 }

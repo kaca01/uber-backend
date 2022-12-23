@@ -5,6 +5,8 @@ import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.communication.RejectionDTO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,7 +14,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@NoArgsConstructor
+@Data
 public class RideDTO {
     private Long id;
     private String startTime;
@@ -28,10 +31,6 @@ public class RideDTO {
     private UserDTO driver;
     private RejectionDTO rejection;
 
-
-    public RideDTO() {
-
-    }
 
     public RideDTO(Ride ride) {
         this.id = ride.getId();
@@ -87,109 +86,5 @@ public class RideDTO {
             users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
         }
         return users;
-    }
-
-    public Set<Route> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(Set<Route> locations) {
-        this.locations = locations;
-    }
-
-    public ArrayList<UserDTO> getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(ArrayList<UserDTO> passengers) {
-        this.passengers = passengers;
-    }
-
-    public String getVehicleType() {
-        return vehicleType;
-    }
-
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
-    public boolean isBabyTransport() {
-        return babyTransport;
-    }
-
-    public void setBabyTransport(boolean babyTransport) {
-        this.babyTransport = babyTransport;
-    }
-
-    public boolean isPetTransport() {
-        return petTransport;
-    }
-
-    public void setPetTransport(boolean petTransport) {
-        this.petTransport = petTransport;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public double getEstimatedTimeInMinutes() {
-        return estimatedTimeInMinutes;
-    }
-
-    public void setEstimatedTimeInMinutes(double estimatedTimeInMinutes) {
-        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public UserDTO getDriver() {
-        return driver;
-    }
-
-    public void setDriver(UserDTO driver) {
-        this.driver = driver;
-    }
-
-    public RejectionDTO getRejection() {
-        return rejection;
-    }
-
-    public void setRejection(RejectionDTO rejection) {
-        this.rejection = rejection;
     }
 }

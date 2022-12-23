@@ -42,14 +42,10 @@ public class Vehicle {
         return type;
     }
 
-
     public Location getCurrentLocation()
     {
         if (this.currentLocation == null) this.currentLocation = new Location();
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
 }
