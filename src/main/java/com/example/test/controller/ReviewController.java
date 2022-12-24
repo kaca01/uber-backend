@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/review")
@@ -91,10 +92,10 @@ public class ReviewController {
     public ResponseEntity<List<RideReviewDTO>> getReviewByRide(@PathVariable int rideId) {
 
         // list sort by passenger id
-        List<Review> reviews = service.getReviewByRide((long) rideId);
+        Set<Review> reviews = service.getReviewByRide((long) rideId);
         List<RideReviewDTO> rideReviewDTO = new ArrayList<>();
 
-        for (int i=0; i< reviews.size(); i++) {
+        /*for (int i=0; i< reviews.size(); i++) {
             if((i+1)< reviews.size() && Objects.equals(reviews.get(i).getPassengerId(), reviews.get(i + 1).getPassengerId())) {
                 if(reviews.get(i).getType() == ReviewType.DRIVER)
                     rideReviewDTO.add(new RideReviewDTO(new ReviewDTO(reviews.get(i+1)), new ReviewDTO(reviews.get(i))));
@@ -107,7 +108,7 @@ public class ReviewController {
                 else
                     rideReviewDTO.add(new RideReviewDTO(new ReviewDTO(reviews.get(i)), null));
             }
-        }
+        }*/
         return new ResponseEntity<>(rideReviewDTO, HttpStatus.OK);
     }
 }

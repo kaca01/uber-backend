@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -142,7 +143,7 @@ public class DriverController {
             throws Exception {
         Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
                 vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
-                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
+                vehicleDTO.isBabyTransport(), vehicleDTO.isPetTransport());
         Vehicle returnedVehicle = service.insertVehicle(id, vehicle);
         // TODO : add 400 status
         if (returnedVehicle == null) {
@@ -159,7 +160,7 @@ public class DriverController {
             throws Exception {
         Vehicle vehicle = new Vehicle(vehicleDTO.getId(), new VehicleType(1L, VehicleTypeName.STANDARD, 50), vehicleDTO.getModel(),
                 vehicleDTO.getLicenseNumber(), vehicleDTO.getPassengerSeats(), vehicleDTO.getCurrentLocation(),
-                vehicleDTO.getBabyTransport(), vehicleDTO.getPetTransport());
+                vehicleDTO.isBabyTransport(), vehicleDTO.isPetTransport());
         Vehicle updatedVehicle = service.updateVehicle(id, vehicle);
         Driver driver = service.get(id);
         vehicleDTO = new VehicleDTO(driver, updatedVehicle);
@@ -172,7 +173,7 @@ public class DriverController {
 
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<WorkingHourDTO>> getWorkTimes(@PathVariable Long id) throws Exception{
-        List<WorkingHour> workingHours = service.getWorkTimes(id);
+        Set<WorkingHour> workingHours = service.getWorkTimes(id);
         // TODO : add 400 status
         if (workingHours == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -81,10 +81,10 @@ public class Mockup {
 
     private ArrayList<Vehicle> createVehicle()
     {
-        Vehicle v1 = new Vehicle(1L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v2 = new Vehicle(2L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v3 = new Vehicle(3L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
-        Vehicle v4 = new Vehicle(4L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, 24.24, 27.27, "Petra Perica 33"), true, false);
+        Vehicle v1 = new Vehicle(1L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27 ), true, false);
+        Vehicle v2 = new Vehicle(2L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
+        Vehicle v3 = new Vehicle(3L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
+        Vehicle v4 = new Vehicle(4L, new VehicleType(1L, VehicleTypeName.STANDARD, 42), "opel 21", "U3dhZ2dlciByb2Nrcw==", 2, new Location(1L, "Petra Perica 33", 24.24, 27.27), true, false);
         ArrayList<Vehicle> ps = new ArrayList<>();
         ps.add(v1);
         ps.add(v2);
@@ -135,27 +135,27 @@ public class Mockup {
 
     private ArrayList<Ride> createRide()
     {
-        Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), true, false, null);
+        /*Ride v1 = new Ride(1L, new Date(), new Date(), 98.8, 25.32, vehicles.get(1), drivers.get(0), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), true, false, null);
         Ride v2 = new Ride(2L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(1), passengers, reviews, RideStatus.ACCEPTED, rejections.get(1), false, false, null);
         Ride v3 = new Ride(123L, new Date(), new Date(), 328.8, 2234.76, vehicles.get(2), drivers.get(2), passengers, reviews, RideStatus.ACCEPTED, rejections.get(0), false, false, null);
-        ArrayList<Ride> ps = new ArrayList<>();
-        ps.add(v1);
+        */ArrayList<Ride> ps = new ArrayList<>();
+        /*ps.add(v1);
         ps.add(v2);
-        ps.add(v3);
+        ps.add(v3);*/
         return ps;
     }
 
     private ArrayList<Message> createMessages()
     {
-        Message m1 = new Message(1L, users.get(1), users.get(2), "sve najlepse", new Date(), MessageType.RIDE, rides.get(0));
+        /*Message m1 = new Message(1L, users.get(1), users.get(2), "sve najlepse", new Date(), MessageType.RIDE, rides.get(0));
         Message m2 = new Message(2L, users.get(2), users.get(1), "lepa voznja", new Date(), MessageType.SUPPORT, rides.get(0));
         Message m3 = new Message(3L, users.get(3), users.get(0), "odlican vozac", new Date(), MessageType.PANIC, rides.get(1));
-        Message m4 = new Message(4L, users.get(0), users.get(1), "vozilo je bilo prljavo", new Date(), MessageType.RIDE, rides.get(1));
+        Message m4 = new Message(4L, users.get(0), users.get(1), "vozilo je bilo prljavo", new Date(), MessageType.RIDE, rides.get(1));*/
         ArrayList<Message> messages = new ArrayList<>();
-        messages.add(m1);
+        /*messages.add(m1);
         messages.add(m2);
         messages.add(m3);
-        messages.add(m4);
+        messages.add(m4);*/
         return messages;
     }
 }

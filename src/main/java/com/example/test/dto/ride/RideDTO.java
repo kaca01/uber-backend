@@ -5,18 +5,21 @@ import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.communication.RejectionDTO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-
+@NoArgsConstructor
+@Data
 public class RideDTO {
     private Long id;
     private String startTime;
     private String endTime;
     private double totalCost;
-    private ArrayList<Route> locations;
+    private Route route;
     private ArrayList<UserDTO> passengers;
     private String vehicleType;
     private boolean babyTransport;
@@ -27,17 +30,13 @@ public class RideDTO {
     private RejectionDTO rejection;
 
 
-    public RideDTO() {
-
-    }
-
     public RideDTO(Ride ride) {
         this.id = ride.getId();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.startTime = format.format(ride.getStartTime());
         this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
-        this.locations = ride.getLocations();
+        this.route = ride.getRoute();
         this.passengers = convertPassengersToUsersDTO(ride);
         this.vehicleType = ride.getVehicle().getType().getName().toString();
         this.babyTransport = ride.isBabyTransport();
@@ -49,9 +48,9 @@ public class RideDTO {
     }
 
     // request
-    public RideDTO(ArrayList<Route> locations, ArrayList<UserDTO> passengers, String vehicleType,
+    public RideDTO(Route route, ArrayList<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
-        this.locations = locations;
+        this.route = route;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
@@ -60,7 +59,7 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, String startTime, String endTime, double totalCost, ArrayList<Route> locations,
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, Route route,
                    ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
                    RejectionDTO rejection) {
@@ -68,7 +67,7 @@ public class RideDTO {
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalCost = totalCost;
-        this.locations = locations;
+        this.route = route;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
@@ -85,109 +84,5 @@ public class RideDTO {
             users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
         }
         return users;
-    }
-
-    public ArrayList<Route> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(ArrayList<Route> locations) {
-        this.locations = locations;
-    }
-
-    public ArrayList<UserDTO> getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(ArrayList<UserDTO> passengers) {
-        this.passengers = passengers;
-    }
-
-    public String getVehicleType() {
-        return vehicleType;
-    }
-
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
-    public boolean isBabyTransport() {
-        return babyTransport;
-    }
-
-    public void setBabyTransport(boolean babyTransport) {
-        this.babyTransport = babyTransport;
-    }
-
-    public boolean isPetTransport() {
-        return petTransport;
-    }
-
-    public void setPetTransport(boolean petTransport) {
-        this.petTransport = petTransport;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public double getEstimatedTimeInMinutes() {
-        return estimatedTimeInMinutes;
-    }
-
-    public void setEstimatedTimeInMinutes(double estimatedTimeInMinutes) {
-        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public UserDTO getDriver() {
-        return driver;
-    }
-
-    public void setDriver(UserDTO driver) {
-        this.driver = driver;
-    }
-
-    public RejectionDTO getRejection() {
-        return rejection;
-    }
-
-    public void setRejection(RejectionDTO rejection) {
-        this.rejection = rejection;
     }
 }

@@ -13,9 +13,7 @@ import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.service.interfaces.IPanicService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PanicService implements IPanicService{
@@ -39,7 +37,7 @@ public class PanicService implements IPanicService{
 
     private Ride setRideData(Ride ride)
     {
-        ArrayList<Passenger> passengers = new ArrayList<>();
+        Set<Passenger> passengers = new HashSet<>();
         Passenger p1 = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
         Passenger p2 = new Passenger(2L, "Pera", "Peric", "U3dhZ2dlciByb2Nrcw==", "+381123123", "pera.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
         passengers.add(p1);
@@ -51,7 +49,7 @@ public class PanicService implements IPanicService{
         Vehicle v = new Vehicle();
         ride.setDriver(new Driver((long)123, "Vozac", "Vozacevic", "jkavajnvan",
                 "+381 789456","email", "Neka adresa", "sifra", false,
-                true, 567, new ArrayList<WorkingHour>(), v));
+                true, 567, new HashSet<>(), v));
         ride.setVehicle(v);
         v.getType().setName(VehicleTypeName.STANDARD);  //todo dont hardcode this
         ride.setEstimatedTimeInMinutes(5);

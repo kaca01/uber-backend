@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DriverService implements IDriverService {
@@ -138,7 +136,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public List<WorkingHour> getWorkTimes(Long id) {
+    public Set<WorkingHour> getWorkTimes(Long id) {
         Driver driver = get(id);
         if (driver == null) return null;
         return driver.getWorkingHours();
@@ -185,9 +183,9 @@ public class DriverService implements IDriverService {
 
     private ArrayList<Driver> createDrivers() throws ParseException {
         VehicleType type = new VehicleType(1L, VehicleTypeName.STANDARD, 50);
-        Location location = new Location(1L, 544, 546, "adresa");
+        Location location = new Location(1L, "adresa", 544, 546 );
         Vehicle v1 = new Vehicle(1L, type, "model", "NS-123-45", 4, location, true, false);
-        ArrayList<WorkingHour> workingHours = createWorkTimes();
+        Set<WorkingHour> workingHours = new HashSet<>();
 
         Driver d1 = new Driver(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
                 "Nikole Pasica 25", "sifra123", false, true, 1245678, workingHours, v1);
@@ -246,7 +244,7 @@ public class DriverService implements IDriverService {
 
     private ArrayList<Ride> createRides() throws ParseException{
         ArrayList<Ride> rides = new ArrayList<>();
-        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z");
+        /*Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T20:55:16.868Z");
         Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse("2021-12-08T22:55:16.868Z");
         Passenger passenger = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com",
                 "Nikole Pasica 25", "sifra123", false, true, null);
@@ -258,7 +256,7 @@ public class DriverService implements IDriverService {
         Rejection rejection = new Rejection(1L, "", passenger, start);
         Ride r1 = new Ride(1L, start, end, 22.555, 15.748, v, drivers.get(0), passengers, null,
                 RideStatus.ACTIVE, rejection, true, true, null);
-        rides.add(r1);
+        rides.add(r1);*/
 
         return rides;
     }

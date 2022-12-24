@@ -7,6 +7,7 @@ import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IDriverService {
 
@@ -31,7 +32,7 @@ public interface IDriverService {
 
     public Vehicle updateVehicle(Long id, Vehicle vehicle);
 
-    public List<WorkingHour> getWorkTimes(Long id);
+    public Set<WorkingHour> getWorkTimes(Long id);
 
     public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
 

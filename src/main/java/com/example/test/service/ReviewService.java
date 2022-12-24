@@ -63,14 +63,14 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public List<Review> getReviewByRide(Long rideId) {
-        List<Review> rideReviews = new ArrayList<>();
+    public Set<Review> getReviewByRide(Long rideId) {
+        Set<Review> rideReviews = new HashSet<>();
         for(Ride r : rides) {
             if(Objects.equals(r.getId(), rideId)) {
                 rideReviews = r.getReviews();
             }
         }
-        rideReviews.sort(Comparator.comparing(Review::getPassengerId));
+        //rideReviews.sort(Comparator.comparing(Review::getPassengerId));
         return rideReviews;
     }
 }
