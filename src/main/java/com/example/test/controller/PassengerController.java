@@ -2,9 +2,8 @@ package com.example.test.controller;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
-import com.example.test.dto.ride.AllRidesDTO;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.AllUsersDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +36,19 @@ public class PassengerController {
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllUsersDTO> getPassengers()
+    public ResponseEntity<AllDTO<UserDTO>> getPassengers()
     {
         List<Passenger> passengers = service.getAll(0, 0);
 
         // convert passengers to DTOs
-        ArrayList<UserDTO> passengersDTO = new ArrayList<>();
+        List<UserDTO> passengersDTO = new ArrayList<>();
         for (Passenger p : passengers) {
             passengersDTO.add(new UserDTO(p));
         }
 
-        return new ResponseEntity<AllUsersDTO>(new AllUsersDTO(passengersDTO.size(), passengersDTO), HttpStatus.OK);
+        AllDTO<UserDTO> allUsers = new AllDTO<>(passengersDTO.size(), passengersDTO);
+
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     //activate passenger account
@@ -93,7 +94,7 @@ public class PassengerController {
     //get passenger rides
     //todo PAGINATED RIDES
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllRidesDTO> getRidesByPassenger(@PathVariable int id)
+    public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {
         List<Ride> rides = service.getRidesByPassenger((long)id);
 
@@ -107,8 +108,10 @@ public class PassengerController {
         for (Ride r : rides) {
             ridesDTO.add(new RideDTO(r));
         }
-
         //TODO error 400
-        return new ResponseEntity<AllRidesDTO>(new AllRidesDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
+
+        AllDTO<RideDTO> allRides = new AllDTO<>(ridesDTO.size(), ridesDTO);
+
+        return new ResponseEntity<>(allRides, HttpStatus.OK);
     }
 }

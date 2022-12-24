@@ -4,13 +4,10 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
-import com.example.test.dto.communication.AllMessagesDTO;
-import com.example.test.dto.communication.AllNotesDTO;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
-import com.example.test.dto.ride.AllRidesDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.AllUsersDTO;
 import com.example.test.dto.user.LoginDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IUserService;
@@ -32,12 +29,12 @@ public class UserController {
 
     // Rides of the user
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllRidesDTO> getRides(@PathVariable int id,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size,
-                                                @RequestParam String sort,
-                                                @RequestParam String from,
-                                                @RequestParam String to) {
+    public ResponseEntity<AllDTO> getRides(@PathVariable int id,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam String sort,
+                                           @RequestParam String from,
+                                           @RequestParam String to) {
 
         List<Ride> rides = service.getRides((long) id, page, size, sort, from, to);
 
@@ -50,12 +47,12 @@ public class UserController {
             ridesDTO.add(new RideDTO(ride));
         }
         // todo za 400
-        return new ResponseEntity<>(new AllRidesDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
     }
 
     // Getting multiple of them for the reason of showing a list
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllUsersDTO> get(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<AllDTO> get(@RequestParam(defaultValue = "1") int page,
                                            @RequestParam(defaultValue = "10") int size) {
 
         List<User> users = service.get(page, size);
@@ -64,7 +61,7 @@ public class UserController {
         for(User user : users) {
             usersDTO.add(new UserDTO(user));
         }
-        return new ResponseEntity<>(new AllUsersDTO(usersDTO.size(), usersDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO(usersDTO.size(), usersDTO), HttpStatus.OK);
     }
 
     // login
@@ -81,7 +78,7 @@ public class UserController {
 
     // Returns a list of user messages
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllMessagesDTO> getMessages(@PathVariable int id) {
+    public ResponseEntity<AllDTO> getMessages(@PathVariable int id) {
 
         List<Message> messages = service.getMessages((long) id);
 
@@ -94,7 +91,7 @@ public class UserController {
             messagesDTO.add(new MessageDTO(message));
         }
         // todo za 400
-        return new ResponseEntity<>(new AllMessagesDTO(messagesDTO.size(), messagesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO(messagesDTO.size(), messagesDTO), HttpStatus.OK);
     }
 
     // Send a message to the user
@@ -151,7 +148,7 @@ public class UserController {
 
     // Getting notes for the user
     @GetMapping(value ="/user/{id}/note", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllNotesDTO> getNotes(@PathVariable int id, @RequestParam int page,
+    public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @RequestParam int page,
                                                 @RequestParam int size) {
 
         List<Note> notes = service.getNotes((long) id, page, size);
@@ -165,6 +162,8 @@ public class UserController {
             notesDTO.add(new NoteDTO(note));
         }
         // todo za 400
-        return new ResponseEntity<>(new AllNotesDTO(notesDTO.size(), notesDTO), HttpStatus.OK);
+        AllDTO<NoteDTO> allNotes = new AllDTO<>(notesDTO.size(), notesDTO);
+
+        return new ResponseEntity<>(allNotes, HttpStatus.OK);
     }
 }
