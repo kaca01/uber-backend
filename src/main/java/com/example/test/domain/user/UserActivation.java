@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class UserActivation {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private Date date;
     @Column(name = "life", nullable = false)
     private int life;
 }
