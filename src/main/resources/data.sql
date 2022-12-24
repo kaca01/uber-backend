@@ -78,22 +78,22 @@ insert into user_activation (date, life, user_id) values ('2022-12-10T17:44:24.8
 insert into user_activation (date, life, user_id) values ('2022-08-05T19:32:24.893Z', 15, 8);
 insert into user_activation (date, life, user_id) values ('2022-10-13T18:23:24.893Z', 15, 9);
 
-insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24 22:56', 5);
+insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 5);
 insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some inappropriate comments',
-                                                                  '2022-11-22 18:43', 1);
+                                                                  '2022-11-22T18:43:24.893Z', 1);
 
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
-values ('2022-12-24 22:42', '2022-12-24 22:55', 550.45, 12.34, 4, false, false, 5, 1, 3, 1);
+values ('2022-12-24T22:42:24.893Z', '2022-12-24T22:55:24.893Z', 550.45, 12.34, 4, false, false, 5, 1, 3, 1);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
-values ('2022-11-22 18:32', '2022-11-22 18:45', 400.53, 10.89, 4, false, false, 6, 2, 2, 2);
+values ('2022-11-22T18:32:24.893Z', '2022-11-22T18:45:24.893Z', 400.53, 10.89, 4, false, false, 6, 2, 2, 2);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
-values ('2022-12-15 20:30', '2022-12-15 22:00', 10000, 90, 4, false, true, 7, null, 1, 3);
+values ('2022-12-15T20:30:24.893Z', '2022-12-15T22:00:24.893Z', 10000, 90, 4, false, true, 7, null, 1, 3);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
-values ('2022-12-22 13:42', null, 450, 8.12, 3, false, false, 8, null, 4, 4);
+values ('2022-12-22T13:42:24.893Z', null, 450, 8.12, 3, false, false, 8, null, 4, 4);
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 1);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -117,7 +117,7 @@ insert into message(message, time_of_sending, type, receiver_id, ride_id, sender
                                                                                              '2022-12-24T20:54:24.893Z',
                                                                                              1, 1, 1, 5);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Please help me',
-                                                                                             '2022-11-22 18:15',
+                                                                                             '2022-11-22T18:15:24.893Z',
                                                                                              2, null, 1, 1);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Hurry up, I am waiting',
                                                                                              '2022-12-24T20:54:24.893Z',
