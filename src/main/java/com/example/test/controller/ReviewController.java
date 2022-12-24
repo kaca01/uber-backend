@@ -1,7 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.domain.communication.Review;
-import com.example.test.dto.communication.AllReviewsDTO;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.ReviewDTO;
 import com.example.test.dto.ride.RideReviewDTO;
 import com.example.test.enumeration.ReviewType;
@@ -43,7 +43,7 @@ public class ReviewController {
 
     // Get the reviews for the specific vehicle
     @GetMapping(value ="/vehicle/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllReviewsDTO> getReviewByVehicle(@PathVariable int id) {
+    public ResponseEntity<AllDTO<ReviewDTO>> getReviewByVehicle(@PathVariable int id) {
 
         List<Review> reviews = service.getReviewByVehicle((long) id);
 
@@ -51,7 +51,9 @@ public class ReviewController {
         for(Review review : reviews) {
             reviewsDTO.add(new ReviewDTO(review));
         }
-        return new ResponseEntity<>(new AllReviewsDTO(reviewsDTO.size(), reviewsDTO), HttpStatus.OK);
+        AllDTO<ReviewDTO> allReviews = new AllDTO<>(reviewsDTO.size(), reviewsDTO);
+
+        return new ResponseEntity<>(allReviews, HttpStatus.OK);
     }
 
     // Creating a review about the driver
@@ -72,7 +74,7 @@ public class ReviewController {
 
     // Get the reviews for the specific driver
     @GetMapping(value ="/driver/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllReviewsDTO> getReviewByDriver(@PathVariable int id) {
+    public ResponseEntity<AllDTO<ReviewDTO>> getReviewByDriver(@PathVariable int id) {
 
         List<Review> reviews = service.getReviewByDriver((long) id);
 
@@ -80,7 +82,9 @@ public class ReviewController {
         for(Review review : reviews) {
             reviewsDTO.add(new ReviewDTO(review));
         }
-        return new ResponseEntity<>(new AllReviewsDTO(reviewsDTO.size(), reviewsDTO), HttpStatus.OK);
+        AllDTO<ReviewDTO> allReviews = new AllDTO<>(reviewsDTO.size(), reviewsDTO);
+
+        return new ResponseEntity<>(allReviews, HttpStatus.OK);
     }
 
     // Overview of both reviews for the specific ride (driver and vehicle)
