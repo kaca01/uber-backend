@@ -173,7 +173,7 @@ public class DriverController {
 
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<WorkingHourDTO>> getWorkTimes(@PathVariable Long id) throws Exception{
-        List<WorkingHour> workingHours = service.getWorkTimes(id);
+        Set<WorkingHour> workingHours = service.getWorkTimes(id);
         // TODO : add 400 status
         if (workingHours == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
