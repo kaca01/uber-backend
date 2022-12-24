@@ -18,7 +18,7 @@ public class Document {
     private String name;
     @Column(name = "documentImage", nullable = false)
     private String documentImage;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
 
     public Document(String name, String documentImage, Driver driver) {

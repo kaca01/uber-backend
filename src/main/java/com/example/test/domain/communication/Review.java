@@ -21,7 +21,7 @@ public class Review {
     private int rating;
     @Column(name = "comment")
     private String comment;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Passenger passenger;
     @Column(name = "type", nullable = false)
     private ReviewType type;

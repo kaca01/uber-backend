@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class UserActivation {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @Column(name = "date", nullable = false)
     private LocalDate date;

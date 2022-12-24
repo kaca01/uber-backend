@@ -17,7 +17,7 @@ public class Rejection {
     private Long id;
     @Column(name = "reason", nullable = false)
     private String reason;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     @Column(name = "timeOfRejection", nullable = false)
     private Date timeOfRejection;

@@ -23,7 +23,7 @@ public class Driver extends User {
     private int drivingLicense;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkingHour> workingHours = new HashSet<>();
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
     public Driver(UserDTO driverDTO) {

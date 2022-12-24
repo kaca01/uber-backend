@@ -19,20 +19,17 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private User sender;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private User receiver;
     @Column(name = "message", nullable = false)
     private String message;
-
     @Column(name = "timeOfSending", nullable = false)
     private Date timeOfSending;
-
     @Column(name = "type", nullable = false)
     private MessageType type;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Ride ride;
 
     public Message(MessageDTO messageDTO) {

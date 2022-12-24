@@ -22,7 +22,7 @@ public class Note {
     private Date date;
     @Column(name = "message", nullable = false)
     private String message;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public Note(Long id, Date date, String message) {

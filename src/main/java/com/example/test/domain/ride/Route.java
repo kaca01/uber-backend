@@ -13,8 +13,8 @@ import javax.persistence.*;
 public class Route {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Location departure;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Location destination;
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Passenger extends User {
-    @OneToMany()
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Location> favoriteLocations = new HashSet<>();
 
     public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,

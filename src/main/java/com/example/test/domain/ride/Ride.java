@@ -32,24 +32,24 @@ public class Ride {
     private double totalCost;
     @Column(name = "estimatedTimeInMinutes")
     private double estimatedTimeInMinutes;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Passenger> passengers = new HashSet<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Review> reviews = new HashSet<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Rejection rejection;
     @Column(name = "babyTransport", nullable = false)
     //private Message panic;          bidirectional relation!!!
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Route route;
 
     public Ride(RideDTO rideDTO)
