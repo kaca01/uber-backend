@@ -22,7 +22,8 @@ import java.util.Set;
 @Data
 @Entity
 public class Ride {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "startTime", nullable = false)
     private Date startTime;
@@ -38,8 +39,6 @@ public class Ride {
     private Driver driver;
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Passenger> passengers = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Review> reviews = new HashSet<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
     @OneToOne(fetch = FetchType.LAZY)
@@ -51,6 +50,9 @@ public class Ride {
     private boolean petTransport;
     @ManyToOne(fetch = FetchType.EAGER)
     private Route route;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ride_id")
+    private Set<Review> reviews = new HashSet<>();
 
     public Ride(RideDTO rideDTO)
     {

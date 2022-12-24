@@ -15,7 +15,6 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    //todo RAZMISLITI TREBA LI joinColumn
     private VehicleType type;
     @Column(name = "model", nullable = false)
     private String model;

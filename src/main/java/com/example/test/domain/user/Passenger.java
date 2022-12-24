@@ -4,10 +4,7 @@ import com.example.test.domain.ride.Location;
 import com.example.test.dto.user.UserDTO;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +15,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Passenger extends User {
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "passenger_id")
     private Set<Location> favoriteLocations = new HashSet<>();
 
     public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,

@@ -24,7 +24,7 @@ abstract public class User {
     private String profilePicture;
     @Column(name = "telephoneNumber")
     private String telephoneNumber;
-    @Column(name = "email", nullable = true, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(name = "address")
     private String address;

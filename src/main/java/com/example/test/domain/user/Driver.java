@@ -17,11 +17,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Driver extends User {
-    // TODO add documents to upload
 
     @Column(name = "drivingLicense", nullable = false)
     private int drivingLicense;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "driver_id")
     private Set<WorkingHour> workingHours = new HashSet<>();
     @OneToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;

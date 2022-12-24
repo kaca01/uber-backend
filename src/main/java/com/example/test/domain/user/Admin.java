@@ -8,7 +8,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-//@PrimaryKeyJoinColumn(name = "id")
 public class Admin extends User {
 
 }
