@@ -58,25 +58,20 @@ values ('879-T-446', 'Hummer H2 Limuzina', 2, 4, false, true, 9);
 insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
 values ('123-T-321', 'Toyota Hiace Van', 3, 2, false, true, 6);
 
-insert into driver (id, driving_license, vehicle_id) values (5, 1, 1);
-insert into driver (id, driving_license, vehicle_id) values (6, 2, 2);
-insert into driver (id, driving_license, vehicle_id) values (7, 3, 3);
-insert into driver (id, driving_license, vehicle_id) values (8, 4, 4);
+insert into driver (id, driving_license, vehicle_id) values (5, 00198456, 1);
+insert into driver (id, driving_license, vehicle_id) values (6, 00223789, 2);
+insert into driver (id, driving_license, vehicle_id) values (7, 00346523, 3);
+insert into driver (id, driving_license, vehicle_id) values (8, 00478956, 4);
 
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document1', 5);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document2', 6);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document3', 7);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document4', 8);
 
-insert into user_activation (date, life, user_id) values ('2022-01-01T12:33:24.893Z', 15, 1);
-insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.893Z', 15, 2);
-insert into user_activation (date, life, user_id) values ('2022-12-11T21:57:24.893Z', 15, 3);
-insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 15, 4);
-insert into user_activation (date, life, user_id) values ('2022-05-22T20:33:24.893Z', 15, 5);
-insert into user_activation (date, life, user_id) values ('2022-10-21T13:56:24.893Z', 15, 6);
-insert into user_activation (date, life, user_id) values ('2022-12-10T17:44:24.893Z', 15, 7);
-insert into user_activation (date, life, user_id) values ('2022-08-05T19:32:24.893Z', 15, 8);
-insert into user_activation (date, life, user_id) values ('2022-10-13T18:23:24.893Z', 15, 9);
+insert into user_activation (date, life, user_id) values ('2022-01-01T12:33:24.893Z', 180, 1);
+insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.893Z', 180, 2);
+insert into user_activation (date, life, user_id) values ('2022-12-11T21:57:24.893Z', 180, 3);
+insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 4);
 
 insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 5);
 insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some inappropriate comments',
@@ -94,6 +89,12 @@ values ('2022-12-15T20:30:24.893Z', '2022-12-15T22:00:24.893Z', 10000, 90, 4, fa
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
 values ('2022-12-22T13:42:24.893Z', null, 450, 8.12, 3, false, false, 8, null, 4, 4);
+insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
+                 driver_id, rejection_id, route_id, vehicle_id)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 2, false, false, 8, 1, 4, 2);
+insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
+                 driver_id, rejection_id, route_id, vehicle_id)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 2, false, false, 6, 2, 1, 1);
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 1);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -114,29 +115,21 @@ insert into working_hour(start, end, driver_id) values ('2022-10-10T16:22:22.156
 insert into working_hour(start, end, driver_id) values ('2022-12-22T07:07:45.456Z', '2022-12-22T18:56:22.222Z', 8);
 
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Hi, I am on  location',
-                                                                                             '2022-12-24T20:54:24.893Z',
-                                                                                             1, 1, 1, 5);
+'2022-12-24T20:54:24.893Z', 1, 1, 1, 5);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Please help me',
-                                                                                             '2022-11-22T18:15:24.893Z',
-                                                                                             2, null, 1, 1);
+'2022-11-22T18:15:24.893Z', 2, null, 1, 1);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Hurry up, I am waiting',
-                                                                                             '2022-12-24T20:54:24.893Z',
-                                                                                             1, 1, 2, 5);
+'2022-12-24T20:54:24.893Z', 1, 1, 2, 5);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Accept my unconditional love',
-                                                                                             '2022-12-24T22:17:24.893Z',
-                                                                                             1, 2, 2, 6);
+'2022-12-24T22:17:24.893Z', 1, 2, 2, 6);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z',
-                                                                                             0, 1, 1, null);
+ '2022-12-24T22:17:24.893Z', 0, 1, 1, null);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z',
-                                                                                             0, 1, 2, null);
+ '2022-12-24T22:17:24.893Z', 0, 1, 2, null);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-15T20:17:24.893Z',
-                                                                                             0, 3, 3, null);
+'2022-12-15T20:17:24.893Z', 0, 3, 3, null);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z',
-                                                                                             0, 4, 4, null);
+ '2022-12-24T22:17:24.893Z', 0, 4, 4, null);
 
 insert into note(date, message, user_id) values ('2022-12-24T22:17:24.893Z', 'He is always late for his rides', 5);
 insert into note(date, message, user_id) values ('2022-12-20T04:58:57.893Z', 'Sent inappropriate message to passenger', 6);
