@@ -34,7 +34,7 @@ public class RideDTO {
         this.id = ride.getId();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.startTime = format.format(ride.getStartTime());
-        this.endTime = format.format(ride.getEndTime());
+        if(ride.getEndTime() != null) this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
         this.route = ride.getRoute();
         this.passengers = convertPassengersToUsersDTO(ride);
@@ -43,8 +43,8 @@ public class RideDTO {
         this.petTransport = ride.isPetTransport();
         this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
         this.status = ride.getStatus().toString();
-        this.driver = new UserDTO(ride.getDriver());
-        this.rejection = new RejectionDTO(ride.getRejection());
+        if(ride.getDriver() != null) this.driver = new UserDTO(ride.getDriver());
+        if (ride.getRejection() != null) this.rejection = new RejectionDTO(ride.getRejection());
     }
 
     // request

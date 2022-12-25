@@ -1,11 +1,11 @@
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '123', false, false);
+    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '123', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '000', false, false);
+    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '000', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '111', false, false);
+    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '111', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '222', false, false);
+    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '222', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
     ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '333', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
@@ -73,9 +73,9 @@ insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.8
 insert into user_activation (date, life, user_id) values ('2022-12-11T21:57:24.893Z', 180, 3);
 insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 4);
 
-insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 5);
+insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 1);
 insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some inappropriate comments',
-                                                                  '2022-11-22T18:43:24.893Z', 1);
+                                                                  '2022-11-22T18:43:24.893Z', 5);
 
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, route_id, vehicle_id)
