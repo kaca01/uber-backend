@@ -1,11 +1,13 @@
 package com.example.test.service;
 
 import com.example.test.domain.business.WorkingHour;
+import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.repository.ride.LocationRepository;
 import com.example.test.repository.user.DocumentRepository;
 import com.example.test.repository.user.DriverRepository;
 import com.example.test.repository.user.UserRepository;
@@ -13,6 +15,7 @@ import com.example.test.repository.vehicle.VehicleRepository;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -27,6 +30,8 @@ public class DriverService implements IDriverService {
     DocumentRepository documentRepository;
     @Autowired
     VehicleRepository vehicleRepository;
+    @Autowired
+    LocationRepository locationRepository;
 
     @Override
     public Driver insert(Driver driver) {
@@ -44,13 +49,13 @@ public class DriverService implements IDriverService {
         return driverRepository.findById(id);
     }
 
-    // TODO : this does not work
     @Override
+    @Transactional
     public Driver update(Long id, Driver driver) {
         driver.setId(id);
-        User user = (User) driver;
-        userRepository.save(user);
-        driverRepository.save(driver);
+        Driver foundDriver = get(id);
+        if (foundDriver == null) return null;
+        userRepository.save(driver);
         return driver;
     }
 
@@ -68,8 +73,8 @@ public class DriverService implements IDriverService {
         return documentRepository.save(document);
     }
 
-    // TODO : this doesn't work
     @Override
+    @Transactional
     public Document deleteDriverDocument(Long id) {
         Document document = documentRepository.findById(id);
         if (document == null) return null;
@@ -82,14 +87,15 @@ public class DriverService implements IDriverService {
         Vehicle vehicle = driverRepository.findVehicleIdByDriverId(id);
         return vehicle;
     }
-    // TODO : this is where I need to continue
+
     @Override
     public Vehicle insertVehicle(Long id, Vehicle vehicle) {
         Driver driver = get(id);
         if (driver == null) return null;
+        vehicle = saveLocation(vehicle);
+        vehicleRepository.save(vehicle);
         driver.setVehicle(vehicle);
         driverRepository.save(driver);
-        vehicleRepository.save(vehicle);
         return vehicle;
     }
 
@@ -97,9 +103,10 @@ public class DriverService implements IDriverService {
     public Vehicle updateVehicle(Long id, Vehicle vehicle) {
         Driver driver = get(id);
         if (driver == null) return null;
+        vehicle = saveLocation(vehicle);
         driver.setVehicle(vehicle);
-        driverRepository.save(driver);
         vehicleRepository.save(vehicle);
+        driverRepository.save(driver);
         return vehicle;
     }
 
@@ -147,5 +154,20 @@ public class DriverService implements IDriverService {
 //            }
 //        }
         return null;
+    }
+
+    public Vehicle saveLocation(Vehicle vehicle) {
+        // TODO : create function for this in location service after everyone finishes services
+        // we are not here just saving location because there can be locations with the same longitude and
+        // latitude but different address (address is a string so it is tricky)
+        // check if there is current location in database
+        Location currentLocation = vehicle.getCurrentLocation();
+        Location location = locationRepository.findByLatitudeAndLongitude(currentLocation.getLatitude(),
+                currentLocation.getLongitude());
+        // if there is not, save it
+        if (location == null) locationRepository.save(currentLocation);
+            // if there is set location from database
+        else vehicle.setCurrentLocation(location);
+        return vehicle;
     }
 }
