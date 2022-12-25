@@ -4,6 +4,7 @@ import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
+import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.repository.user.DocumentRepository;
 import com.example.test.repository.user.DriverRepository;
@@ -43,10 +44,12 @@ public class DriverService implements IDriverService {
         return driverRepository.findById(id);
     }
 
+    // TODO : this does not work
     @Override
     public Driver update(Long id, Driver driver) {
-        // TODO for what is this id?
-        userRepository.save(driver);
+        driver.setId(id);
+        User user = (User) driver;
+        userRepository.save(user);
         driverRepository.save(driver);
         return driver;
     }
