@@ -7,7 +7,9 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.repository.business.WorkingHourRepository;
 import com.example.test.repository.ride.LocationRepository;
+import com.example.test.repository.ride.RideRepository;
 import com.example.test.repository.user.DocumentRepository;
 import com.example.test.repository.user.DriverRepository;
 import com.example.test.repository.user.UserRepository;
@@ -32,6 +34,11 @@ public class DriverService implements IDriverService {
     VehicleRepository vehicleRepository;
     @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    RideRepository rideRepository;
+
+    @Autowired
+    WorkingHourRepository workingHourRepository;
 
     @Override
     public Driver insert(Driver driver) {
@@ -122,38 +129,28 @@ public class DriverService implements IDriverService {
         Driver driver = get(id);
         if (driver == null) return null;
         driver.getWorkingHours().add(workingHour);
+        driverRepository.save(driver);
         return workingHour;
     }
 
     @Override
     public List<Ride> getRides(Long id) {
-//        Driver d = get(id);
-//        if (d == null) return null;
-//        List<Ride> foundRides = new ArrayList<>();
-//        for (Ride ride : rides) {
-//            if (ride.getDriver().getId().equals(id)) foundRides.add(ride);
-//        }
-        return null;
+        Driver driver = get(id);
+        if (driver == null) return null;
+        return rideRepository.findRidesByDriverId(id);
     }
 
     @Override
     public WorkingHour getWorkTime(Long workTimeId) {
-//        for (WorkingHour workTime : workTimes) {
-//            if (workTime.getId().equals(workTimeId)) return workTime;
-//        }
-        return null;
+        return workingHourRepository.findById(workTimeId);
     }
 
     @Override
     public WorkingHour updateWorkTime(Long workTimeId, WorkingHour workingHour) {
-//        for (WorkingHour workTime : workTimes) {
-//            if (workTime.getId().equals(workTimeId)) {
-//                workTime.setStart(workingHour.getStart());
-//                workTime.setEnd(workingHour.getEnd());
-//                return workTime;
-//            }
-//        }
-        return null;
+        if (workingHourRepository.findById(workTimeId) == null) return null;
+        workingHour.setId(workTimeId);
+        workingHourRepository.save(workingHour);
+        return workingHour;
     }
 
     public Vehicle saveLocation(Vehicle vehicle) {

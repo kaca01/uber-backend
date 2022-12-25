@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface WorkingHourRepository extends JpaRepository<WorkingHour, Integer> {
 
-//    @Query("select w from WorkingHour w where w.driver = ?1")
-//    public List<WorkingHour> findWorkingHoursByDriverId(Long id);
+    public WorkingHour findById(Long id);
 }
