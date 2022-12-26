@@ -65,7 +65,7 @@ public class PassengerService implements IPassengerService {
     @Override
     public Passenger findUserById(Long id)
     {
-        return passengerRepository.findById(id).orElseGet(null);
+        return passengerRepository.findById(id).orElse(null);
     }
 
     @Override

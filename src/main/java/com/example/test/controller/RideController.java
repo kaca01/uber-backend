@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.ride.Ride;
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.service.interfaces.IRideService;
@@ -81,9 +82,9 @@ public class RideController {
 
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PanicDTO> setPanic(@RequestBody String reason, @PathVariable Long id) throws Exception
+    public ResponseEntity<PanicDTO> setPanic(@RequestBody ErrorDTO reason, @PathVariable Long id) throws Exception
     {
-        Message message = service.setPanic(reason, id);
+        Message message = service.setPanic(reason.getMessage(), id);
 
         if (message == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -120,9 +121,9 @@ public class RideController {
 
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@RequestBody String reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@RequestBody ErrorDTO reason, @PathVariable Long id)
     {
-        Ride ride = service.cancelRide(reason, id);
+        Ride ride = service.cancelRide(reason.getMessage(), id);
 
         if (ride == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

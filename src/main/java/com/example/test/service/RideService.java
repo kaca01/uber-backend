@@ -13,11 +13,13 @@ import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -38,7 +40,7 @@ public class RideService implements IRideService {
         Set<Passenger> passengers = new HashSet<>();
 
         for (UserDTO u : rideDTO.getPassengers()) {
-            Passenger p = passengerRepository.findById(u.getId()).orElseGet(null);
+            Passenger p = passengerRepository.findById(u.getId()).orElse(null);
             passengers.add(p);
         }
         ride.setPassengers(passengers);
@@ -67,7 +69,7 @@ public class RideService implements IRideService {
 
     @Override
     public Ride findRideById(Long id) {
-        return rideRepository.findById(id).orElseGet(null);
+        return rideRepository.findById(id).orElse(null);
     }
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
@@ -117,7 +119,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED);
-        ride.setRejection(new Rejection(reason, ride.getDriver(), new Date()));  // da li ce ovo automatski kreirati novi rejection?
+        ride.setRejection(new Rejection(reason, ride.getDriver(), new Date()));
         return rideRepository.save(ride);
     }
 }
