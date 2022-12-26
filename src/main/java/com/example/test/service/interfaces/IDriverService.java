@@ -5,6 +5,8 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.AllDTO;
+import com.example.test.dto.ride.RideDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +38,7 @@ public interface IDriverService {
 
     public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
 
-    public List<Ride> getRides(Long id);
+    public AllDTO<RideDTO> getRides(Long id);
 
     public WorkingHour getWorkTime(Long workTimeId);
 

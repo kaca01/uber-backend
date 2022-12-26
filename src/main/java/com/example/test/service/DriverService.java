@@ -7,6 +7,8 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.AllDTO;
+import com.example.test.dto.ride.RideDTO;
 import com.example.test.repository.business.WorkingHourRepository;
 import com.example.test.repository.ride.LocationRepository;
 import com.example.test.repository.ride.RideRepository;
@@ -125,6 +127,7 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    @Transactional
     public WorkingHour insertWorkTime(Long id, WorkingHour workingHour) {
         Driver driver = get(id);
         if (driver == null) return null;
@@ -134,10 +137,15 @@ public class DriverService implements IDriverService {
     }
 
     @Override
-    public List<Ride> getRides(Long id) {
+    @Transactional
+    public AllDTO<RideDTO> getRides(Long id) {
         Driver driver = get(id);
         if (driver == null) return null;
-        return rideRepository.findRidesByDriverId(id);
+        List<Ride> rides = rideRepository.findRidesByDriverId(id);
+        List<RideDTO> rideDTOS = new ArrayList<RideDTO>();
+        for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
+        AllDTO<RideDTO> allRidesDTO = new AllDTO<>(rideDTOS.size(), rideDTOS);
+        return allRidesDTO;
     }
 
     @Override

@@ -203,16 +203,12 @@ public class DriverController {
 
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id) throws Exception {
-        List<Ride> rides = service.getRides(id);
+        AllDTO<RideDTO> rides = service.getRides(id);
         // TODO : add 400 status
         if (rides == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<RideDTO> rideDTOS = new ArrayList<RideDTO>();
-        for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
-        AllDTO<RideDTO> allRidesDTO = new AllDTO<>(rideDTOS.size(), rideDTOS);
-
-        return new ResponseEntity<>(allRidesDTO, HttpStatus.OK);
+        return new ResponseEntity<>(rides, HttpStatus.OK);
     }
 
     @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

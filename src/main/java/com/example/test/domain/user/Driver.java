@@ -20,7 +20,7 @@ public class Driver extends User {
 
     @Column(name = "drivingLicense", nullable = false)
     private int drivingLicense;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "driver_id")
     private Set<WorkingHour> workingHours = new HashSet<>();
     @OneToOne(fetch = FetchType.EAGER)
