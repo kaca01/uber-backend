@@ -3,7 +3,7 @@ package com.example.test.service;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.UserActivation;
-import com.example.test.repository.IRideRepository;
+import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserActivationRepository;
 import com.example.test.service.interfaces.IPassengerService;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

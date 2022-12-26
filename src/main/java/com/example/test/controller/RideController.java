@@ -23,8 +23,7 @@ public class RideController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> insert(@RequestBody RideDTO rideDTO) throws Exception
     {
-        Ride newRide = new Ride(rideDTO);
-        newRide = service.insert(newRide, rideDTO);  // returns ride with set id and other data
+        Ride newRide = service.insert(rideDTO);  // returns ride with set id and other data
 
         // todo newRide will never be null. Error 404 should be sent when there is invalid data
         return new ResponseEntity<RideDTO>(new RideDTO(newRide), HttpStatus.OK);
@@ -68,7 +67,6 @@ public class RideController {
     }
 
     // cancel existing ride (perspective of passenger - before the driver has arrived at the destination)
-    // promijeniti status voznje
     @PutMapping(value = "/{id}/withdraw")
     public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id) throws Exception
     {

@@ -6,7 +6,7 @@ import com.example.test.dto.ride.RideDTO;
 
 public interface IRideService {
 
-    Ride insert(Ride ride, RideDTO vehicleType);
+    Ride insert(RideDTO vehicleType);
 
     Ride findDriversActiveRide(Long id);
 

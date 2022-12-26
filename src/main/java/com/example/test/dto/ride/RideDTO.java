@@ -38,7 +38,7 @@ public class RideDTO {
         this.totalCost = ride.getTotalCost();
         this.route = ride.getRoute();
         this.passengers = convertPassengersToUsersDTO(ride);
-        this.vehicleType = ride.getVehicle().getType().getName().toString();
+        if (ride.getVehicle() != null) this.vehicleType = ride.getVehicle().getType().getName().toString();
         this.babyTransport = ride.isBabyTransport();
         this.petTransport = ride.isPetTransport();
         this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();

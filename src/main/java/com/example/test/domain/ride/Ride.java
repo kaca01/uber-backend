@@ -41,14 +41,14 @@ public class Ride {
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Rejection rejection;
     @Column(name = "babyTransport", nullable = false)
     //private Message panic;          bidirectional relation!!!
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Route route;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ride_id")
