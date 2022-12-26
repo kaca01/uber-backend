@@ -38,4 +38,13 @@ public class Message {
         this.setType(MessageType.valueOf(messageDTO.getType().toUpperCase()));
         this.ride.setId(messageDTO.getId());
     }
+
+    public Message(User sender, User receiver, String message, Date timeOfSending, MessageType type, Ride ride) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.timeOfSending = timeOfSending;
+        this.type = type;
+        this.ride = ride;
+    }
 }
