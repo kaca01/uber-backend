@@ -1,15 +1,8 @@
 package com.example.test.service;
 
-import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.communication.Message;
-import com.example.test.domain.communication.Rejection;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.Passenger;
-import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.communication.PanicDTO;
 import com.example.test.enumeration.MessageType;
-import com.example.test.enumeration.RideStatus;
-import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.service.interfaces.IPanicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +17,16 @@ public class PanicService implements IPanicService{
     private IMessageRepository messageRepository;
 
     @Override
-    public List<Message> getAll()
+    public List<PanicDTO> getAll()
     {
-        return messageRepository.findByType(MessageType.PANIC);
+        List<Message> messages = messageRepository.findByType(MessageType.PANIC);
+        // convert panics to DTOs
+        List<PanicDTO> panicsDTO = new ArrayList<>();
+        for (Message m : messages) {
+            panicsDTO.add(new PanicDTO(m));
+        }
+
+        return panicsDTO;
     }
 
 }

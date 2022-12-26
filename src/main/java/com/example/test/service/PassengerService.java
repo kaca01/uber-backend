@@ -3,6 +3,8 @@ package com.example.test.service;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.UserActivation;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserActivationRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,25 +29,36 @@ public class PassengerService implements IPassengerService {
 
     //get only those whose active status is true
     @Override
-    public List<Passenger> getAll(Integer page, Integer size)
+    public List<UserDTO> getAll(Integer page, Integer size)
     {
-        return passengerRepository.findAllByActiveIsTrue();
+        List<Passenger> passengers = passengerRepository.findAllByActiveIsTrue();
+
+        // convert passengers to DTOs
+        List<UserDTO> passengersDTO = new ArrayList<>();
+        for (Passenger p : passengers) {
+            passengersDTO.add(new UserDTO(p));
+        }
+
+        return passengersDTO;
     }
 
     @Override
-    public Passenger insert(Passenger passenger)
+    public UserDTO insert(UserDTO passengerDTO)
     {
+        Passenger passenger = new Passenger(passengerDTO);
         passenger.setActive(false);
         passenger.setBlocked(false);
-        Passenger p = passengerRepository.save(passenger);
-        userActivationRepository.save(new UserActivation(p, new Date(), 180));
-        return p;
+        passenger = passengerRepository.save(passenger);
+        userActivationRepository.save(new UserActivation(passenger, new Date(), 180));
+        return new UserDTO(passenger);
     }
 
     @Override
-    public Passenger update(Passenger passenger, Long passengerId)
+    public UserDTO update(UserDTO passengerDTO, Long passengerId)
     {
+        Passenger passenger = new Passenger(passengerDTO);
         Passenger p = findUserById(passengerId);
+        if (p == null) return null;
         p.setName(passenger.getName());
         p.setSurname(passenger.getSurname());
         if (passenger.getProfilePicture() != null) p.setProfilePicture(passenger.getProfilePicture());
@@ -52,18 +66,35 @@ public class PassengerService implements IPassengerService {
         p.setEmail(passenger.getEmail());
         if (passenger.getAddress() != null) p.setAddress(passenger.getAddress());
         p.setPassword(passenger.getPassword());
-        return passengerRepository.save(p);
+        p = passengerRepository.save(p);
+        return new UserDTO(p);
     }
 
     @Transactional
     @Override
-    public List<Ride> getRidesByPassenger(Long passengerId)
+    public List<RideDTO> getRidesByPassenger(Long passengerId)
     {
-        return rideRepository.findByPassengers_id(passengerId);
+        List<Ride> rides = rideRepository.findByPassengers_id(passengerId);
+        if(rides == null) return null;
+
+        // convert rides to DTOs
+        List<RideDTO> ridesDTO = new ArrayList<>();
+        for (Ride r : rides) {
+            ridesDTO.add(new RideDTO(r));
+        }
+
+        return ridesDTO;
     }
 
     @Override
-    public Passenger findUserById(Long id)
+    public UserDTO findOne(Long id)
+    {
+        Passenger p = findUserById(id);
+        if (p == null) return null;
+        return new UserDTO(p);
+    }
+
+    private Passenger findUserById(Long id)
     {
         return passengerRepository.findById(id).orElse(null);
     }

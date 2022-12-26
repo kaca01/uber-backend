@@ -21,21 +21,14 @@ public class PanicController {
 
     @Autowired
     IPanicService service;
-    
+
     //Overview of all panic notifications
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<PanicDTO>> getPanicMessages()
     {
+        List<PanicDTO> messages = service.getAll();
 
-        List<Message> messages = service.getAll();
-
-        // convert panics to DTOs
-        ArrayList<PanicDTO> panicsDTO = new ArrayList<>();
-        for (Message m : messages) {
-            panicsDTO.add(new PanicDTO(m));
-        }
-        AllDTO<PanicDTO> allPanics = new AllDTO<>(panicsDTO.size(), panicsDTO);
-
+        AllDTO<PanicDTO> allPanics = new AllDTO<>(messages.size(), messages);
         return new ResponseEntity<>(allPanics, HttpStatus.OK);
     }
 }

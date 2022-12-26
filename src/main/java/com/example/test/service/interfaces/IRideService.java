@@ -1,26 +1,25 @@
 package com.example.test.service.interfaces;
 
-import com.example.test.domain.communication.Message;
-import com.example.test.domain.ride.Ride;
+import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 
 public interface IRideService {
 
-    Ride insert(RideDTO vehicleType);
+    RideDTO insert(RideDTO vehicleType);
 
-    Ride findDriversActiveRide(Long id);
+    RideDTO findDriversActiveRide(Long id);
 
-    Ride findPassengersActiveRide(Long id);
+    RideDTO findPassengersActiveRide(Long id);
 
-    Ride findRideById(Long id);
+    RideDTO findOne(Long id);
 
-    Ride cancelExistingRide(Long id);
+    RideDTO cancelExistingRide(Long id);
 
-    Message setPanic(String reason, Long id);
+    PanicDTO setPanic(String reason, Long id);
 
-    Ride acceptRide(Long id);
+    RideDTO acceptRide(Long id);
 
-    Ride endRide(Long id);
+    RideDTO endRide(Long id);
 
-    Ride cancelRide(String reason, Long id);
+    RideDTO cancelRide(String reason, Long id);
 }

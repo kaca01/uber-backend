@@ -1,24 +1,21 @@
 package com.example.test.service.interfaces;
 
-import com.example.test.domain.communication.Message;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
-import com.example.test.domain.user.UserActivation;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface IPassengerService {
 
-    public List<Passenger> getAll(Integer page, Integer size);
+    public List<UserDTO> getAll(Integer page, Integer size);
 
-    Passenger insert(Passenger passenger);
+    UserDTO insert(UserDTO passenger);
 
-    Passenger update(Passenger passenger, Long passengerId);
+    UserDTO update(UserDTO passenger, Long passengerId);
 
-    List<Ride> getRidesByPassenger(Long passengerId);
+    List<RideDTO> getRidesByPassenger(Long passengerId);
 
-    Passenger findUserById(Long id);
+    UserDTO findOne(Long id);
 
     Boolean activatePassenger(Long activationId);
 }

@@ -4,6 +4,7 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
+import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
@@ -13,13 +14,11 @@ import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -34,7 +33,7 @@ public class RideService implements IRideService {
 
     @Transactional
     @Override
-    public Ride insert(RideDTO rideDTO) {
+    public RideDTO insert(RideDTO rideDTO) {
 
         Ride ride = new Ride(rideDTO);
         Set<Passenger> passengers = new HashSet<>();
@@ -47,7 +46,8 @@ public class RideService implements IRideService {
         ride.setStatus(RideStatus.PENDING);
         findAvailableDriver(ride, rideDTO.getVehicleType());
 
-        return rideRepository.save(ride);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
     }
 
     private void findAvailableDriver(Ride ride, String vehicleType) {
@@ -58,68 +58,81 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public Ride findDriversActiveRide(Long id) {
-        return rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, id);
+    public RideDTO findDriversActiveRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, id);
+        if(ride == null) return null;
+        return new RideDTO(ride);
     }
 
     @Override
-    public Ride findPassengersActiveRide(Long id) {
-        return rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, id);
+    public RideDTO findPassengersActiveRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, id);
+        if(ride == null) return null;
+        return new RideDTO(ride);
     }
 
     @Override
-    public Ride findRideById(Long id) {
-        return rideRepository.findById(id).orElse(null);
+    public RideDTO findOne(Long id) {
+        Ride r = findRideById(id);
+        if (r == null) return null;
+        return new RideDTO(r);
     }
+
+    private Ride findRideById(Long id){ return rideRepository.findById(id).orElse(null);}
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
     @Override
-    public Ride cancelExistingRide(Long id) {
+    public RideDTO cancelExistingRide(Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         if ( !ride.getRoute().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
                 (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING)){
             ride.setStatus(RideStatus.REJECTED);
-            return rideRepository.save(ride);
+            ride = rideRepository.save(ride);
+            return new RideDTO(ride);
         }
         return null;
     }
 
     //the user will be used from the token
     @Override
-    public Message setPanic(String reason, Long id)
+    public PanicDTO setPanic(String reason, Long id)
     {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED); //todo is this supposed to be like this?
         //todo sender will be received from the token (wont be ride.getDriver())
         Message panic = new Message(ride.getDriver(), null, reason, new Date(), MessageType.PANIC, ride);
-        return messageRepository.save(panic);
+        panic = messageRepository.save(panic);
+        return new PanicDTO(panic);
     }
 
     @Override
-    public Ride acceptRide(Long id) {
+    public RideDTO acceptRide(Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.ACCEPTED);
-        return rideRepository.save(ride);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
     }
 
     @Override
-    public Ride endRide(Long id) {
+    public RideDTO endRide(Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.FINISHED);
-        return rideRepository.save(ride);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
     }
 
     //perspective of driver
     @Override
-    public Ride cancelRide(String reason, Long id) {
+    public RideDTO cancelRide(String reason, Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED);
         ride.setRejection(new Rejection(reason, ride.getDriver(), new Date()));
-        return rideRepository.save(ride);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
     }
 }
