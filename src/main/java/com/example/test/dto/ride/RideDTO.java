@@ -34,7 +34,8 @@ public class RideDTO {
         this.id = ride.getId();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.startTime = format.format(ride.getStartTime());
-        this.endTime = format.format(ride.getEndTime());
+        if (ride.getEndTime() == null) this.endTime = null;
+        else this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
         this.route = ride.getRoute();
         this.passengers = convertPassengersToUsersDTO(ride);

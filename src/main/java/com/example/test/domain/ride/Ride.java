@@ -37,11 +37,11 @@ public class Ride {
     private Vehicle vehicle;
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Rejection rejection;
     @Column(name = "babyTransport", nullable = false)
     //private Message panic;          bidirectional relation!!!
