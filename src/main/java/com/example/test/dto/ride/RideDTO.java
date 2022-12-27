@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Data
@@ -19,8 +22,8 @@ public class RideDTO {
     private String startTime;
     private String endTime;
     private double totalCost;
-    private Route route;
-    private ArrayList<UserDTO> passengers;
+    private Set<Route> locations;
+    private Set<UserDTO> passengers;
     private String vehicleType;
     private boolean babyTransport;
     private boolean petTransport;
@@ -34,24 +37,23 @@ public class RideDTO {
         this.id = ride.getId();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.startTime = format.format(ride.getStartTime());
-        if (ride.getEndTime() == null) this.endTime = null;
-        else this.endTime = format.format(ride.getEndTime());
+        if(ride.getEndTime() != null) this.endTime = format.format(ride.getEndTime());
         this.totalCost = ride.getTotalCost();
-        this.route = ride.getRoute();
+        this.locations = ride.getLocations();
         this.passengers = convertPassengersToUsersDTO(ride);
-        this.vehicleType = ride.getVehicle().getType().getName().toString();
+        if (ride.getVehicle() != null) this.vehicleType = ride.getVehicle().getType().getName().toString();
         this.babyTransport = ride.isBabyTransport();
         this.petTransport = ride.isPetTransport();
         this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
         this.status = ride.getStatus().toString();
-        this.driver = new UserDTO(ride.getDriver());
-        this.rejection = new RejectionDTO(ride.getRejection());
+        if(ride.getDriver() != null) this.driver = new UserDTO(ride.getDriver());
+        if (ride.getRejection() != null) this.rejection = new RejectionDTO(ride.getRejection());
     }
 
     // request
-    public RideDTO(Route route, ArrayList<UserDTO> passengers, String vehicleType,
+    public RideDTO(Set<Route> locations, Set<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport) {
-        this.route = route;
+        this.locations = locations;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
@@ -60,15 +62,15 @@ public class RideDTO {
 
 
     // response
-    public RideDTO(Long id, String startTime, String endTime, double totalCost, Route route,
-                   ArrayList<UserDTO> passengers, String vehicleType, boolean babyTransport,
+    public RideDTO(Long id, String startTime, String endTime, double totalCost, Set<Route> locations,
+                   Set<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
                    RejectionDTO rejection) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalCost = totalCost;
-        this.route = route;
+        this.locations = locations;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
@@ -79,8 +81,8 @@ public class RideDTO {
         this.rejection = rejection;
     }
 
-    public ArrayList<UserDTO> convertPassengersToUsersDTO(Ride ride) {
-        ArrayList<UserDTO> users = new ArrayList<UserDTO>();
+    private Set<UserDTO> convertPassengersToUsersDTO(Ride ride) {
+        Set<UserDTO> users = new HashSet<>();
         for (Passenger passenger: ride.getPassengers()) {
             users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
         }

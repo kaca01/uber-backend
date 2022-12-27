@@ -1,9 +1,9 @@
 package com.example.test.service.interfaces;
 
-import com.example.test.domain.communication.Message;
+import com.example.test.dto.communication.PanicDTO;
 
 import java.util.List;
 
 public interface IPanicService {
-    public List<Message> getAll();
+    public List<PanicDTO> getAll();
 }

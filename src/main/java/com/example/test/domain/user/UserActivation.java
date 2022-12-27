@@ -20,4 +20,10 @@ public class UserActivation {
     private Date date;
     @Column(name = "life", nullable = false)
     private int life;
+
+    public UserActivation(User user, Date date, int life) {
+        this.user = user;
+        this.date = date;
+        this.life = life;
+    }
 }

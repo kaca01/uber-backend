@@ -26,25 +26,18 @@ public class PassengerController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
     {
-        Passenger passenger = new Passenger(passengerDTO);
-        passenger = service.insert(passenger);  // returns passenger with set id
+        UserDTO passenger = service.insert(passengerDTO);  // returns passenger with set id
         if (passenger == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             // todo passenger will never be null. This request should be sent when there is invalid data
-        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<UserDTO>> getPassengers()
     {
-        List<Passenger> passengers = service.getAll(0, 0);
-
-        // convert passengers to DTOs
-        List<UserDTO> passengersDTO = new ArrayList<>();
-        for (Passenger p : passengers) {
-            passengersDTO.add(new UserDTO(p));
-        }
+        List<UserDTO> passengersDTO = service.getAll(0, 0);
 
         AllDTO<UserDTO> allUsers = new AllDTO<>(passengersDTO.size(), passengersDTO);
 
@@ -65,30 +58,28 @@ public class PassengerController {
 
     //get passsenger details
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> findUserById(@PathVariable int id)
+    public ResponseEntity<UserDTO> findOne(@PathVariable int id)
     {
-        Passenger passenger = service.findUserById((long) id);
+        UserDTO passenger = service.findOne((long) id);
 
         if (passenger == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //Update existing passenger
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO passengerDTO, @PathVariable int id) throws Exception
     {
-        Passenger passenger = new Passenger(passengerDTO);
-
-        passenger = service.update(passenger, (long) id);
+        UserDTO passenger = service.update(passengerDTO, (long) id);
 
         if (passenger == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //TODO error 400
-        return new ResponseEntity<UserDTO>(new UserDTO(passenger), HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //get passenger rides
@@ -96,22 +87,15 @@ public class PassengerController {
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {
-        List<Ride> rides = service.getRidesByPassenger((long)id);
+        List<RideDTO> rides = service.getRidesByPassenger((long)id);
 
         // ako ne postoji korisnik. Ako postoji korisnik a nema voznji, vraca praznu listu
         if (rides == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        // convert rides to DTOs
-        ArrayList<RideDTO> ridesDTO = new ArrayList<>();
-        for (Ride r : rides) {
-            ridesDTO.add(new RideDTO(r));
-        }
         //TODO error 400
 
-        AllDTO<RideDTO> allRides = new AllDTO<>(ridesDTO.size(), ridesDTO);
-
+        AllDTO<RideDTO> allRides = new AllDTO<>(rides.size(), rides);
         return new ResponseEntity<>(allRides, HttpStatus.OK);
     }
 }
