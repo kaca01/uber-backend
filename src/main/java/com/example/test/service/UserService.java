@@ -6,17 +6,28 @@ import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
+import com.example.test.dto.communication.NoteDTO;
 import com.example.test.enumeration.MessageType;
+import com.example.test.repository.communication.INoteRepository;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class UserService implements IUserService {
+
+    @Autowired
+    IUserRepository iUserRepository;
+    @Autowired
+    INoteRepository iNoteRepository;
 
     Mockup mockup = new Mockup();
     ArrayList<User> users = mockup.users;
@@ -110,49 +121,42 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean block(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(true);
-                return true;
-            }
-        } return false;
+        User user = iUserRepository.findById(id);
+        if (user == null) return false;
+        user.setBlocked(true);
+        iUserRepository.save(user);
+        return true;
     }
 
     @Override
     public Boolean unblock(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(false);
-                return true;
-            }
-        } return false;
+        User user = iUserRepository.findById(id);
+        if (user == null) return false;
+        user.setBlocked(false);
+        iUserRepository.save(user);
+        return true;
     }
 
     @Override
-    public Note insertNote(Long id, Note requestNote) {
-        User u = findUserById(id);
-        if (u == null) return null;
-        requestNote.setId(notes.get(notes.size()-1).getId()+1);
-        requestNote.setDate(new Date());
-        requestNote.setUser(u);
+    public NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException {
+        User user = iUserRepository.findById(id);
+        if (user == null) return null;
+        Note note = new Note(requestNote);
+        note.setUser(user);
+        iNoteRepository.save(note);
+        requestNote.setId(note.getId());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        requestNote.setDate(formatter.format(note.getDate()));
         return requestNote;
     }
 
     @Override
-    public List<Note> getNotes(Long id, int page, int size) {
-        List<Note> userNotes = new ArrayList<>();
-        int last = page*size;
-        for(int i = last-size; i<last; i++) {
-            try {
-                Note note = notes.get(i);
-                if (Objects.equals(note.getUser().getId(), id)) {
-                    userNotes.add(notes.get(i));
-                }
-            } catch (Exception e) {
-                break;
-            }
-        } if (!userNotes.isEmpty()) return userNotes;
-        return null;
+    public AllDTO<NoteDTO> getNotes(Long id, int page, int size) {
+        List<Note> userNotes = iNoteRepository.findByUserId(id);
+        List<NoteDTO> userNoteDTOs = new ArrayList<>();
+        for (Note note : userNotes) userNoteDTOs.add(new NoteDTO(note));
+        AllDTO<NoteDTO> allDTO = new AllDTO<>(userNoteDTOs.size(), userNoteDTOs);
+        return allDTO;
     }
 
     private User findUserById(Long id)

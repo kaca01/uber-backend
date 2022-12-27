@@ -53,7 +53,7 @@ public class UserController {
     // Getting multiple of them for the reason of showing a list
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO> get(@RequestParam(defaultValue = "1") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
+                                      @RequestParam(defaultValue = "10") int size) {
 
         List<User> users = service.get(page, size);
 
@@ -133,37 +133,29 @@ public class UserController {
     }
 
     // Creating note
-    @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE,
+                                               produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @RequestBody NoteDTO requestNote) throws Exception {
+        NoteDTO noteDTO = service.insertNote((long) id, requestNote);
 
-        Note note = new Note(requestNote);
-        note = service.insertNote((long) id, note);
-
-        if(note == null) {
+        if(noteDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // todo za 400
-        return new ResponseEntity<>(new NoteDTO(note), HttpStatus.OK);
+        return new ResponseEntity<>(noteDTO, HttpStatus.OK);
     }
 
     // Getting notes for the user
     @GetMapping(value ="/user/{id}/note", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @RequestParam int page,
-                                                @RequestParam int size) {
+                                                    @RequestParam int size) {
 
-        List<Note> notes = service.getNotes((long) id, page, size);
+        AllDTO<NoteDTO> noteDTOS = service.getNotes((long) id, page, size);
 
-        if(notes == null) {
+        if(noteDTOS == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        List<NoteDTO> notesDTO = new ArrayList<>();
-        for(Note note : notes) {
-            notesDTO.add(new NoteDTO(note));
-        }
         // todo za 400
-        AllDTO<NoteDTO> allNotes = new AllDTO<>(notesDTO.size(), notesDTO);
-
-        return new ResponseEntity<>(allNotes, HttpStatus.OK);
+        return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
     }
 }

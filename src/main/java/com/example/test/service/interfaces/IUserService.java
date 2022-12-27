@@ -4,8 +4,11 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.User;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
+import com.example.test.dto.communication.NoteDTO;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface IUserService {
@@ -24,7 +27,7 @@ public interface IUserService {
 
     public Boolean unblock(Long id);
 
-    public Note insertNote(Long id, Note requestNote);
+    public NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException;
 
-    public List<Note> getNotes(Long id, int page, int size);
+    public AllDTO<NoteDTO> getNotes(Long id, int page, int size);
 }
