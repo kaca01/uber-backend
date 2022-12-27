@@ -7,6 +7,7 @@ import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.service.interfaces.IPanicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public class PanicService implements IPanicService{
     @Autowired
     private IMessageRepository messageRepository;
 
+    @Transactional
     @Override
     public List<PanicDTO> getAll()
     {

@@ -10,6 +10,7 @@ import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
 import com.example.test.enumeration.RideStatus;
 import com.example.test.repository.communication.IMessageRepository;
+import com.example.test.repository.communication.IRejectionRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
@@ -30,6 +31,8 @@ public class RideService implements IRideService {
     private IRideRepository rideRepository;
     @Autowired
     private IMessageRepository messageRepository;
+    @Autowired
+    private IRejectionRepository rejectionRepository;
 
     @Transactional
     @Override
@@ -57,6 +60,7 @@ public class RideService implements IRideService {
         ride.setStartTime(new Date());
     }
 
+    @Transactional
     @Override
     public RideDTO findDriversActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, id);
@@ -64,6 +68,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    @Transactional
     @Override
     public RideDTO findPassengersActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, id);
@@ -85,7 +90,7 @@ public class RideService implements IRideService {
     public RideDTO cancelExistingRide(Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
-        if ( !ride.getRoute().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
+        if ( !ride.getLocations().stream().findFirst().get().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
                 (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING)){
             ride.setStatus(RideStatus.REJECTED);
             ride = rideRepository.save(ride);
@@ -100,8 +105,9 @@ public class RideService implements IRideService {
     {
         Ride ride = findRideById(id);
         if(ride == null) return null;
-        ride.setStatus(RideStatus.REJECTED); //todo is this supposed to be like this?
-        //todo sender will be received from the token (wont be ride.getDriver())
+        ride.setStatus(RideStatus.REJECTED);
+        ride = rideRepository.save(ride);
+        //todo sender will be received from the token (wont be ride.getDriver()) and should Rejection be here as well?No?
         Message panic = new Message(ride.getDriver(), null, reason, new Date(), MessageType.PANIC, ride);
         panic = messageRepository.save(panic);
         return new PanicDTO(panic);
@@ -131,7 +137,8 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED);
-        ride.setRejection(new Rejection(reason, ride.getDriver(), new Date()));
+        Rejection rejection = new Rejection(reason, ride.getDriver(), new Date());
+        ride.setRejection(rejection);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }

@@ -32,6 +32,8 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     private Ride ride;
 
+
+
     public Message(MessageDTO messageDTO) {
         this.receiver.setId(messageDTO.getId());
         this.setMessage(messageDTO.getMessage());

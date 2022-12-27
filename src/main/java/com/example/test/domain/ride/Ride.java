@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,15 +47,15 @@ public class Ride {
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private Route route;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Route> locations = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ride_id")
     private Set<Review> reviews = new HashSet<>();
 
     public Ride(RideDTO rideDTO)
     {
-        this.setRoute(rideDTO.getRoute());
+        //this.setLocations(rideDTO.getRoute());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
     }
