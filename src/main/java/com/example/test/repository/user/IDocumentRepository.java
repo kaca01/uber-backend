@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface DocumentRepository extends JpaRepository<Document, Integer> {
+public interface IDocumentRepository extends JpaRepository<Document, Integer> {
 
     public Document findById(Long id);
 

@@ -5,7 +5,7 @@ import com.example.test.domain.vehicle.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface DriverRepository extends JpaRepository<Driver, Integer> {
+public interface IDriverRepository extends JpaRepository<Driver, Integer> {
 
     public Driver findById(Long id);
 

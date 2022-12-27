@@ -1,6 +1,7 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.dto.vehicle.VehicleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,16 @@ public class Vehicle {
     public Vehicle() {
         this.type = new VehicleType();
         this.currentLocation = new Location();
+    }
+
+    public Vehicle(VehicleDTO vehicleDTO) {
+        this.id = vehicleDTO.getId();
+        this.licenseNumber = vehicleDTO.getLicenseNumber();
+        this.passengerSeats = vehicleDTO.getPassengerSeats();
+        this.currentLocation = vehicleDTO.getCurrentLocation();
+        this.babyTransport = vehicleDTO.isBabyTransport();
+        this.petTransport = vehicleDTO.isPetTransport();
+        this.model = vehicleDTO.getModel();
     }
 
     public VehicleType getType()

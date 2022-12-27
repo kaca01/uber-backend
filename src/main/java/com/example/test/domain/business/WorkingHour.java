@@ -1,9 +1,11 @@
 package com.example.test.domain.business;
 
 
+import com.example.test.dto.business.WorkingHourDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.jdbc.Work;
 
 import javax.persistence.*;
 import java.util.Date;
