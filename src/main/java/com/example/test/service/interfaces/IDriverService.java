@@ -5,40 +5,47 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.AllDTO;
+import com.example.test.dto.business.WorkingHourDTO;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.DocumentDTO;
+import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.vehicle.VehicleDTO;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
 public interface IDriverService {
 
-    public Driver insert(Driver driver);
+    public UserDTO insert(UserDTO driver);
 
     // TODO : check this later (paginated drivers???)
-    public List<Driver> getAll();
+    public AllDTO<UserDTO> getAll();
 
-    public Driver get(Long id);
+    public UserDTO get(Long id);
 
-    public Driver update(Long id, Driver driver);
+    public UserDTO update(Long id, UserDTO driverDTO);
 
-    public List<Document> getDriverDocuments(Long id);
+    public List<DocumentDTO> getDriverDocuments(Long id);
 
-    public Document insertDriverDocument(Long id, Document driverDocument);
+    public DocumentDTO insertDriverDocument(Long id, DocumentDTO driverDocument);
 
-    public Document deleteDriverDocument(Long id);
+    public DocumentDTO deleteDriverDocument(Long id);
 
-    public Vehicle getVehicle(Long id);
+    public VehicleDTO getVehicle(Long id);
 
-    public Vehicle insertVehicle(Long id, Vehicle vehicle);
+    public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle);
 
-    public Vehicle updateVehicle(Long id, Vehicle vehicle);
+    public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle);
 
-    public Set<WorkingHour> getWorkTimes(Long id);
+    public AllDTO<WorkingHourDTO> getWorkTimes(Long id);
 
-    public WorkingHour insertWorkTime(Long id, WorkingHour workingHour);
+    public WorkingHourDTO insertWorkTime(Long id, WorkingHourDTO workingHour) throws ParseException;
 
-    public List<Ride> getRides(Long id);
+    public AllDTO<RideDTO> getRides(Long id);
 
-    public WorkingHour getWorkTime(Long workTimeId);
+    public WorkingHourDTO getWorkTime(Long workTimeId);
 
-    public WorkingHour updateWorkTime(Long workTimeId, WorkingHour workingHour);
+    public WorkingHourDTO updateWorkTime(Long workTimeId, WorkingHourDTO workingHour) throws ParseException;
 }

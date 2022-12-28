@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,26 +36,26 @@ public class Ride {
     private Vehicle vehicle;
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Rejection rejection;
     @Column(name = "babyTransport", nullable = false)
     //private Message panic;          bidirectional relation!!!
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Route route;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Route> locations = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ride_id")
     private Set<Review> reviews = new HashSet<>();
 
     public Ride(RideDTO rideDTO)
     {
-        this.setRoute(rideDTO.getRoute());
+        //this.setLocations(rideDTO.getRoute());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
     }

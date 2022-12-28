@@ -32,10 +32,21 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     private Ride ride;
 
+
+
     public Message(MessageDTO messageDTO) {
         this.receiver.setId(messageDTO.getId());
         this.setMessage(messageDTO.getMessage());
         this.setType(MessageType.valueOf(messageDTO.getType().toUpperCase()));
         this.ride.setId(messageDTO.getId());
+    }
+
+    public Message(User sender, User receiver, String message, Date timeOfSending, MessageType type, Ride ride) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.timeOfSending = timeOfSending;
+        this.type = type;
+        this.ride = ride;
     }
 }

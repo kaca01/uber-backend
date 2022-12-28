@@ -16,18 +16,19 @@ public class UserDTO {
     private String telephoneNumber;
     private String email;
     private String address;
-    @JsonIgnore
     private String password;
+
+    private boolean isBlocked;
 
     public UserDTO(User user)
     {
         this(user.getId(), user.getName(), user.getSurname(), user.getProfilePicture(), user.getTelephoneNumber(),
-                user.getEmail(), user.getAddress());
+                user.getEmail(), user.getAddress(), user.isBlocked());
     }
 
     // response
     public UserDTO(Long id, String name, String surname, String profilePicture, String telephoneNumber,
-                   String email, String address) {
+                   String email, String address, boolean isBlocked) {
         super();
         this.id = id;
         this.name = name;
@@ -36,6 +37,7 @@ public class UserDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
+        this.isBlocked = isBlocked;
     }
 
     // response

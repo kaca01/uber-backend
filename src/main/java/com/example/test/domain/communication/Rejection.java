@@ -22,4 +22,9 @@ public class Rejection {
     @Column(name = "timeOfRejection", nullable = false)
     private Date timeOfRejection;
 
+    public Rejection(String reason, User user, Date timeOfRejection) {
+        this.reason = reason;
+        this.user = user;
+        this.timeOfRejection = timeOfRejection;
+    }
 }
