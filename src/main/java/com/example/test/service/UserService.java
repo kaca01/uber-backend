@@ -8,8 +8,10 @@ import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.enumeration.MessageType;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +19,9 @@ import java.util.*;
 
 @Service
 public class UserService implements IUserService {
+
+    @Autowired
+    IUserRepository iUserRepository;
 
     Mockup mockup = new Mockup();
     ArrayList<User> users = mockup.users;
@@ -110,22 +115,20 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean block(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(true);
-                return true;
-            }
-        } return false;
+        User user = iUserRepository.findById(id);
+        if (user == null) return false;
+        user.setBlocked(true);
+        iUserRepository.save(user);
+        return true;
     }
 
     @Override
     public Boolean unblock(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(false);
-                return true;
-            }
-        } return false;
+        User user = iUserRepository.findById(id);
+        if (user == null) return false;
+        user.setBlocked(false);
+        iUserRepository.save(user);
+        return true;
     }
 
     @Override
