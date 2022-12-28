@@ -1,9 +1,5 @@
 package com.example.test.controller;
 
-import com.example.test.domain.communication.Message;
-import com.example.test.domain.communication.Note;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
@@ -17,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -29,26 +24,23 @@ public class UserController {
     private IUserService service;
 
     // Rides of the user
+    // TODO : does not work for passengers id, works only for drivers
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO> getRides(@PathVariable int id,
+    public ResponseEntity<AllDTO> getRides(@PathVariable Long id,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size,
                                            @RequestParam String sort,
                                            @RequestParam String from,
                                            @RequestParam String to) {
 
-        List<Ride> rides = service.getRides((long) id, page, size, sort, from, to);
+        List<RideDTO> rides = service.getRides(id, page, size, sort, from, to);
+        for (RideDTO ride : rides) System.out.println(ride);
 
         if(rides == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        ArrayList<RideDTO> ridesDTO = new ArrayList<>();
-        for (Ride ride : rides) {
-            ridesDTO.add(new RideDTO(ride));
-        }
         // todo za 400
-        return new ResponseEntity<>(new AllDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO(rides.size(), rides), HttpStatus.OK);
     }
 
     // Getting multiple of them for the reason of showing a list
@@ -56,13 +48,8 @@ public class UserController {
     public ResponseEntity<AllDTO> get(@RequestParam(defaultValue = "1") int page,
                                       @RequestParam(defaultValue = "10") int size) {
 
-        List<User> users = service.get(page, size);
-
-        List<UserDTO> usersDTO = new ArrayList<>();
-        for(User user : users) {
-            usersDTO.add(new UserDTO(user));
-        }
-        return new ResponseEntity<>(new AllDTO(usersDTO.size(), usersDTO), HttpStatus.OK);
+        List<UserDTO> users = service.get(page, size);
+        return new ResponseEntity<>(new AllDTO(users.size(), users), HttpStatus.OK);
     }
 
     // login
@@ -81,32 +68,27 @@ public class UserController {
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO> getMessages(@PathVariable int id) {
 
-        List<Message> messages = service.getMessages((long) id);
+        List<MessageDTO> messages = service.getMessages((long) id);
 
         if(messages == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        List<MessageDTO> messagesDTO = new ArrayList<>();
-        for(Message message : messages) {
-            messagesDTO.add(new MessageDTO(message));
-        }
         // todo za 400
-        return new ResponseEntity<>(new AllDTO(messagesDTO.size(), messagesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO(messages.size(), messages), HttpStatus.OK);
     }
 
     // Send a message to the user
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO) throws Exception {
 
-        Message message = service.insertMessage((long) id, messageDTO);
+        MessageDTO message = service.insertMessage((long) id, messageDTO);
 
         if(message == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         // todo za 400
-        return new ResponseEntity<>(new MessageDTO(message), HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // Blocking the user from the part of the administrator
