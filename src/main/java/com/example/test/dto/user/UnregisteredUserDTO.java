@@ -17,7 +17,7 @@ public class UnregisteredUserDTO {
     private String vehicleType;
     private boolean petTransport;
     private boolean babyTransport;
-    private double estimatedTimeInMinutes;
+    private int estimatedTimeInMinutes;
     private double estimatedCost;
 
     //request
@@ -30,7 +30,7 @@ public class UnregisteredUserDTO {
     }
 
     //response
-    public UnregisteredUserDTO(double estimatedTimeInMinutes, double estimatedCost) {
+    public UnregisteredUserDTO(int estimatedTimeInMinutes, double estimatedCost) {
         this.estimatedTimeInMinutes = estimatedTimeInMinutes;
         this.estimatedCost = estimatedCost;
     }
