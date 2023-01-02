@@ -1,14 +1,11 @@
 package com.example.test.service;
 
-import com.example.test.Mockup;
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.service.interfaces.IVehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class VehicleService implements IVehicleService {
