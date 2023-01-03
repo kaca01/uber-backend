@@ -22,4 +22,6 @@ public interface IRideService {
     RideDTO endRide(Long id);
 
     RideDTO cancelRide(String reason, Long id);
+
+    RideDTO startRide(Long id);
 }

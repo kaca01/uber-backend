@@ -112,6 +112,20 @@ public class RideController {
     }
 
     @Transactional
+    //start the ride
+    @PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> startRide(@PathVariable Long id) throws Exception
+    {
+        RideDTO ride = service.startRide(id);
+
+        if (ride == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        //todo error 400
+        return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
+    }
+
+    @Transactional
     //end the ride
     @PutMapping(value = "/{id}/end", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> endRide(@PathVariable Long id) throws Exception

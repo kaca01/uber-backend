@@ -142,4 +142,13 @@ public class RideService implements IRideService {
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
+
+    @Override
+    public RideDTO startRide(Long id) {
+        Ride ride = findRideById(id);
+        if(ride == null) return null;
+        ride.setStatus(RideStatus.ACTIVE);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
+    }
 }
