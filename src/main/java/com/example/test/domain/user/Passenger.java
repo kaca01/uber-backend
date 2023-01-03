@@ -5,7 +5,9 @@ import com.example.test.dto.user.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +24,7 @@ public class Passenger extends User {
     public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                      String address, String password, boolean blocked, boolean active,
                      Set<Location> favoriteLocations) {
-        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active);
         this.favoriteLocations = favoriteLocations;
     }
 

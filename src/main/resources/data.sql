@@ -1,25 +1,25 @@
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '123', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '000', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '111', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '222', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '333', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Boris', 'Petrov', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2', '444', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Dusko', 'Dabić', 'U3dhZ2dlciByb2Nrcw==', '+381133333', 'duki@gmail.com', 'Omladinska 3', '555', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Danka', 'Danić', 'U3dhZ2dlciByb2Nrcw==', '+381222222', 'danka@gmail.com', 'Fruskogorska 23', '666', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '777', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '888', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '999', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Boris', 'Petrov', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Dusko', 'Dabić', 'U3dhZ2dlciByb2Nrcw==', '+381133333', 'duki@gmail.com', 'Omladinska 3', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Danka', 'Danić', 'U3dhZ2dlciByb2Nrcw==', '+381222222', 'danka@gmail.com', 'Fruskogorska 23', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 
 insert into passenger values(1);
 insert into passenger values(2);
@@ -153,11 +153,3 @@ insert into review(comment, rating, type, passenger_id, ride_id) values ('Everyt
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Great car', 5, 1, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Music was toooooo loud', 3, 0, 4, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Car is could be newer -.-', 2, 1, 4, 4);
-
-
-
-
-
-
-
-

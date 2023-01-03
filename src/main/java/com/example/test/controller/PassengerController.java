@@ -1,7 +1,5 @@
 package com.example.test.controller;
 
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -12,10 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {

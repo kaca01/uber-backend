@@ -1,11 +1,14 @@
 package com.example.test.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -28,10 +31,16 @@ abstract public class User {
     private String email;
     @Column(name = "address")
     private String address;
+    @JsonIgnore
     @Column(name = "password", nullable=false)
     private String password;
+
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
+
     @Column(name = "blocked", nullable=false)
     private boolean blocked;
+
     @Column(name = "active", nullable=false)
     private boolean active;
 

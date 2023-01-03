@@ -16,6 +16,9 @@ import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService, UserDetailsService {
 
     @Autowired
     IUserRepository userRepository;
@@ -138,5 +141,13 @@ public class UserService implements IUserService {
         List<NoteDTO> userNoteDTOs = new ArrayList<>();
         for (Note note : userNotes) userNoteDTOs.add(new NoteDTO(note));
         return new AllDTO<>(userNoteDTOs.size(), userNoteDTOs);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User wineUser = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email '%s' is not found!", email)));
+
+        return (UserDetails) wineUser;
     }
 }

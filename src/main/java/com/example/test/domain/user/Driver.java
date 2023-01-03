@@ -6,10 +6,8 @@ import com.example.test.dto.user.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 @NoArgsConstructor
 @Data
@@ -39,7 +37,7 @@ public class Driver extends User {
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                   String address, String password, boolean blocked, boolean active,
                   int drivingLicense, Set<WorkingHour> workingHours, Vehicle vehicle) {
-        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active);
         this.drivingLicense = drivingLicense;
         this.workingHours = workingHours;
         this.vehicle = vehicle;
