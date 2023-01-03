@@ -2,7 +2,12 @@ package com.example.test.dto.communication;
 
 
 import com.example.test.domain.communication.Message;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Data
 public class MessageDTO {
 
     private Long id;
@@ -12,11 +17,6 @@ public class MessageDTO {
     private String message;
     private String type;
     private Long rideId;
-
-    public MessageDTO()
-    {
-
-    }
 
     public MessageDTO(Message message)
     {
@@ -49,72 +49,4 @@ public class MessageDTO {
         this.rideId = rideId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTimeOfSending() {
-        return timeOfSending;
-    }
-
-    public void setTimeOfSending(String timeOfSending) {
-        this.timeOfSending = timeOfSending;
-    }
-
-    public Long getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
-
-    public Long getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getRideId() {
-        return rideId;
-    }
-
-    public void setRideId(Long rideId) {
-        this.rideId = rideId;
-    }
-
-    @Override
-    public String toString() {
-        return "MessageDTO{" +
-                "id=" + id +
-                ", timeOfSending='" + timeOfSending + '\'' +
-                ", senderId=" + senderId +
-                ", receiverId=" + receiverId +
-                ", message='" + message + '\'' +
-                ", type='" + type + '\'' +
-                ", rideId=" + rideId +
-                '}';
-    }
 }

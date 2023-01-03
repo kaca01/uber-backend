@@ -1,19 +1,22 @@
 package com.example.test.service.interfaces;
 
 import com.example.test.domain.communication.Review;
+import com.example.test.dto.AllDTO;
+import com.example.test.dto.communication.ReviewDTO;
+import com.example.test.dto.ride.RideReviewDTO;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface IReviewService {
 
-    public Review insertVehicleReview(Long rideId, Long vehicleId, Review review);
+    public ReviewDTO insertVehicleReview(Long rideId, ReviewDTO review);
 
-    public List<Review> getReviewByVehicle(Long vehicleId);
+    public AllDTO<ReviewDTO> getReviewByVehicle(Long vehicleId);
 
-    public Review insertDriverReview(Long rideId, Long driverId, Review review);
+    public ReviewDTO insertDriverReview(Long rideId, ReviewDTO review);
 
-    public List<Review> getReviewByDriver(Long driverId);
+    public AllDTO<ReviewDTO> getReviewByDriver(Long driverId);
 
-    public List<Review> getReviewByRide(Long rideId);
+    public List<RideReviewDTO> getReviewByRide(Long rideId);
 }

@@ -1,23 +1,25 @@
 package com.example.test.dto.communication;
 
 import com.example.test.domain.communication.Rejection;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
+@NoArgsConstructor
+@Data
 public class RejectionDTO {
 
     private String reason;
     private String timeOfRejection;
 
-    public RejectionDTO() {
-
-    }
 
     public RejectionDTO(Rejection rejection) {
-        this.reason = rejection.getReason();
-        if (rejection.getTimeOfRejection() == null){
-            this.timeOfRejection = null;
+        if (rejection != null) {
+            this.reason = rejection.getReason();
         }
-        else
-            this.timeOfRejection = rejection.getTimeOfRejection().toString();
+        else this.reason = null;
+        setTime(rejection);
     }
 
     public RejectionDTO(String reason, String timeOfRejection) {
@@ -25,19 +27,9 @@ public class RejectionDTO {
         this.timeOfRejection = timeOfRejection;
     }
 
-    public String getReason() {
-        return reason;
+    public void setTime(Rejection rejection) {
+        if (rejection == null) this.timeOfRejection = null;
+        else this.timeOfRejection = rejection.getTimeOfRejection().toString();
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public String getTimeOfRejection() {
-        return timeOfRejection;
-    }
-
-    public void setTimeOfRejection(String timeOfRejection) {
-        this.timeOfRejection = timeOfRejection;
-    }
 }

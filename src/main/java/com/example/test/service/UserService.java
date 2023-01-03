@@ -1,175 +1,142 @@
 package com.example.test.service;
 
-import com.example.test.Mockup;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
+import com.example.test.dto.communication.NoteDTO;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
+import com.example.test.repository.communication.IMessageRepository;
+import com.example.test.repository.communication.INoteRepository;
+import com.example.test.repository.ride.IRideRepository;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
-import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class UserService implements IUserService {
 
-    Mockup mockup = new Mockup();
-    ArrayList<User> users = mockup.users;
-    ArrayList<Note> notes = mockup.notes;
-    ArrayList<Ride> rides = mockup.rides;
-    ArrayList<Message> messages = mockup.messages;
+    @Autowired
+    IUserRepository userRepository;
+    @Autowired
+    INoteRepository noteRepository;
+    @Autowired
+    IRideRepository rideRepository;
+    @Autowired
+    IMessageRepository messageRepository;
 
-    @SneakyThrows
     @Override
-    public List<Ride> getRides(Long id, int page, int size, String sort, String from, String to) {
+    @Transactional
+    public List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to) {
         // todo page, size
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        Date fromDate = formatter.parse(from);;
-        Date toDate = formatter.parse(to);
-
-        List<Ride> userRides = new ArrayList<>();
-        for (Ride r : rides) {
-            // check for driver
-            if(Objects.equals(r.getDriver().getId(), id) && r.getStartTime().after(fromDate)
-                    && r.getStartTime().before(toDate))
-                userRides.add(r);
-            // checking for passenger
-            for(Passenger p : r.getPassengers() ) {
-                if(Objects.equals(p.getId(), id) && r.getStartTime().after(fromDate)
-                && r.getStartTime().before(toDate)) {
-                    userRides.add(r);
-                }
-            }
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null) return null;
+        List<Ride> rides = rideRepository.findByPassengers_id(id);
+        if (rides.isEmpty()) {
+            rides = rideRepository.findRidesByDriverId(id);
+            System.out.println(rides);
+            if (rides.isEmpty()) return null;
         }
-        if(!userRides.isEmpty()) {
-            userRides.sort(Comparator.comparing(Ride::getStartTime));
-            return userRides;
+        // convert to DTO
+        List<RideDTO> rideDTOS = new ArrayList<>();
+        for (Ride ride : rides) {
+            rideDTOS.add(new RideDTO(ride));
         }
-        return null;
+        return rideDTOS;
     }
 
     @Override
     // page:1, size:5
-    public List<User> get(int page, int size) {
-        List<User> usersFromPage = new ArrayList<>();
-        int last = page*size;
-        for(int i = last-size; i<last; i++) {
-            try {
-                usersFromPage.add(users.get(i));
-            } catch (Exception e) {
-                break;
-            }
-        } return usersFromPage;
+    public List<UserDTO> get(int page, int size) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        // list of users is never empty or null
+        for(User user : userRepository.findAll()) {
+            userDTOS.add(new UserDTO(user));
+        }
+        return userDTOS;
     }
 
     @Override
     public List<String> login(String email, String password) {
-        List<String> tokens = new ArrayList<>();
-        for (User u : users) {
-            if(Objects.equals(u.getEmail(), email) && Objects.equals(u.getPassword(), password)) {
-                tokens.add("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-                tokens.add("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-                return tokens;
-            }
-        }
         return null;
     }
 
     @Override
-    public List<Message> getMessages(Long id) {
-        List<Message> userMessage = new ArrayList<>();
-        for(Message m : messages) {
-            if(Objects.equals(m.getReceiver().getId(), id)) userMessage.add(m);
-            else if (Objects.equals(m.getSender().getId(), id)) userMessage.add(m);
+    @Transactional
+    public List<MessageDTO> getMessages(Long id) {
+        List<Message> messages = messageRepository.findMessageBySenderIdOrReceiverId(id, id);
+        if(messages.isEmpty()) return null;
+        // convert to DTO
+        List<MessageDTO> messageDTOS = new ArrayList<>();
+        for(Message message : messages) {
+            messageDTOS.add(new MessageDTO(message));
         }
-        if (!userMessage.isEmpty()) return userMessage;
-        return null;
+        return messageDTOS;
     }
 
     @Override
-    public Message insertMessage(Long id, MessageDTO requestMessage) {
-        User u = findUserById(id);
-        if (u == null) return null;
-        Ride r = findRideById(requestMessage.getRideId());
-        if (r == null) return null;
+    public MessageDTO insertMessage(Long senderId, MessageDTO requestMessage) {
+        User sender = userRepository.findById(senderId).orElse(null);
+        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElse(null);
+        User receiver = userRepository.findById(requestMessage.getReceiverId()).orElse(null);
+        if(sender == null || ride == null || receiver == null) return null;
+
         Message message = new Message();
-        message.setId(messages.get(messages.size()-1).getId()+1);
         message.setTimeOfSending(new Date());
-        message.setSender(u);
-        message.setReceiver(findUserById(requestMessage.getReceiverId()));
+        message.setSender(sender);
+        message.setReceiver(receiver);
         message.setMessage(requestMessage.getMessage());
         message.setType(MessageType.valueOf(requestMessage.getType()));
-        message.setRide(r);
-        return message;
+        message.setRide(ride);
+        return new MessageDTO(message);
     }
 
     @Override
     public Boolean block(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(true);
-                return true;
-            }
-        } return false;
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return false;
+        user.setBlocked(true);
+        userRepository.save(user);
+        return true;
     }
 
     @Override
     public Boolean unblock(Long id) {
-        for(User user : users) {
-            if(Objects.equals(user.getId(), id)) {
-                user.setBlocked(false);
-                return true;
-            }
-        } return false;
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return false;
+        user.setBlocked(false);
+        userRepository.save(user);
+        return true;
     }
 
     @Override
-    public Note insertNote(Long id, Note requestNote) {
-        User u = findUserById(id);
-        if (u == null) return null;
-        requestNote.setId(notes.get(notes.size()-1).getId()+1);
-        requestNote.setDate(new Date());
-        requestNote.setUser(u);
+    public NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return null;
+        Note note = new Note(requestNote);
+        note.setUser(user);
+        noteRepository.save(note);
+        requestNote.setId(note.getId());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        requestNote.setDate(formatter.format(note.getDate()));
         return requestNote;
     }
 
     @Override
-    public List<Note> getNotes(Long id, int page, int size) {
-        List<Note> userNotes = new ArrayList<>();
-        int last = page*size;
-        for(int i = last-size; i<last; i++) {
-            try {
-                Note note = notes.get(i);
-                if (Objects.equals(note.getUser().getId(), id)) {
-                    userNotes.add(notes.get(i));
-                }
-            } catch (Exception e) {
-                break;
-            }
-        } if (!userNotes.isEmpty()) return userNotes;
-        return null;
-    }
-
-    private User findUserById(Long id)
-    {
-        for (User u : users)
-        {
-            if (u.getId().equals(id)) return u;
-        }
-        return null;
-    }
-
-    private Ride findRideById(Long id)
-    {
-        for (Ride r : rides)
-        {
-            if (r.getId().equals(id)) return r;
-        }
-        return null;
+    public AllDTO<NoteDTO> getNotes(Long id, int page, int size) {
+        List<Note> userNotes = noteRepository.findByUserId(id);
+        List<NoteDTO> userNoteDTOs = new ArrayList<>();
+        for (Note note : userNotes) userNoteDTOs.add(new NoteDTO(note));
+        return new AllDTO<>(userNoteDTOs.size(), userNoteDTOs);
     }
 }

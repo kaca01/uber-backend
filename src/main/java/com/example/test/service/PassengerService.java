@@ -2,85 +2,116 @@ package com.example.test.service;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.UserActivation;
+import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
+import com.example.test.repository.ride.IRideRepository;
+import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.repository.user.IUserActivationRepository;
 import com.example.test.service.interfaces.IPassengerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class PassengerService implements IPassengerService {
 
-    private ArrayList<Passenger> passengers = createPassengers();
+    @Autowired
+    private IPassengerRepository passengerRepository;
+    @Autowired
+    private IRideRepository rideRepository;
+    @Autowired
+    private IUserActivationRepository userActivationRepository;
 
+    //get only those whose active status is true
     @Override
-    public List<Passenger> getAll(Integer page, Integer size)
+    public List<UserDTO> getAll(Integer page, Integer size)
     {
-        return passengers;
-    }
+        List<Passenger> passengers = passengerRepository.findAllByActiveIsTrue();
 
-    // kako funkcionise oko cekanja na mail? Da se ovdje doda u bazu i stavi activation=false,
-    // pa dole kad se aktivira prebaci se na activation true
-    @Override
-    public Passenger insert(Passenger passenger)
-    {
-        passenger.setId((passengers.get(passengers.size() - 1).getId()+1));
-        this.passengers.add(passenger);
-        return passenger;
-    }
+        // convert passengers to DTOs
+        List<UserDTO> passengersDTO = new ArrayList<>();
+        for (Passenger p : passengers) {
+            passengersDTO.add(new UserDTO(p));
+        }
 
-    @Override
-    public Passenger update(Passenger passenger, Long passengerId)
-    {
-        Passenger p = findUserById(passengerId);
-        p.setName(passenger.getName());
-        p.setSurname(passenger.getSurname());
-        p.setProfilePicture(passenger.getProfilePicture());
-        p.setTelephoneNumber(passenger.getTelephoneNumber());
-        p.setEmail(passenger.getEmail());
-        p.setAddress(passenger.getAddress());
-        p.setId(passengerId);
-        p.setPassword(passenger.getPassword());
-        return p;
+        return passengersDTO;
     }
 
     @Override
-    public List<Ride> getRidesByPassenger(Long passengerId)
+    public UserDTO insert(UserDTO passengerDTO)
     {
+        Passenger passenger = new Passenger(passengerDTO);
+        passenger.setActive(false);
+        passenger.setBlocked(false);
+        passenger = passengerRepository.save(passenger);
+        userActivationRepository.save(new UserActivation(passenger, new Date(), 180));
+        return new UserDTO(passenger);
+    }
+
+    @Override
+    public UserDTO update(UserDTO passengerDTO, Long passengerId)
+    {
+        Passenger passenger = new Passenger(passengerDTO);
         Passenger p = findUserById(passengerId);
         if (p == null) return null;
-        return new ArrayList<Ride>();
+        p.setName(passenger.getName());
+        p.setSurname(passenger.getSurname());
+        if (passenger.getProfilePicture() != null) p.setProfilePicture(passenger.getProfilePicture());
+        if (passenger.getTelephoneNumber() != null) p.setTelephoneNumber(passenger.getTelephoneNumber());
+        p.setEmail(passenger.getEmail());
+        if (passenger.getAddress() != null) p.setAddress(passenger.getAddress());
+        p.setPassword(passenger.getPassword());
+        p = passengerRepository.save(p);
+        return new UserDTO(p);
+    }
+
+    @Transactional
+    @Override
+    public List<RideDTO> getRidesByPassenger(Long passengerId)
+    {
+        List<Ride> rides = rideRepository.findByPassengers_id(passengerId);
+        if(rides == null) return null;
+
+        // convert rides to DTOs
+        List<RideDTO> ridesDTO = new ArrayList<>();
+        for (Ride r : rides) {
+            ridesDTO.add(new RideDTO(r));
+        }
+
+        return ridesDTO;
     }
 
     @Override
-    public Passenger findUserById(Long id)
+    public UserDTO findOne(Long id)
     {
-        for (Passenger p : passengers)
-        {
-            if (p.getId().equals(id)) return p;
-        }
-        return null;
+        Passenger p = findUserById(id);
+        if (p == null) return null;
+        return new UserDTO(p);
     }
 
-    //activationId == id of the passenger
-    //treba da ako nije isteklo vrijeme, da user-u prebacim aktivnost na active
+    private Passenger findUserById(Long id)
+    {
+        return passengerRepository.findById(id).orElse(null);
+    }
+
     @Override
     public Boolean activatePassenger(Long activationId) {
         Passenger p = findUserById(activationId);
-        return p != null;
-    }
-
-    private ArrayList<Passenger> createPassengers()
-    {
-        Passenger p1 = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        Passenger p2 = new Passenger(2L, "Pera", "Peric", "U3dhZ2dlciByb2Nrcw==", "+381123123", "pera.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        Passenger p3 = new Passenger(3L, "Neko", "Nekic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "neko.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        Passenger p4 = new Passenger(4L, "Bosko", "Radojcic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "bosko.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        ArrayList<Passenger> ps = new ArrayList<>();
-        ps.add(p1);
-        ps.add(p2);
-        ps.add(p3);
-        ps.add(p4);
-        return ps;
+        UserActivation activation = userActivationRepository.findByUser_id(activationId);
+        if (new Date().before(new Date(activation.getDate().getTime() + activation.getLife()*1000L))) {
+            p.setActive(true);
+            passengerRepository.save(p);
+            userActivationRepository.delete(activation); //todo discuss with the team whether to delete this or not
+            return true;
+        } else {
+            userActivationRepository.delete(activation);
+            passengerRepository.delete(p);
+            return false;
+        }
     }
 }

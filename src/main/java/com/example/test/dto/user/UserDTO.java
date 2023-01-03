@@ -2,32 +2,39 @@ package com.example.test.dto.user;
 
 import com.example.test.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Data
 public class UserDTO {
 
     private Long id;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String name;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String surname;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String profilePicture;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String telephoneNumber;
     private String email;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String address;
-    @JsonIgnore
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String password;
-
-
-    public UserDTO() {
-    }
+    private boolean isBlocked;
 
     public UserDTO(User user)
     {
         this(user.getId(), user.getName(), user.getSurname(), user.getProfilePicture(), user.getTelephoneNumber(),
-                user.getEmail(), user.getAddress());
+                user.getEmail(), user.getAddress(), user.isBlocked());
     }
 
     // response
     public UserDTO(Long id, String name, String surname, String profilePicture, String telephoneNumber,
-                   String email, String address) {
+                   String email, String address, boolean isBlocked) {
         super();
         this.id = id;
         this.name = name;
@@ -36,6 +43,7 @@ public class UserDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
+        this.isBlocked = isBlocked;
     }
 
     // response
@@ -54,71 +62,6 @@ public class UserDTO {
         this.telephoneNumber = telephoneNumber;
         this.email = email;
         this.address = address;
-        this.password = password;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public String getTelephoneNumber() {
-        return telephoneNumber;
-    }
-
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
     }
 }

@@ -1,40 +1,49 @@
 package com.example.test.domain.vehicle;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.dto.vehicle.VehicleDTO;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@AllArgsConstructor
+@Data
+@Entity
 public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
     private VehicleType type;
+    @Column(name = "model", nullable = false)
     private String model;
+    @Column(name = "licenseNumber", nullable = false)
     private String licenseNumber;
+    @Column(name = "passengerSeats", nullable = false)
     private int passengerSeats;
+    @ManyToOne(fetch = FetchType.EAGER)
     private Location currentLocation;
+    @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;
+    @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
+
 
     public Vehicle() {
         this.type = new VehicleType();
         this.currentLocation = new Location();
     }
 
-    public Vehicle(Long id, VehicleType type, String model, String licenseNumber, int passengerSeats,
-                   Location currentLocation, boolean babyTransport, boolean petTransport) {
-        this.id = id;
-        this.type = type;
-        this.model = model;
-        this.licenseNumber = licenseNumber;
-        this.passengerSeats = passengerSeats;
-        this.currentLocation = currentLocation;
-        this.babyTransport = babyTransport;
-        this.petTransport = petTransport;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Vehicle(VehicleDTO vehicleDTO) {
+        this.id = vehicleDTO.getId();
+        this.licenseNumber = vehicleDTO.getLicenseNumber();
+        this.passengerSeats = vehicleDTO.getPassengerSeats();
+        this.currentLocation = vehicleDTO.getCurrentLocation();
+        this.babyTransport = vehicleDTO.isBabyTransport();
+        this.petTransport = vehicleDTO.isPetTransport();
+        this.model = vehicleDTO.getModel();
     }
 
     public VehicleType getType()
@@ -43,77 +52,10 @@ public class Vehicle {
         return type;
     }
 
-    public void setType(VehicleType type) {
-        this.type = type;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getLicenseNumber() {
-        return licenseNumber;
-    }
-
-    public void setLicenseNumber(String licenseNumber) {
-        this.licenseNumber = licenseNumber;
-    }
-
-    public int getPassengerSeats() {
-        return passengerSeats;
-    }
-
-    public void setPassengerSeats(int passengerSeats) {
-        this.passengerSeats = passengerSeats;
-    }
-
     public Location getCurrentLocation()
     {
         if (this.currentLocation == null) this.currentLocation = new Location();
         return currentLocation;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
-
-    public boolean isBabyTransport() {
-        return babyTransport;
-    }
-
-    public void setBabyTransport(boolean babyTransport) {
-        this.babyTransport = babyTransport;
-    }
-
-    public boolean isPetTransport() {
-        return petTransport;
-    }
-
-    public void setPetTransport(boolean petTransport) {
-        this.petTransport = petTransport;
-    }
-
-    @Override
-    public String toString() {
-        return "Vehicle{" +
-                "id=" + id +
-                ", type=" + type +
-                ", model='" + model + '\'' +
-                ", licenseNumber='" + licenseNumber + '\'' +
-                ", passengerSeats=" + passengerSeats +
-                ", currentLocation=" + currentLocation +
-                ", babyTransport=" + babyTransport +
-                ", petTransport=" + petTransport +
-                '}';
-    }
-
-    // TODO move this to service
-    VehicleType findVehicleTypeByName(String name) {
-        // TODO not implemented yet
-        return null;
-    }
 }

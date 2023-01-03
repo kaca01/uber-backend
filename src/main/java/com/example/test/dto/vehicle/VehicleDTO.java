@@ -3,9 +3,15 @@ package com.example.test.dto.vehicle;
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.vehicle.Vehicle;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
+@NoArgsConstructor
+@Data
 public class VehicleDTO {
 
     private Long id;
@@ -17,10 +23,6 @@ public class VehicleDTO {
     private int passengerSeats;
     private boolean babyTransport;
     private boolean petTransport;
-
-
-    public VehicleDTO() {
-    }
 
     public VehicleDTO(Driver driver, Vehicle vehicle) {
         this(vehicle.getId(), driver.getId(), vehicle.getType().getName().toString(), vehicle.getModel(), vehicle.getLicenseNumber(),
@@ -55,75 +57,4 @@ public class VehicleDTO {
         this.petTransport = petTransport;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Long driverId) {
-        this.driverId = driverId;
-    }
-
-    public String getVehicleType() {
-        return vehicleType;
-    }
-
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getLicenseNumber() {
-        return licenseNumber;
-    }
-
-    public void setLicenseNumber(String licenseNumber) {
-        this.licenseNumber = licenseNumber;
-    }
-
-    public Location getCurrentLocation() {
-        return currentLocation;
-    }
-
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-    }
-
-    public int getPassengerSeats() {
-        return passengerSeats;
-    }
-
-    public void setPassengerSeats(int passengerSeats) {
-        this.passengerSeats = passengerSeats;
-    }
-
-    public boolean getBabyTransport() {
-        return babyTransport;
-    }
-
-    public void setBabyTransport(boolean babyTransport) {
-        this.babyTransport = babyTransport;
-    }
-
-    public boolean getPetTransport() {
-        return petTransport;
-    }
-
-    public void setPetTransport(boolean petTransport) {
-        this.petTransport = petTransport;
-    }
 }

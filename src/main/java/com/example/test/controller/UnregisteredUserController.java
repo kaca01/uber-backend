@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/unregisteredUser/")
 public class UnregisteredUserController {
@@ -23,7 +24,7 @@ public class UnregisteredUserController {
             throws Exception {
 
         // the data is not stored in the database, so we can pass the dto object to the service
-        List<Double> estimatedValues = service.getEstimationTimeAndCost(unregisteredUserDTO);
+        List<Integer> estimatedValues = service.getEstimationTimeAndCost(unregisteredUserDTO);
 
         if(estimatedValues == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

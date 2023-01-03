@@ -1,62 +1,34 @@
 package com.example.test.service;
 
-import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.communication.Message;
-import com.example.test.domain.communication.Rejection;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.Passenger;
-import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.dto.communication.PanicDTO;
 import com.example.test.enumeration.MessageType;
-import com.example.test.enumeration.RideStatus;
-import com.example.test.enumeration.VehicleTypeName;
+import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.service.interfaces.IPanicService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PanicService implements IPanicService{
 
+    @Autowired
+    private IMessageRepository messageRepository;
+
+    @Transactional
     @Override
-    public List<Message> getAll()
+    public List<PanicDTO> getAll()
     {
-        ArrayList<Message> panics = new ArrayList<>();
+        List<Message> messages = messageRepository.findByType(MessageType.PANIC);
+        // convert panics to DTOs
+        List<PanicDTO> panicsDTO = new ArrayList<>();
+        for (Message m : messages) {
+            panicsDTO.add(new PanicDTO(m));
+        }
 
-        Ride ride = new Ride();
-        setRideData(ride);
-        Message m1 = new Message((long)15, ride.getDriver(), null, "reason1", new Date(), MessageType.PANIC, ride);
-        Message m2 = new Message((long)16, ride.getDriver(), null, "reason2", new Date(), MessageType.PANIC, ride);
-        Message m3 = new Message((long)17, ride.getDriver(), null, "reason3", new Date(), MessageType.PANIC, ride);
-
-        panics.add(m1);
-        panics.add(m2);
-        panics.add(m3);
-        return panics;
+        return panicsDTO;
     }
 
-    private Ride setRideData(Ride ride)
-    {
-        ArrayList<Passenger> passengers = new ArrayList<>();
-        Passenger p1 = new Passenger(1L, "Mica", "Micic", "U3dhZ2dlciByb2Nrcw==", "+381123123", "mica.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        Passenger p2 = new Passenger(2L, "Pera", "Peric", "U3dhZ2dlciByb2Nrcw==", "+381123123", "pera.micic@gmail.com", "Nikole Pasica 25", "sifra123", false, true, null);
-        passengers.add(p1);
-        passengers.add(p2);
-        ride.setPassengers(passengers);
-        ride.setStartTime(new Date());
-        ride.setEndTime(new Date());
-        ride.setTotalCost(1235);
-        Vehicle v = new Vehicle();
-        ride.setDriver(new Driver((long)123, "Vozac", "Vozacevic", "jkavajnvan",
-                "+381 789456","email", "Neka adresa", "sifra", false,
-                true, 567, new ArrayList<WorkingHour>(), v));
-        ride.setVehicle(v);
-        v.getType().setName(VehicleTypeName.STANDARD);  //todo dont hardcode this
-        ride.setEstimatedTimeInMinutes(5);
-        ride.setRejection(new Rejection());
-        ride.setStatus(RideStatus.ACTIVE);
-        return ride;
-    }
 }

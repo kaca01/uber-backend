@@ -1,7 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.domain.communication.Message;
-import com.example.test.dto.communication.AllPanicsDTO;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.service.interfaces.IPanicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +21,14 @@ public class PanicController {
 
     @Autowired
     IPanicService service;
-    
+
     //Overview of all panic notifications
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllPanicsDTO> getPanicMessages()
+    public ResponseEntity<AllDTO<PanicDTO>> getPanicMessages()
     {
+        List<PanicDTO> messages = service.getAll();
 
-        List<Message> messages = service.getAll();
-
-        // convert panics to DTOs
-        ArrayList<PanicDTO> panicsDTO = new ArrayList<>();
-        for (Message m : messages) {
-            panicsDTO.add(new PanicDTO(m));
-        }
-        return new ResponseEntity<AllPanicsDTO>(new AllPanicsDTO(panicsDTO.size(), panicsDTO), HttpStatus.OK);
+        AllDTO<PanicDTO> allPanics = new AllDTO<>(messages.size(), messages);
+        return new ResponseEntity<>(allPanics, HttpStatus.OK);
     }
 }
