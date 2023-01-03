@@ -1,14 +1,12 @@
 package com.example.test.controller;
 
-import com.example.test.domain.communication.Message;
-import com.example.test.domain.communication.Note;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.ChangePasswordDTO;
 import com.example.test.dto.user.LoginDTO;
+import com.example.test.dto.user.ResetPasswordDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -27,49 +25,60 @@ public class UserController {
     @Autowired
     private IUserService service;
 
+    // Change password of a user
+    @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody ChangePasswordDTO changePasswordDTO)
+    {
+        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Reset password of user
+    @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> sendResetEmail(@PathVariable Long id)
+    {
+        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Change password of a user with the reset code
+    @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
+    {
+        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     // Rides of the user
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO> getRides(@PathVariable int id,
+    public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size,
                                            @RequestParam String sort,
                                            @RequestParam String from,
-                                           @RequestParam String to) {
+                                           @RequestParam String to)
+    {
 
-        List<Ride> rides = service.getRides((long) id, page, size, sort, from, to);
+        List<RideDTO> rides = service.getRides(id, page, size, sort, from, to);
 
         if(rides == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        ArrayList<RideDTO> ridesDTO = new ArrayList<>();
-        for (Ride ride : rides) {
-            ridesDTO.add(new RideDTO(ride));
-        }
         // todo za 400
-        return new ResponseEntity<>(new AllDTO(ridesDTO.size(), ridesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO<>(rides.size(), rides), HttpStatus.OK);
     }
 
     // Getting multiple of them for the reason of showing a list
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO> get(@RequestParam(defaultValue = "1") int page,
-                                           @RequestParam(defaultValue = "10") int size) {
-
-        List<User> users = service.get(page, size);
-
-        List<UserDTO> usersDTO = new ArrayList<>();
-        for(User user : users) {
-            usersDTO.add(new UserDTO(user));
-        }
-        return new ResponseEntity<>(new AllDTO(usersDTO.size(), usersDTO), HttpStatus.OK);
+    public ResponseEntity<AllDTO<UserDTO>> get(@RequestParam(defaultValue = "1") int page,
+                                      @RequestParam(defaultValue = "10") int size)
+    {
+        List<UserDTO> users = service.get(page, size);
+        return new ResponseEntity<>(new AllDTO<>(users.size(), users), HttpStatus.OK);
     }
 
-    // login
+    // todo login
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) throws Exception {
-
+    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) throws Exception
+    {
         List<String> tokens = service.login(loginDTO.getEmail(), loginDTO.getPassword());
-
         if(tokens == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -78,40 +87,33 @@ public class UserController {
 
     // Returns a list of user messages
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO> getMessages(@PathVariable int id) {
-
-        List<Message> messages = service.getMessages((long) id);
-
+    public ResponseEntity<AllDTO<MessageDTO>> getMessages(@PathVariable int id)
+    {
+        List<MessageDTO> messages = service.getMessages((long) id);
         if(messages == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        List<MessageDTO> messagesDTO = new ArrayList<>();
-        for(Message message : messages) {
-            messagesDTO.add(new MessageDTO(message));
-        }
         // todo za 400
-        return new ResponseEntity<>(new AllDTO(messagesDTO.size(), messagesDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new AllDTO<>(messages.size(), messages), HttpStatus.OK);
     }
 
     // Send a message to the user
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO) throws Exception {
-
-        Message message = service.insertMessage((long) id, messageDTO);
-
+    public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO)
+            throws Exception
+    {
+        MessageDTO message = service.insertMessage((long) id, messageDTO);
         if(message == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
         // todo za 400
-        return new ResponseEntity<>(new MessageDTO(message), HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // Blocking the user from the part of the administrator
     @PutMapping(value = "/user/{id}/block", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> block(@PathVariable int id) throws Exception {
-
+    public ResponseEntity<Boolean> block(@PathVariable int id) throws Exception
+    {
         Boolean blockedUser = service.block((long) id);
         if (!blockedUser) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -122,10 +124,9 @@ public class UserController {
 
     // Unblocking user from the administrator
     @PutMapping(value = "/user/{id}/unblock", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> unblock(@PathVariable int id) throws Exception {
-
+    public ResponseEntity<Boolean> unblock(@PathVariable int id) throws Exception
+    {
         Boolean unblockedUser = service.unblock((long) id);
-
         if (!unblockedUser) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -133,37 +134,28 @@ public class UserController {
     }
 
     // Creating note
-    @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @RequestBody NoteDTO requestNote) throws Exception {
-
-        Note note = new Note(requestNote);
-        note = service.insertNote((long) id, note);
-
-        if(note == null) {
+    @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE,
+                                               produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @RequestBody NoteDTO requestNote) throws Exception
+    {
+        NoteDTO noteDTO = service.insertNote((long) id, requestNote);
+        if(noteDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // todo za 400
-        return new ResponseEntity<>(new NoteDTO(note), HttpStatus.OK);
+        return new ResponseEntity<>(noteDTO, HttpStatus.OK);
     }
 
     // Getting notes for the user
     @GetMapping(value ="/user/{id}/note", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @RequestParam int page,
-                                                @RequestParam int size) {
-
-        List<Note> notes = service.getNotes((long) id, page, size);
-
-        if(notes == null) {
+                                                    @RequestParam int size)
+    {
+        AllDTO<NoteDTO> noteDTOS = service.getNotes((long) id, page, size);
+        if(noteDTOS == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        List<NoteDTO> notesDTO = new ArrayList<>();
-        for(Note note : notes) {
-            notesDTO.add(new NoteDTO(note));
-        }
         // todo za 400
-        AllDTO<NoteDTO> allNotes = new AllDTO<>(notesDTO.size(), notesDTO);
-
-        return new ResponseEntity<>(allNotes, HttpStatus.OK);
+        return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
     }
 }

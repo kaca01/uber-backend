@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IUnregisteredUserService {
 
-    public List<Double> getEstimationTimeAndCost(UnregisteredUserDTO unregisteredUserDTO);
+    List<Integer> getEstimationTimeAndCost(UnregisteredUserDTO unregisteredUserDTO);
 }

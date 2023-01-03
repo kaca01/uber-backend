@@ -128,19 +128,19 @@ insert into working_hour(start, end, driver_id) values ('2022-12-22T07:07:45.456
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Hi, I am on  location',
                                                                                              '2022-12-24T20:54:24.893Z', 1, 1, 1, 5);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Please help me',
-                                                                                             '2022-11-22T18:15:24.893Z', 2, null, 1, 1);
+                                                                                             '2022-11-22T18:15:24.893Z', 2, 2, 1, 1);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Hurry up, I am waiting',
                                                                                              '2022-12-24T20:54:24.893Z', 1, 1, 2, 5);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Accept my unconditional love',
                                                                                              '2022-12-24T22:17:24.893Z', 1, 2, 2, 6);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z', 0, 1, 1, null);
+                                                                                             '2022-12-24T22:17:24.893Z', 0, 1, 1, 3);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z', 0, 1, 2, null);
+                                                                                             '2022-12-24T22:17:24.893Z', 0, 1, 2, 4);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-15T20:17:24.893Z', 0, 3, 3, null);
+                                                                                             '2022-12-15T20:17:24.893Z', 0, 3, 3, 4);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
-                                                                                             '2022-12-24T22:17:24.893Z', 0, 4, 4, null);
+                                                                                             '2022-12-24T22:17:24.893Z', 0, 4, 4, 6);
 
 insert into note(date, message, user_id) values ('2022-12-24T22:17:24.893Z', 'He is always late for his rides', 5);
 insert into note(date, message, user_id) values ('2022-12-20T04:58:57.893Z', 'Sent inappropriate message to passenger', 6);

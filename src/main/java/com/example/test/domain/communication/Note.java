@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -32,8 +34,9 @@ public class Note {
         this.user = null;
     }
 
-    public Note(NoteDTO noteDTO) {
+    public Note(NoteDTO noteDTO) throws ParseException {
         this.setMessage(noteDTO.getMessage());
+        this.setDate(new Date());
     }
 
 }

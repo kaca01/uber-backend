@@ -2,6 +2,7 @@ package com.example.test.dto.user;
 
 import com.example.test.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,14 +11,19 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 
     private Long id;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String name;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String surname;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String profilePicture;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String telephoneNumber;
     private String email;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String address;
+    @JsonInclude( JsonInclude.Include.NON_NULL)
     private String password;
-
     private boolean isBlocked;
 
     public UserDTO(User user)

@@ -30,4 +30,8 @@ public class Review {
         this.setRating(reviewDTO.getRating());
         this.setComment(reviewDTO.getComment());
     }
+
+    public Long getPassengerId() {
+        return this.getPassenger().getId();
+    }
 }
