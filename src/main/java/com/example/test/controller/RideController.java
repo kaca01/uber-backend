@@ -1,10 +1,10 @@
 package com.example.test.controller;
 
-import com.example.test.domain.communication.Message;
-import com.example.test.domain.ride.Ride;
-import com.example.test.dto.ErrorDTO;
+import com.example.test.domain.ride.FavoriteOrder;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.DocumentDTO;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -86,7 +88,7 @@ public class RideController {
     @Transactional
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PanicDTO> setPanic(@RequestBody String reason, @PathVariable Long id) throws Exception
+    public ResponseEntity<PanicDTO> setPanic(@RequestBody PanicDTO reason, @PathVariable Long id) throws Exception
     {
         PanicDTO message = service.setPanic(reason, id);
 
@@ -142,7 +144,7 @@ public class RideController {
     @Transactional
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@RequestBody String reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@RequestBody PanicDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
 
@@ -151,5 +153,39 @@ public class RideController {
         }
         //todo error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
+    }
+
+    //creating a ride
+    @Transactional
+    @PostMapping(value = "/favorites", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@RequestBody FavoriteOrder favoriteOrder) throws Exception
+    {
+        //todo insert to passenger and save it
+        FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder);
+
+        if (order == null) {return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
+
+        return new ResponseEntity<FavoriteOrder>(order, HttpStatus.OK);
+    }
+
+    @Transactional
+    @GetMapping(value = "/favorites", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AllDTO<FavoriteOrder>> getFavoriteLocations()
+    {
+        //todo get by user from token?
+        AllDTO<FavoriteOrder> allOrders = service.getAllFavoriteOrders();
+
+        return new ResponseEntity<>(allOrders, HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping(value = "/favorites/{id}")
+    public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) throws Exception {
+        boolean successful = service.deleteFavoriteLocation(id);
+
+        if (!successful) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

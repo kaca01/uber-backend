@@ -1,5 +1,6 @@
 package com.example.test.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ abstract public class User {
     @Column(name = "address")
     private String address;
     @Column(name = "password", nullable=false)
+    @JsonIgnore
     private String password;
     @Column(name = "blocked", nullable=false)
     private boolean blocked;

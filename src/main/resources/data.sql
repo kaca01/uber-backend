@@ -149,10 +149,10 @@ insert into review(comment, rating, type, passenger_id, ride_id) values ('Great 
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Music was toooooo loud', 3, 0, 4, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Car is could be newer -.-', 2, 1, 4, 4);
 
-insert into favorite_order(favorite_name, vehicle_type, baby_transport, pet_transport) values ('Home to work', 0, true, false);
-insert into favorite_order(favorite_name, vehicle_type, baby_transport, pet_transport) values ('Home to university', 1, false, false);
-insert into favorite_order(favorite_name, vehicle_type, baby_transport, pet_transport) values ('Work to Cinema', 2, false, true);
-insert into favorite_order(favorite_name, vehicle_type, baby_transport, pet_transport) values ('University to home', 0, true, false);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Home to work', 1, 0, true, false);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Home to university', 1, 1, false, false);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Work to Cinema', 2, 2, false, true);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('University to home', 2, 0, true, false);
 
 insert into favorite_order_passengers(favorite_order_id, passengers_id) values (1, 1);
 insert into favorite_order_passengers(favorite_order_id, passengers_id) values (1, 2);
@@ -167,11 +167,6 @@ insert into favorite_order_locations(favorite_order_id, locations_id) values (1,
 insert into favorite_order_locations(favorite_order_id, locations_id) values (2, 2);
 insert into favorite_order_locations(favorite_order_id, locations_id) values (3, 3);
 insert into favorite_order_locations(favorite_order_id, locations_id) values (4, 4);
-
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (1, 1);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (1, 2);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (2, 3);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (2, 4);
 
 
 
