@@ -3,7 +3,9 @@ package com.example.test.domain.user;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.user.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -37,9 +39,39 @@ public class Driver extends User {
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                   String address, String password, boolean blocked, boolean active,
                   int drivingLicense, Set<WorkingHour> workingHours, Vehicle vehicle) {
-        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active);
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active, new ArrayList<>());
         this.drivingLicense = drivingLicense;
         this.workingHours = workingHours;
         this.vehicle = vehicle;
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.getRoles();
+    }
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActive();
     }
 }
