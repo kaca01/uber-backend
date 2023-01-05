@@ -153,3 +153,19 @@ insert into review(comment, rating, type, passenger_id, ride_id) values ('Everyt
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Great car', 5, 1, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Music was toooooo loud', 3, 0, 4, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Car is could be newer -.-', 2, 1, 4, 4);
+
+insert into role (name) values ('ROLE_PASSENGER');
+insert into role (name) values ('ROLE_DRIVER');
+insert into role (name) values ('ROLE_ADMIN');
+
+insert into user_role (user_id, role_id) VALUES (1, 1); 
+insert into user_role (user_id, role_id) VALUES (2, 1); 
+insert into user_role (user_id, role_id) VALUES (3, 1);
+insert into user_role (user_id, role_id) VALUES (4, 1); 
+insert into user_role (user_id, role_id) VALUES (5, 2); 
+insert into user_role (user_id, role_id) VALUES (6, 2);
+insert into user_role (user_id, role_id) VALUES (7, 2); 
+insert into user_role (user_id, role_id) VALUES (8, 2); 
+insert into user_role (user_id, role_id) VALUES (9, 3); 
+insert into user_role (user_id, role_id) VALUES (10, 3); 
+insert into user_role (user_id, role_id) VALUES (11, 3); 

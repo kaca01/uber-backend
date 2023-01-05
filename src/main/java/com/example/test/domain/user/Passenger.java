@@ -16,6 +16,7 @@ import java.util.*;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Passenger extends User {
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     //@JoinColumn(name = "passenger_id")
     private Set<Location> favoriteLocations = new HashSet<>();
@@ -65,6 +66,6 @@ public class Passenger extends User {
 
     @Override
     public boolean isEnabled() {
-        return this.isActive();
+        return !this.isBlocked();
     }
 }

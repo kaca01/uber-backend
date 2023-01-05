@@ -20,6 +20,7 @@ public class Driver extends User {
 
     @Column(name = "drivingLicense", nullable = false)
     private int drivingLicense;
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "driver_id")
     private Set<WorkingHour> workingHours = new HashSet<>();
@@ -72,6 +73,6 @@ public class Driver extends User {
 
     @Override
     public boolean isEnabled() {
-        return this.isActive();
+        return !this.isBlocked();
     }
 }

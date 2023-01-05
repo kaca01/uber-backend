@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 public class UserController {
 
@@ -186,8 +187,7 @@ public class UserController {
         return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/whoami")
-//    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/currentUser")
     public User user(Principal user) {
         return this.service.findByEmail(user.getName());
     }

@@ -39,6 +39,6 @@ public class Admin extends User {
     }
     @Override
     public boolean isEnabled() {
-        return this.isActive();
+        return !this.isBlocked();
     }
 }
