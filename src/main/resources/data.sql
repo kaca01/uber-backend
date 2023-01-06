@@ -149,6 +149,7 @@ insert into note(date, message, user_id) values ('2022-10-11T09:11:07.893Z', 'Wa
 insert into review(comment, rating, type, passenger_id, ride_id) values ('I did not like the driver at all', 1, 0, 1, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values (null, 4, 0, 1, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Comfortable car!!!', 5, 1, 3, 2);
+insert into review(comment, rating, type, passenger_id, ride_id) values ('', 0, 0, 3, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Everything was great', 5, 0, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Great car', 5, 1, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Music was toooooo loud', 3, 0, 4, 4);
