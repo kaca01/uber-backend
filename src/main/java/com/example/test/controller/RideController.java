@@ -1,19 +1,21 @@
 package com.example.test.controller;
 
 import com.example.test.domain.ride.FavoriteOrder;
+import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.DocumentDTO;
+import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -22,6 +24,8 @@ public class RideController {
 
     @Autowired
     IRideService service;
+    @Autowired
+    IPassengerRepository passengerRepository;
 
     //creating a ride
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -155,13 +159,15 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    //creating a ride
     @Transactional
     @PostMapping(value = "/favorites", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@RequestBody FavoriteOrder favoriteOrder) throws Exception
     {
-        //todo insert to passenger and save it
-        FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Passenger p = passengerRepository.findByEmail(email);
+        FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, p);
 
         if (order == null) {return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
 
@@ -170,22 +176,29 @@ public class RideController {
 
     @Transactional
     @GetMapping(value = "/favorites", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<AllDTO<FavoriteOrder>> getFavoriteLocations()
     {
-        //todo get by user from token?
-        AllDTO<FavoriteOrder> allOrders = service.getAllFavoriteOrders();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Passenger p = passengerRepository.findByEmail(email);
+        AllDTO<FavoriteOrder> allOrders = service.getFavoriteOrdersByPassenger(p);
 
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
     }
 
     @Transactional
     @DeleteMapping(value = "/favorites/{id}")
+    @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) throws Exception {
-        boolean successful = service.deleteFavoriteLocation(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Passenger p = passengerRepository.findByEmail(email);
+        boolean successful = service.deleteFavoriteLocation(id, p);
 
         if (!successful) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

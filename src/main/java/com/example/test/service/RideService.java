@@ -156,7 +156,7 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder) {
+    public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, Passenger passengerT) {
         Set<Passenger> passengers = new HashSet<>();
         for (Passenger p : favoriteOrder.getPassengers())
         {
@@ -165,20 +165,24 @@ public class RideService implements IRideService {
             passengers.add(p);
         }
         favoriteOrder.setPassengers(passengers);
+        favoriteOrder.setPassenger(passengerT);
         return favoriteOrderRepository.save(favoriteOrder);
     }
 
     @Override
-    public AllDTO<FavoriteOrder> getAllFavoriteOrders() {
-        List<FavoriteOrder> orders = favoriteOrderRepository.findAll();
+    public AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p) {
+        List<FavoriteOrder> orders = favoriteOrderRepository.findByPassenger_Id(p.getId());
         return new AllDTO<FavoriteOrder>(orders.size(), orders);
     }
 
     @Override
-    public boolean deleteFavoriteLocation(Long id) {
+    public boolean deleteFavoriteLocation(Long id, Passenger p) {
         FavoriteOrder order = favoriteOrderRepository.findById(id).orElse(null);
         if (order == null) return false;
-        favoriteOrderRepository.delete(order);
-        return true;
+        if (Objects.equals(order.getPassenger().getId(), p.getId())){
+            favoriteOrderRepository.delete(order);
+            return true;
+        }
+        return false;
     }
 }
