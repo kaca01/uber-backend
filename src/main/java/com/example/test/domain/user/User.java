@@ -35,7 +35,6 @@ abstract public class User implements UserDetails {
     private String address;
     @JsonIgnore
     @Column(name = "password", nullable=false)
-    @JsonIgnore
     private String password;
 
     @Column(name = "last_password_reset_date")

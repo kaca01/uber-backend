@@ -1,4 +1,5 @@
 package com.example.test.domain.user;
+import com.example.test.domain.ride.Location;
 import com.example.test.dto.user.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
