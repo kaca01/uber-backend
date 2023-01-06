@@ -1,7 +1,5 @@
 package com.example.test.controller;
 
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -10,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {
@@ -36,6 +33,7 @@ public class PassengerController {
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<UserDTO>> getPassengers()
     {
         List<UserDTO> passengersDTO = service.getAll(0, 0);

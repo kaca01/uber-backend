@@ -1,32 +1,23 @@
 package com.example.test.controller;
 
-import com.example.test.domain.business.WorkingHour;
-import com.example.test.domain.user.Document;
-import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.User;
-import com.example.test.domain.vehicle.Vehicle;
-import com.example.test.domain.vehicle.VehicleType;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.DocumentDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.vehicle.VehicleDTO;
-import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-@CrossOrigin
 @RestController
 @RequestMapping("api/driver")
 public class DriverController {
@@ -44,6 +35,7 @@ public class DriverController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<UserDTO>> getAll() throws Exception{
         AllDTO<UserDTO> drivers = service.getAll();
 
