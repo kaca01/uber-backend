@@ -2,12 +2,13 @@ package com.example.test.domain.user;
 
 import com.example.test.domain.ride.Location;
 import com.example.test.dto.user.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Passenger extends User {
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     //@JoinColumn(name = "passenger_id")
     private Set<Location> favoriteLocations = new HashSet<>();
@@ -22,7 +24,7 @@ public class Passenger extends User {
     public Passenger(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                      String address, String password, boolean blocked, boolean active,
                      Set<Location> favoriteLocations) {
-        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, blocked, active);
+        super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active, new ArrayList<>());
         this.favoriteLocations = favoriteLocations;
     }
 
@@ -35,5 +37,35 @@ public class Passenger extends User {
         this.setAddress(passengerDTO.getAddress());
         this.setTelephoneNumber(passengerDTO.getTelephoneNumber());
         this.setPassword(passengerDTO.getPassword());
+    }
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.getRoles();
+    }
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !this.isBlocked();
     }
 }

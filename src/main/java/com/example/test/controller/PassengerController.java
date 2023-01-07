@@ -1,7 +1,5 @@
 package com.example.test.controller;
 
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -10,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {
@@ -23,6 +20,7 @@ public class PassengerController {
     @Autowired
     IPassengerService service;
 
+    @PreAuthorize("hasRole('PASSENGER')")
     // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
@@ -36,6 +34,7 @@ public class PassengerController {
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<UserDTO>> getPassengers()
     {
         List<UserDTO> passengersDTO = service.getAll(0, 0);
@@ -46,6 +45,7 @@ public class PassengerController {
     }
 
     //activate passenger account
+    @PreAuthorize("hasRole('PASSENGER')")
     @GetMapping(value = "/activate/{activationId}")
     public ResponseEntity<Boolean> activatePassenger(@PathVariable int activationId) throws Exception
     {
@@ -58,6 +58,7 @@ public class PassengerController {
     }
 
     //get passsenger details
+    @PreAuthorize("hasRole('PASSENGER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findOne(@PathVariable int id)
     {
@@ -71,6 +72,7 @@ public class PassengerController {
     }
 
     //Update existing passenger
+    @PreAuthorize("hasRole('PASSENGER')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO passengerDTO, @PathVariable int id) throws Exception
     {
@@ -85,6 +87,7 @@ public class PassengerController {
 
     //get passenger rides
     //todo PAGINATED RIDES
+    @PreAuthorize("hasAnyRole('ADMIN', 'PASSENGER')")
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {

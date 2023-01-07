@@ -15,21 +15,23 @@ import java.util.List;
 
 public interface IUserService {
 
-    public List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to);
+    List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to);
 
-    public List<UserDTO> get(int page, int size);
+    List<UserDTO> get(int page, int size);
 
-    public List<String> login(String email, String password);
+    List<String> login(String email, String password);
 
-    public List<MessageDTO> getMessages(Long id);
+    List<MessageDTO> getMessages(Long id);
 
-    public MessageDTO insertMessage(Long id, MessageDTO requestMessage);
+    MessageDTO insertMessage(Long id, MessageDTO requestMessage);
 
-    public Boolean block(Long id);
+    Boolean block(Long id);
 
-    public Boolean unblock(Long id);
+    Boolean unblock(Long id);
 
-    public NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException;
+    NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException;
 
-    public AllDTO<NoteDTO> getNotes(Long id, int page, int size);
+    AllDTO<NoteDTO> getNotes(Long id, int page, int size);
+
+    User findByEmail(String email);
 }
