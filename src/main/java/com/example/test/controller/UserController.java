@@ -78,6 +78,7 @@ public class UserController {
     }
 
     // Getting multiple of them for the reason of showing a list
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<UserDTO>> get(@RequestParam(defaultValue = "1") int page,
                                                @RequestParam(defaultValue = "10") int size)

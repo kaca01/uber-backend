@@ -25,6 +25,7 @@ public class DriverController {
     @Autowired
     IDriverService service;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO driverDTO) throws Exception{
         UserDTO returnedDriver = service.insert(driverDTO);
@@ -46,6 +47,7 @@ public class DriverController {
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         UserDTO driver = service.get(id);
@@ -56,6 +58,7 @@ public class DriverController {
         return new ResponseEntity<UserDTO>(driver, HttpStatus.OK);
     }
 
+    //TODO
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update (@PathVariable Long id, @RequestBody UserDTO driverDTO) throws Exception {
@@ -68,6 +71,7 @@ public class DriverController {
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @GetMapping(value = "/{id}/documents", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<DocumentDTO>> getDriverDocuments(@PathVariable Long id) throws Exception {
         List<DocumentDTO> driverDocuments = service.getDriverDocuments(id);
@@ -78,6 +82,7 @@ public class DriverController {
         return new ResponseEntity<List<DocumentDTO>>(driverDocuments, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @PostMapping(value = "/{id}/documents", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DocumentDTO> insertDriverDocuments(@PathVariable Long id,
@@ -91,6 +96,7 @@ public class DriverController {
         return new ResponseEntity<DocumentDTO>(returnedDriverDocument, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @DeleteMapping(value = "/document/{id}")
     public ResponseEntity<Void> deleteDriverDocument(@PathVariable Long id) throws Exception {
         DocumentDTO document = service.deleteDriverDocument(id);
@@ -111,6 +117,7 @@ public class DriverController {
         return new ResponseEntity<VehicleDTO>(vehicle, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> insertVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
@@ -123,6 +130,7 @@ public class DriverController {
         return new ResponseEntity<VehicleDTO>(returnedVehicle, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO vehicleDTO)
@@ -135,6 +143,9 @@ public class DriverController {
         return new ResponseEntity<VehicleDTO>(updatedVehicle, HttpStatus.OK);
     }
 
+    //returns history of the driver working hours that can be filtered by data
+    //id of the driver
+    @PreAuthorize("hasRole('DRIVER')")
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<WorkingHourDTO>> getWorkTimes(@PathVariable Long id) throws Exception{
         AllDTO<WorkingHourDTO> workingHours = service.getWorkTimes(id);
@@ -149,6 +160,7 @@ public class DriverController {
         return new ResponseEntity<>(workingHours, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
                                                          @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
@@ -162,6 +174,7 @@ public class DriverController {
         return new ResponseEntity<WorkingHourDTO>(updatedWorkingHour, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id) throws Exception {
         AllDTO<RideDTO> rides = service.getRides(id);
@@ -172,6 +185,9 @@ public class DriverController {
         return new ResponseEntity<>(rides, HttpStatus.OK);
     }
 
+    //details about the working hour of the driver
+    // id of working hour
+    @PreAuthorize("hasRole('DRIVER')")
     @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long id) throws Exception {
         WorkingHourDTO workingHour = service.getWorkTime(id);
@@ -182,6 +198,8 @@ public class DriverController {
         return new ResponseEntity<WorkingHourDTO>(workingHour, HttpStatus.OK);
     }
 
+    //changing the working hours
+    @PreAuthorize("hasRole('DRIVER')")
     @PutMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> updateWorkTime(@PathVariable Long id,
                                                          @RequestBody WorkingHourDTO workingHourDTO) throws Exception {

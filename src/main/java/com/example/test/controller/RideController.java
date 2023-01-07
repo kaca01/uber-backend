@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class RideController {
     IRideService service;
 
     //creating a ride
+    @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> insert(@RequestBody RideDTO rideDTO) throws Exception
     {
@@ -70,6 +72,7 @@ public class RideController {
     }
 
     // cancel existing ride (perspective of passenger - before the driver has arrived at the destination)
+    @PreAuthorize("hasRole('PASSENGER')")
     @Transactional
     @PutMapping(value = "/{id}/withdraw")
     public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id) throws Exception
@@ -83,6 +86,7 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
     @Transactional
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,6 +102,7 @@ public class RideController {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('DRIVER')")
     //accept the ride
     @PutMapping(value = "/{id}/accept", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> acceptRide(@PathVariable Long id) throws Exception
@@ -111,6 +116,7 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @Transactional
     //end the ride
     @PutMapping(value = "/{id}/end", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -125,6 +131,7 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")
     @Transactional
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ReviewController {
     private IReviewService service;
 
     // Creating a review about the vehicle
+    @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(value = "/{rideId}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> insertVehicleReview(@PathVariable int rideId, @RequestBody ReviewDTO reviewDTO)
             throws Exception
@@ -45,6 +47,7 @@ public class ReviewController {
     }
 
     // Creating a review about the driver
+    @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(value = "/{rideId}/driver", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> insertDriverReview(@PathVariable Long rideId, @RequestBody ReviewDTO reviewDTO)
             throws Exception {

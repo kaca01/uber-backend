@@ -19,7 +19,7 @@ public class UnregisteredUserController {
 
     // Getting the assumption about the time and cost of the ride
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UnregisteredUserDTO> createGreeting(@RequestBody UnregisteredUserDTO unregisteredUserDTO)
+    public ResponseEntity<UnregisteredUserDTO> calculateEstimatedValues(@RequestBody UnregisteredUserDTO unregisteredUserDTO)
             throws Exception {
 
         // the data is not stored in the database, so we can pass the dto object to the service
