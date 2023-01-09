@@ -62,7 +62,6 @@ public class RideController {
     }
 
     //ride details
-    @Transactional
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findOne(@PathVariable Long id)
     {
@@ -76,7 +75,6 @@ public class RideController {
     }
 
     // cancel existing ride (perspective of passenger - before the driver has arrived at the destination)
-    @Transactional
     @PutMapping(value = "/{id}/withdraw")
     public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id) throws Exception
     {
@@ -89,7 +87,6 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @Transactional
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PanicDTO> setPanic(@RequestBody PanicDTO reason, @PathVariable Long id) throws Exception
@@ -103,7 +100,6 @@ public class RideController {
         return new ResponseEntity<PanicDTO>(message, HttpStatus.OK);
     }
 
-    @Transactional
     //accept the ride
     @PutMapping(value = "/{id}/accept", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> acceptRide(@PathVariable Long id) throws Exception
@@ -117,7 +113,6 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @Transactional
     //start the ride
     @PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> startRide(@PathVariable Long id) throws Exception
@@ -131,7 +126,6 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @Transactional
     //end the ride
     @PutMapping(value = "/{id}/end", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> endRide(@PathVariable Long id) throws Exception
@@ -145,7 +139,6 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @Transactional
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> cancelRide(@RequestBody PanicDTO reason, @PathVariable Long id)
@@ -167,14 +160,13 @@ public class RideController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Passenger p = passengerRepository.findByEmail(email);
-        FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, p);
+        FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, email);
 
         if (order == null) {return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
 
         return new ResponseEntity<FavoriteOrder>(order, HttpStatus.OK);
     }
 
-    @Transactional
     @GetMapping(value = "/favorites", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<AllDTO<FavoriteOrder>> getFavoriteLocations()
@@ -187,7 +179,6 @@ public class RideController {
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
     }
 
-    @Transactional
     @DeleteMapping(value = "/favorites/{id}")
     @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) throws Exception {

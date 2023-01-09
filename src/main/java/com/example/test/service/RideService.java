@@ -79,6 +79,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    @Transactional
     @Override
     public RideDTO findOne(Long id) {
         Ride r = findRideById(id);
@@ -156,7 +157,8 @@ public class RideService implements IRideService {
     }
 
     @Override
-    public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, Passenger passengerT) {
+    public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
+        Passenger passengerT = passengerRepository.findByEmail(email);
         Set<Passenger> passengers = new HashSet<>();
         for (Passenger p : favoriteOrder.getPassengers())
         {

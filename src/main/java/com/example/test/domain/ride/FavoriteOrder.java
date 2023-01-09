@@ -24,13 +24,13 @@ public class FavoriteOrder {
     private VehicleTypeName vehicleType;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Passenger passenger;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Route> locations = new HashSet<>();
 
 }

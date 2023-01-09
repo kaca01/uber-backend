@@ -28,7 +28,7 @@ public interface IRideService {
 
     RideDTO startRide(Long id);
 
-    FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, Passenger p);
+    FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String p);
 
     AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p);
 
