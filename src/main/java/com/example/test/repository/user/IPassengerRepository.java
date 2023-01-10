@@ -8,5 +8,5 @@ public interface IPassengerRepository extends JpaRepository<Passenger, Long> {
 
     public List<Passenger> findAllByActiveIsTrue();
 
-
+    public Passenger findByEmail(String email);
 }

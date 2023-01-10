@@ -2,8 +2,10 @@ package com.example.test.service;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
+import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -11,6 +13,7 @@ import com.example.test.enumeration.MessageType;
 import com.example.test.enumeration.RideStatus;
 import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.repository.communication.IRejectionRepository;
+import com.example.test.repository.ride.IFavoriteOrderRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
@@ -18,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RideService implements IRideService {
@@ -33,6 +34,8 @@ public class RideService implements IRideService {
     private IMessageRepository messageRepository;
     @Autowired
     private IRejectionRepository rejectionRepository;
+    @Autowired
+    private IFavoriteOrderRepository favoriteOrderRepository;
 
     @Transactional
     @Override
@@ -76,6 +79,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    @Transactional
     @Override
     public RideDTO findOne(Long id) {
         Ride r = findRideById(id);
@@ -101,14 +105,14 @@ public class RideService implements IRideService {
 
     //the user will be used from the token
     @Override
-    public PanicDTO setPanic(String reason, Long id)
+    public PanicDTO setPanic(PanicDTO reason, Long id)
     {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED);
         ride = rideRepository.save(ride);
         //todo sender will be received from the token (wont be ride.getDriver()) and should Rejection be here as well?No?
-        Message panic = new Message(ride.getDriver(), null, reason, new Date(), MessageType.PANIC, ride);
+        Message panic = new Message(ride.getDriver(), null, reason.getReason(), new Date(), MessageType.PANIC, ride);
         panic = messageRepository.save(panic);
         return new PanicDTO(panic);
     }
@@ -133,13 +137,54 @@ public class RideService implements IRideService {
 
     //perspective of driver
     @Override
-    public RideDTO cancelRide(String reason, Long id) {
+    public RideDTO cancelRide(PanicDTO reason, Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.REJECTED);
-        Rejection rejection = new Rejection(reason, ride.getDriver(), new Date());
+        Rejection rejection = new Rejection(reason.getReason(), ride.getDriver(), new Date());
         ride.setRejection(rejection);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
+    }
+
+    @Override
+    public RideDTO startRide(Long id) {
+        Ride ride = findRideById(id);
+        if(ride == null) return null;
+        ride.setStatus(RideStatus.ACTIVE);
+        ride = rideRepository.save(ride);
+        return new RideDTO(ride);
+    }
+
+    @Override
+    public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
+        Passenger passengerT = passengerRepository.findByEmail(email);
+        Set<Passenger> passengers = new HashSet<>();
+        for (Passenger p : favoriteOrder.getPassengers())
+        {
+            Passenger passenger = passengerRepository.findById(p.getId()).orElse(null);
+            if (passenger == null) return null;
+            passengers.add(p);
+        }
+        favoriteOrder.setPassengers(passengers);
+        favoriteOrder.setPassenger(passengerT);
+        return favoriteOrderRepository.save(favoriteOrder);
+    }
+
+    @Override
+    public AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p) {
+        List<FavoriteOrder> orders = favoriteOrderRepository.findByPassenger_Id(p.getId());
+        return new AllDTO<FavoriteOrder>(orders.size(), orders);
+    }
+
+    @Override
+    public boolean deleteFavoriteLocation(Long id, Passenger p) {
+        FavoriteOrder order = favoriteOrderRepository.findById(id).orElse(null);
+        if (order == null) return false;
+        if (Objects.equals(order.getPassenger().getId(), p.getId())){
+            favoriteOrderRepository.delete(order);
+            return true;
+        }
+        return false;
     }
 }
