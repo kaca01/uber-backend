@@ -13,6 +13,7 @@ import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.DocumentDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.vehicle.VehicleDTO;
+import com.example.test.enumeration.RideStatus;
 import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.repository.business.IWorkingHourRepository;
 import com.example.test.repository.ride.ILocationRepository;
@@ -235,8 +236,14 @@ public class DriverService implements IDriverService {
 
     public List<Driver> findAvailable() {
         List<Driver> drivers = getActiveDrivers();
-
-        return null;
+        if (drivers.size() == 0) return null;
+        drivers = getAvailableDrivers(drivers);
+        // if there are active available drivers, return
+        if (drivers.size() > 0) return drivers;
+        // if there are no drivers, find drivers that do not have scheduled ride
+        drivers = getDriversWithNoScheduledRide(drivers);
+        if (drivers.size() == 0) return null;
+        return drivers;
     }
 
     public List<Driver> getActiveDrivers() {
@@ -251,8 +258,27 @@ public class DriverService implements IDriverService {
         return drivers;
     }
 
-    public List<Driver> getDriversWithNoCurrentRide(List<Driver> activeDrivers) {
+    // returns active drivers with no current ride
+    public List<Driver> getAvailableDrivers(List<Driver> activeDrivers) {
+        List<Driver> drivers = new ArrayList<>();
+        for (Driver driver : activeDrivers) {
+            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driver.getId());
+            if (ride == null) drivers.add(driver);
+        }
+        return drivers;
+    }
 
-        return null;
+    public List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers) {
+        List<Driver> drivers = new ArrayList<>();
+
+
+        return drivers;
+    }
+
+    // checks if driver has more than 8 hours in the last 24 hours
+    public boolean finishedForToday(Long id) {
+        // TODO : implement this
+        // this should be called from the function that chooses one driver
+        return false;
     }
 }
