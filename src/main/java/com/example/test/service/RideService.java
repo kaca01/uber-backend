@@ -127,6 +127,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.FINISHED);
+        // TODO : call here calculate price
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
@@ -141,5 +142,10 @@ public class RideService implements IRideService {
         ride.setRejection(rejection);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
+    }
+
+    private double calculatePrice(Long id, double distance) {
+        Ride ride = findRideById(id);
+        return distance * 120 + ride.getVehicle().getType().getPricePerKm();
     }
 }
