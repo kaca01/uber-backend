@@ -235,15 +235,17 @@ public class DriverService implements IDriverService {
     // TODO : have the next ride -> if there is not... reject
 
     public List<Driver> findAvailable() {
-        List<Driver> drivers = getActiveDrivers();
-        if (drivers.size() == 0) return null;
-        drivers = getAvailableDrivers(drivers);
+        // TODO : before return of the drivers, we should check
+        // TODO : if there are more than 8 working hours in the last 24 hours
+        List<Driver> activeDrivers = getActiveDrivers();
+        if (activeDrivers.size() == 0) return null;
+        List<Driver> availableDrivers = getAvailableDrivers(activeDrivers);
         // if there are active available drivers, return
-        if (drivers.size() > 0) return drivers;
-        // if there are no drivers, find drivers that do not have scheduled ride
-        drivers = getDriversWithNoScheduledRide(drivers);
-        if (drivers.size() == 0) return null;
-        return drivers;
+        if (availableDrivers.size() > 0) return availableDrivers;
+        // if there are no active available drivers, find drivers that do not have scheduled ride
+        List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers);
+        if (noScheduledRide.size() == 0) return null;
+        return noScheduledRide;
     }
 
     public List<Driver> getActiveDrivers() {
