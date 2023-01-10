@@ -225,4 +225,34 @@ public class DriverService implements IDriverService {
     private Driver getDriver(Long id) {
         return iDriverRepository.findById(id);
     }
+
+    // TODO : driver is currently active
+    // TODO : driver has less than 8 working hours in the last 24 hours (with estimated time?)
+    // TODO : driver does not have current ride
+    // TODO : first case -> found one or more drivers that are currently active and don't have curr. ride -> DONE
+    // TODO : second case -> there are active drivers but every driver has curr. ride -> find the one that does not
+    // TODO : have the next ride -> if there is not... reject
+
+    public List<Driver> findAvailable() {
+        List<Driver> drivers = getActiveDrivers();
+
+        return null;
+    }
+
+    public List<Driver> getActiveDrivers() {
+        AllDTO<UserDTO> all = getAll();
+        List<UserDTO> allUsers = all.getResults();
+        List<Driver> drivers = new ArrayList<>();
+        for (UserDTO one: allUsers) {
+            Long id = one.getId();
+            Driver driver = iDriverRepository.findById(id);
+            if (driver.isActive()) drivers.add(driver);
+        }
+        return drivers;
+    }
+
+    public List<Driver> getDriversWithNoCurrentRide(List<Driver> activeDrivers) {
+
+        return null;
+    }
 }
