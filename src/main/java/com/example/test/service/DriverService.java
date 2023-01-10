@@ -272,8 +272,10 @@ public class DriverService implements IDriverService {
 
     public List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers) {
         List<Driver> drivers = new ArrayList<>();
-
-
+        for (Driver driver : activeDrivers) {
+            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.PENDING, driver.getId());
+            if (ride == null) drivers.add(driver);
+        }
         return drivers;
     }
 
