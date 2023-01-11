@@ -229,16 +229,10 @@ public class DriverService implements IDriverService {
         return iDriverRepository.findById(id);
     }
 
-    // TODO : driver is currently active
-    // TODO : driver has compatible vehicle
     // TODO : driver has less than 8 working hours in the last 24 hours (with estimated time?)
-    // TODO : driver does not have current ride
-    // TODO : first case -> found one or more drivers that are currently active and don't have curr. ride -> DONE
-    // TODO : second case -> there are active drivers but every driver has curr. ride -> find the one that does not
-    // TODO : have the next ride -> if there is not... reject
 
     public List<Driver> findAvailable(Ride ride, String type) {
-        // here are also limited drivers with incompatibility of vehicle
+        // here are also eliminated drivers with incompatibility of vehicle
         List<Driver> activeDrivers = getActiveDrivers(type);
         if (activeDrivers.size() == 0) return null;
         List<Driver> availableDrivers = getAvailableDrivers(activeDrivers, ride);
@@ -253,9 +247,9 @@ public class DriverService implements IDriverService {
     private List<Driver> getActiveDrivers(String type) {
         List<Driver> allDrivers = iDriverRepository.findAll();
         List<Driver> drivers = new ArrayList<>();
-        for (Driver one: allDrivers) {
-            if (!checkVehicleCompatibility(type, one)) continue;
-            if (one.isActive()) drivers.add(one);
+        for (Driver driver: allDrivers) {
+            if (!checkVehicleCompatibility(type, driver)) continue;
+            if (driver.isActive()) drivers.add(driver);
         }
         return drivers;
     }
@@ -281,27 +275,27 @@ public class DriverService implements IDriverService {
                 drivers.add(driver);
                 continue;
             }
-            Date rideShouldEnd = addMinutesToDate(ride.getStartTime(), (long) ride.getEstimatedTimeInMinutes());
-            Date newRideShouldEnd = addMinutesToDate(newRide.getStartTime(), (long) newRide.getEstimatedTimeInMinutes());
-            if (!checkIfRidesOverlap(ride.getStartTime(), rideShouldEnd, newRide.getStartTime(), newRideShouldEnd))
+            if (!checkIfRidesOverlap(ride, newRide))
                 drivers.add(driver);
         }
         return drivers;
     }
 
-    private boolean checkIfRidesOverlap(Date firstRideStart, Date firstRideEnd, Date secondRideStart,
-                                        Date secondRideEnd) {
+    private boolean checkIfRidesOverlap(Ride firstRide, Ride secondRide) {
+        Date firstRideStart = firstRide.getStartTime();
+        Date firstRideEnd = addMinutesToDate(firstRide.getStartTime(), (long) firstRide.getEstimatedTimeInMinutes());
+        Date secondRideStart = secondRide.getStartTime();
+        Date secondRideEnd = addMinutesToDate(secondRide.getStartTime(), (long) secondRide.getEstimatedTimeInMinutes());
         if (firstRideStart.before(secondRideStart) && firstRideEnd.before(secondRideStart)) return false;
-        else if (firstRideStart.after(secondRideEnd) && firstRideEnd.after(secondRideEnd)) return false;
-        return true;
+        else return !firstRideStart.after(secondRideEnd) || !firstRideEnd.after(secondRideEnd);
     }
-
 
     private Date addMinutesToDate(Date date, long minutes) {
         long start = date.getTime();
         return new Date(start + (minutes * 60000));
     }
 
+    // removes drivers that have more than 8 hours in the last 24 hours
     private List<Driver> removeFinishedForToday(List<Driver> drivers) {
         drivers.removeIf(driver -> isFinishedForToday(driver.getWorkingHours()));
         return drivers;
@@ -312,7 +306,6 @@ public class DriverService implements IDriverService {
         // this should be called from the function that chooses one driver
         double sumOfHours = 0;
         Date date = find24HoursAgo();
-        List<WorkingHour> todayWorkingHours = new ArrayList<>();
         for (WorkingHour workingHour : workingHours) {
             Date workingHourStarts = workingHour.getStart();
             Date workingHourEnds = workingHour.getEnd();
