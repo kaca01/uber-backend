@@ -30,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -211,7 +213,7 @@ public class DriverService implements IDriverService {
     public VehicleDTO saveLocation(VehicleDTO vehicle) {
         // TODO : create function for this in vehicle service after everyone finishes services
         // we are not here just saving location because there can be locations with the same longitude and
-        // latitude but different address (address is a string so it is tricky)
+        // latitude but different address (address is a string, so it is tricky)
         // check if there is current location in database
         Location currentLocation = vehicle.getCurrentLocation();
         Location location = iLocationRepository.findByLatitudeAndLongitude(currentLocation.getLatitude(),
@@ -228,40 +230,41 @@ public class DriverService implements IDriverService {
     }
 
     // TODO : driver is currently active
+    // TODO : driver has compatible vehicle
     // TODO : driver has less than 8 working hours in the last 24 hours (with estimated time?)
     // TODO : driver does not have current ride
     // TODO : first case -> found one or more drivers that are currently active and don't have curr. ride -> DONE
     // TODO : second case -> there are active drivers but every driver has curr. ride -> find the one that does not
     // TODO : have the next ride -> if there is not... reject
 
-    public List<Driver> findAvailable() {
-        // TODO : before return of the drivers, we should check
-        // TODO : if there are more than 8 working hours in the last 24 hours
-        List<Driver> activeDrivers = getActiveDrivers();
+    public List<Driver> findAvailable(Ride ride) {
+        // here are also limited drivers with incompatibility of vehicle
+        List<Driver> activeDrivers = getActiveDrivers(ride.getVehicle().getType().toString());
         if (activeDrivers.size() == 0) return null;
         List<Driver> availableDrivers = getAvailableDrivers(activeDrivers);
-        // if there are active available drivers, return
+        // if there are active available drivers, return them
         if (availableDrivers.size() > 0) return availableDrivers;
         // if there are no active available drivers, find drivers that do not have scheduled ride
-        List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers);
+        List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers, ride);
         if (noScheduledRide.size() == 0) return null;
-        return noScheduledRide;
+        return removeFinishedForToday(noScheduledRide);
     }
 
-    public List<Driver> getActiveDrivers() {
+    private List<Driver> getActiveDrivers(String type) {
         AllDTO<UserDTO> all = getAll();
         List<UserDTO> allUsers = all.getResults();
         List<Driver> drivers = new ArrayList<>();
         for (UserDTO one: allUsers) {
             Long id = one.getId();
             Driver driver = iDriverRepository.findById(id);
+            if (!checkVehicleCompatibility(type, driver)) continue;
             if (driver.isActive()) drivers.add(driver);
         }
         return drivers;
     }
 
     // returns active drivers with no current ride
-    public List<Driver> getAvailableDrivers(List<Driver> activeDrivers) {
+    private List<Driver> getAvailableDrivers(List<Driver> activeDrivers) {
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
             Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driver.getId());
@@ -270,19 +273,66 @@ public class DriverService implements IDriverService {
         return drivers;
     }
 
-    public List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers) {
+    private List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers, Ride newRide) {
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
             Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.PENDING, driver.getId());
-            if (ride == null) drivers.add(driver);
+            Date rideShouldEnd = addMinutesToDate(ride.getStartTime(), (long) ride.getEstimatedTimeInMinutes());
+            if (!checkIfRidesOverlap(ride.getStartTime(), rideShouldEnd, ride.getStartTime(), ride.getEndTime()))
+                activeDrivers.add(driver);
         }
         return drivers;
     }
 
-    // checks if driver has more than 8 hours in the last 24 hours
-    public boolean finishedForToday(Long id) {
-        // TODO : implement this
-        // this should be called from the function that chooses one driver
-        return false;
+    private boolean checkIfRidesOverlap(Date firstRideStart, Date firstRideEnd, Date secondRideStart,
+                                        Date secondRideEnd) {
+        if (firstRideStart.before(secondRideStart) && firstRideEnd.before(secondRideStart)) return false;
+        else if (firstRideStart.after(secondRideEnd) && firstRideEnd.after(secondRideEnd)) return false;
+        return true;
     }
+
+
+    private Date addMinutesToDate(Date date, long minutes) {
+        long start = date.getTime();
+        return new Date(start + (minutes * 60000));
+    }
+
+    private List<Driver> removeFinishedForToday(List<Driver> drivers) {
+        drivers.removeIf(driver -> isFinishedForToday(driver.getWorkingHours()));
+        return drivers;
+    }
+
+    // checks if driver has more than 8 hours in the last 24 hours
+    private boolean isFinishedForToday(Set<WorkingHour> workingHours) {
+        // this should be called from the function that chooses one driver
+        double sumOfHours = 0;
+        Date date = find24HoursAgo();
+        List<WorkingHour> todayWorkingHours = new ArrayList<>();
+        for (WorkingHour workingHour : workingHours) {
+            Date workingHourStarts = workingHour.getStart();
+            Date workingHourEnds = workingHour.getEnd();
+            if (workingHourStarts.after(date)) {
+                sumOfHours += calculateHoursDifference(workingHourStarts, workingHourEnds);
+            } else if (workingHourEnds.after(date)) {
+                sumOfHours += calculateHoursDifference(date, workingHourEnds);
+            }
+        }
+        return sumOfHours >= 8;
+    }
+
+    private long calculateHoursDifference(Date startDate, Date endDate) {
+        long differenceInTime = endDate.getTime() - startDate.getTime();
+
+        return (differenceInTime / (1000 * 60 * 60)) % 24;
+    }
+
+    private Date find24HoursAgo() {
+        Instant instant = Instant.now().minus(24, ChronoUnit.HOURS);
+        return Date.from(instant);
+    }
+
+    private boolean checkVehicleCompatibility(String vehicleType, Driver driver) {
+        return (driver.getVehicle().getType().toString().equals(vehicleType));
+    }
+
 }

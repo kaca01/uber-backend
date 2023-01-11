@@ -3,6 +3,7 @@ package com.example.test.service;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -13,6 +14,7 @@ import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.repository.communication.IRejectionRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.service.interfaces.IDriverService;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -33,6 +36,8 @@ public class RideService implements IRideService {
     private IMessageRepository messageRepository;
     @Autowired
     private IRejectionRepository rejectionRepository;
+    @Autowired
+    private IDriverService driverService;
 
     @Transactional
     @Override
@@ -58,6 +63,8 @@ public class RideService implements IRideService {
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
         ride.setStartTime(new Date());
+        List<Driver> drivers = driverService.findAvailable(ride);
+
     }
 
     @Transactional
