@@ -276,13 +276,8 @@ public class DriverService implements IDriverService {
     private List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers, Ride newRide) {
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
-            System.out.println("cekamo zlatu");
-            System.out.println(driver.getEmail());
             Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, driver.getId());
-            System.out.println(ride);
             if (ride == null) {
-                System.out.println("nulllll");
-                System.out.println(driver.getEmail());
                 drivers.add(driver);
                 continue;
             }
@@ -296,14 +291,8 @@ public class DriverService implements IDriverService {
 
     private boolean checkIfRidesOverlap(Date firstRideStart, Date firstRideEnd, Date secondRideStart,
                                         Date secondRideEnd) {
-        System.out.println("Overlappp");
-        System.out.println(firstRideStart.toString());
-        System.out.println(firstRideEnd.toString());
-        System.out.println(secondRideStart);
-        System.out.println(secondRideEnd);
         if (firstRideStart.before(secondRideStart) && firstRideEnd.before(secondRideStart)) return false;
         else if (firstRideStart.after(secondRideEnd) && firstRideEnd.after(secondRideEnd)) return false;
-        System.out.println("returned true");
         return true;
     }
 
