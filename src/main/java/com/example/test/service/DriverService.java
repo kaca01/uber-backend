@@ -237,11 +237,11 @@ public class DriverService implements IDriverService {
     // TODO : second case -> there are active drivers but every driver has curr. ride -> find the one that does not
     // TODO : have the next ride -> if there is not... reject
 
-    public List<Driver> findAvailable(Ride ride) {
+    public List<Driver> findAvailable(Ride ride, String type) {
         // here are also limited drivers with incompatibility of vehicle
-        List<Driver> activeDrivers = getActiveDrivers(ride.getVehicle().getType().toString());
+        List<Driver> activeDrivers = getActiveDrivers(type);
         if (activeDrivers.size() == 0) return null;
-        List<Driver> availableDrivers = getAvailableDrivers(activeDrivers);
+        List<Driver> availableDrivers = getAvailableDrivers(activeDrivers, ride);
         // if there are active available drivers, return them
         if (availableDrivers.size() > 0) return availableDrivers;
         // if there are no active available drivers, find drivers that do not have scheduled ride
@@ -251,24 +251,24 @@ public class DriverService implements IDriverService {
     }
 
     private List<Driver> getActiveDrivers(String type) {
-        AllDTO<UserDTO> all = getAll();
-        List<UserDTO> allUsers = all.getResults();
+        List<Driver> allDrivers = iDriverRepository.findAll();
         List<Driver> drivers = new ArrayList<>();
-        for (UserDTO one: allUsers) {
-            Long id = one.getId();
-            Driver driver = iDriverRepository.findById(id);
-            if (!checkVehicleCompatibility(type, driver)) continue;
-            if (driver.isActive()) drivers.add(driver);
+        for (Driver one: allDrivers) {
+            if (!checkVehicleCompatibility(type, one)) continue;
+            if (one.isActive()) drivers.add(one);
         }
         return drivers;
     }
 
     // returns active drivers with no current ride
-    private List<Driver> getAvailableDrivers(List<Driver> activeDrivers) {
+    private List<Driver> getAvailableDrivers(List<Driver> activeDrivers, Ride newRide) {
+        List<Driver> noScheduled = getDriversWithNoScheduledRide(activeDrivers, newRide);
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
             Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driver.getId());
-            if (ride == null) drivers.add(driver);
+            if (ride == null) {
+                if (noScheduled.contains(driver)) drivers.add(driver);
+            }
         }
         return drivers;
     }
@@ -276,18 +276,34 @@ public class DriverService implements IDriverService {
     private List<Driver> getDriversWithNoScheduledRide(List<Driver> activeDrivers, Ride newRide) {
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
-            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.PENDING, driver.getId());
+            System.out.println("cekamo zlatu");
+            System.out.println(driver.getEmail());
+            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, driver.getId());
+            System.out.println(ride);
+            if (ride == null) {
+                System.out.println("nulllll");
+                System.out.println(driver.getEmail());
+                drivers.add(driver);
+                continue;
+            }
             Date rideShouldEnd = addMinutesToDate(ride.getStartTime(), (long) ride.getEstimatedTimeInMinutes());
-            if (!checkIfRidesOverlap(ride.getStartTime(), rideShouldEnd, ride.getStartTime(), ride.getEndTime()))
-                activeDrivers.add(driver);
+            Date newRideShouldEnd = addMinutesToDate(newRide.getStartTime(), (long) newRide.getEstimatedTimeInMinutes());
+            if (!checkIfRidesOverlap(ride.getStartTime(), rideShouldEnd, newRide.getStartTime(), newRideShouldEnd))
+                drivers.add(driver);
         }
         return drivers;
     }
 
     private boolean checkIfRidesOverlap(Date firstRideStart, Date firstRideEnd, Date secondRideStart,
                                         Date secondRideEnd) {
+        System.out.println("Overlappp");
+        System.out.println(firstRideStart.toString());
+        System.out.println(firstRideEnd.toString());
+        System.out.println(secondRideStart);
+        System.out.println(secondRideEnd);
         if (firstRideStart.before(secondRideStart) && firstRideEnd.before(secondRideStart)) return false;
         else if (firstRideStart.after(secondRideEnd) && firstRideEnd.after(secondRideEnd)) return false;
+        System.out.println("returned true");
         return true;
     }
 
@@ -332,7 +348,7 @@ public class DriverService implements IDriverService {
     }
 
     private boolean checkVehicleCompatibility(String vehicleType, Driver driver) {
-        return (driver.getVehicle().getType().toString().equals(vehicleType));
+        return (driver.getVehicle().getType().getName().toString().equals(vehicleType));
     }
 
 }

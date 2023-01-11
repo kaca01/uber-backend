@@ -63,7 +63,12 @@ public class RideService implements IRideService {
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
         ride.setStartTime(new Date());
-        List<Driver> drivers = driverService.findAvailable(ride);
+        ride.setEstimatedTimeInMinutes(20);
+        List<Driver> drivers = driverService.findAvailable(ride, vehicleType);
+        System.out.println("Printing drivers");
+        for (Driver driver : drivers) {
+            System.out.println(driver.getEmail() + "\n");
+        }
 
     }
 

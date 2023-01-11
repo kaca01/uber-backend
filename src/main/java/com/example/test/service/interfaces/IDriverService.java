@@ -49,5 +49,5 @@ public interface IDriverService {
 
     public WorkingHourDTO updateWorkTime(Long workTimeId, WorkingHourDTO workingHour) throws ParseException;
 
-    public List<Driver> findAvailable(Ride ride);
+    public List<Driver> findAvailable(Ride ride, String type);
 }
