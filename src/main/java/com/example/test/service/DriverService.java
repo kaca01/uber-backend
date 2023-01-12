@@ -112,8 +112,7 @@ public class DriverService implements IDriverService {
         Document document = iDocumentRepository.findById(id);
         if (document == null) return null;
         iDocumentRepository.deleteDocumentById(id);
-        DocumentDTO documentDTO = new DocumentDTO(document);
-        return documentDTO;
+        return new DocumentDTO(document);
     }
 
     @Override
@@ -188,8 +187,7 @@ public class DriverService implements IDriverService {
         List<Ride> rides = iRideRepository.findRidesByDriverId(id);
         List<RideDTO> rideDTOS = new ArrayList<RideDTO>();
         for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
-        AllDTO<RideDTO> allRidesDTO = new AllDTO<>(rideDTOS.size(), rideDTOS);
-        return allRidesDTO;
+        return new AllDTO<>(rideDTOS.size(), rideDTOS);
     }
 
     @Override
@@ -241,14 +239,15 @@ public class DriverService implements IDriverService {
         // if there are no active available drivers, find drivers that do not have scheduled ride
         List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers, ride);
         if (noScheduledRide.size() == 0) return null;
-        return removeFinishedForToday(noScheduledRide);
+        removeFinishedForToday(noScheduledRide);
+        return removeIncompatible(noScheduledRide, ride, type);
     }
 
     private List<Driver> getActiveDrivers(String type) {
         List<Driver> allDrivers = iDriverRepository.findAll();
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver: allDrivers) {
-            if (!checkVehicleCompatibility(type, driver)) continue;
+            if (!isVehicleCompatible(type, driver)) continue;
             if (driver.isActive()) drivers.add(driver);
         }
         return drivers;
@@ -296,9 +295,8 @@ public class DriverService implements IDriverService {
     }
 
     // removes drivers that have more than 8 hours in the last 24 hours
-    private List<Driver> removeFinishedForToday(List<Driver> drivers) {
+    private void removeFinishedForToday(List<Driver> drivers) {
         drivers.removeIf(driver -> isFinishedForToday(driver.getWorkingHours()));
-        return drivers;
     }
 
     // checks if driver has more than 8 hours in the last 24 hours
@@ -329,8 +327,24 @@ public class DriverService implements IDriverService {
         return Date.from(instant);
     }
 
-    private boolean checkVehicleCompatibility(String vehicleType, Driver driver) {
+    private List<Driver> removeIncompatible(List<Driver> drivers, Ride ride, String type) {
+        List<Driver> validDrivers = new ArrayList<>();
+        for (Driver driver: drivers) {
+            if (!isVehicleCompatible(type, driver)) continue;
+            if (!checkTransportCompatibility(ride, driver.getVehicle())) continue;
+            validDrivers.add(driver);
+        }
+        return validDrivers;
+    }
+
+    private boolean isVehicleCompatible(String vehicleType, Driver driver) {
         return (driver.getVehicle().getType().getName().toString().equals(vehicleType));
+    }
+
+    private boolean checkTransportCompatibility(Ride ride, Vehicle vehicle) {
+        if (ride.isBabyTransport()) if(!vehicle.isBabyTransport()) return false;
+        if (ride.isPetTransport()) return vehicle.isPetTransport();
+        return true;
     }
 
 }
