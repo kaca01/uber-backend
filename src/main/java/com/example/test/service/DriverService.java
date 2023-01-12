@@ -232,13 +232,15 @@ public class DriverService implements IDriverService {
     public List<Driver> findAvailable(Ride ride, String type) {
         // here are also eliminated drivers with incompatibility of vehicle
         List<Driver> activeDrivers = getActiveDrivers(type);
-        if (activeDrivers.size() == 0) return null;
+        if (activeDrivers.size() == 0) return new ArrayList<>();
         List<Driver> availableDrivers = getAvailableDrivers(activeDrivers, ride);
+        removeFinishedForToday(availableDrivers);
+        removeIncompatible(availableDrivers, ride, type);
         // if there are active available drivers, return them
         if (availableDrivers.size() > 0) return availableDrivers;
         // if there are no active available drivers, find drivers that do not have scheduled ride
         List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers, ride);
-        if (noScheduledRide.size() == 0) return null;
+        if (noScheduledRide.size() == 0) return new ArrayList<>();
         removeFinishedForToday(noScheduledRide);
         return removeIncompatible(noScheduledRide, ride, type);
     }
@@ -306,7 +308,9 @@ public class DriverService implements IDriverService {
         Date date = find24HoursAgo();
         for (WorkingHour workingHour : workingHours) {
             Date workingHourStarts = workingHour.getStart();
-            Date workingHourEnds = workingHour.getEnd();
+            Date workingHourEnds;
+            if (workingHour.getEnd() != null) workingHourEnds = workingHour.getEnd();
+            else workingHourEnds = new Date();
             if (workingHourStarts.after(date)) {
                 sumOfHours += calculateHoursDifference(workingHourStarts, workingHourEnds);
             } else if (workingHourEnds.after(date)) {
@@ -331,7 +335,7 @@ public class DriverService implements IDriverService {
         List<Driver> validDrivers = new ArrayList<>();
         for (Driver driver: drivers) {
             if (!isVehicleCompatible(type, driver)) continue;
-            if (!checkTransportCompatibility(ride, driver.getVehicle())) continue;
+            if (!isTransportCompatible(ride, driver.getVehicle())) continue;
             validDrivers.add(driver);
         }
         return validDrivers;
@@ -341,7 +345,7 @@ public class DriverService implements IDriverService {
         return (driver.getVehicle().getType().getName().toString().equals(vehicleType));
     }
 
-    private boolean checkTransportCompatibility(Ride ride, Vehicle vehicle) {
+    private boolean isTransportCompatible(Ride ride, Vehicle vehicle) {
         if (ride.isBabyTransport()) if(!vehicle.isBabyTransport()) return false;
         if (ride.isPetTransport()) return vehicle.isPetTransport();
         return true;

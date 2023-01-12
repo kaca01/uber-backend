@@ -50,6 +50,9 @@ public class RideService implements IRideService {
             Passenger p = passengerRepository.findById(u.getId()).orElse(null);
             passengers.add(p);
         }
+
+        // TODO : this is only for testing
+        // TODO : this is not implemented
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         findAvailableDriver(ride, rideDTO.getVehicleType());
