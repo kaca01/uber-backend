@@ -1,4 +1,4 @@
-package com.example.test.service;
+package com.example.test.service.implementation;
 
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.vehicle.Vehicle;

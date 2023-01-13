@@ -1,4 +1,4 @@
-package com.example.test.service;
+package com.example.test.service.implementation;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
@@ -11,18 +11,16 @@ import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
 import com.example.test.enumeration.RideStatus;
 import com.example.test.repository.communication.IMessageRepository;
-import com.example.test.repository.communication.IRejectionRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
-import com.example.test.service.interfaces.IDriverService;
 import com.example.test.service.interfaces.IRideService;
+import com.example.test.service.interfaces.ISelectionDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -35,9 +33,7 @@ public class RideService implements IRideService {
     @Autowired
     private IMessageRepository messageRepository;
     @Autowired
-    private IRejectionRepository rejectionRepository;
-    @Autowired
-    private IDriverService driverService;
+    private ISelectionDriver iSelectionDriver;
 
     @Transactional
     @Override
@@ -55,6 +51,7 @@ public class RideService implements IRideService {
         // TODO : this is not implemented
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
+        ride.setLocations(rideDTO.getLocations());
         findAvailableDriver(ride, rideDTO.getVehicleType());
 
         ride = rideRepository.save(ride);
@@ -68,12 +65,9 @@ public class RideService implements IRideService {
         ride.setStartTime(new Date());
         // TODO : delete code below after testing
         ride.setEstimatedTimeInMinutes(20);
-        List<Driver> drivers = driverService.findAvailable(ride, vehicleType);
-        System.out.println("Printing drivers");
-        for (Driver driver : drivers) {
-            System.out.println(driver.getEmail() + "\n");
-        }
-
+        Driver driver = iSelectionDriver.findDriver(ride, vehicleType);
+        System.out.println("Printing driver");
+        System.out.println(driver.getEmail());
     }
 
     @Transactional

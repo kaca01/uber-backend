@@ -14,7 +14,6 @@ import com.example.test.dto.vehicle.VehicleDTO;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Set;
 
 public interface IDriverService {
 
@@ -48,6 +47,4 @@ public interface IDriverService {
     public WorkingHourDTO getWorkTime(Long workTimeId);
 
     public WorkingHourDTO updateWorkTime(Long workTimeId, WorkingHourDTO workingHour) throws ParseException;
-
-    public List<Driver> findAvailable(Ride ride, String type);
 }
