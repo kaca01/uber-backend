@@ -53,6 +53,7 @@ public class RideService implements IRideService {
         ride.setLocations(rideDTO.getLocations());
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
+        ride.setVehicle(driver.getVehicle());
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
