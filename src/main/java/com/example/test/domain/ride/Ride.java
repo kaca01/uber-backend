@@ -28,7 +28,7 @@ public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "startTime")
     private Date startTime;
     @Column(name = "endTime")
     private Date endTime;

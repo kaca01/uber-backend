@@ -62,7 +62,7 @@ public class RideService implements IRideService {
         //metoda nalazi slobodnog aktivnog vozaca koji je najblizi polazistu i cije vozilo odgovara zeljenom tipu i ostalim zahtjevima (baby i pet i br putnika)
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
-        ride.setStartTime(ride.getScheduledTime());
+        ride.setScheduledTime(ride.getScheduledTime());
         // TODO : delete code below after testing
         ride.setEstimatedTimeInMinutes(20);
         Driver driver = iSelectionDriver.findDriver(ride, vehicleType);
