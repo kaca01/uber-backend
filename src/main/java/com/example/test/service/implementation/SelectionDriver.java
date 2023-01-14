@@ -131,10 +131,10 @@ public class SelectionDriver implements ISelectionDriver {
     }
 
     private boolean checkIfRidesOverlap(Ride firstRide, Ride secondRide) {
-        Date firstRideStart = firstRide.getStartTime();
-        Date firstRideEnd = addMinutesToDate(firstRide.getStartTime(), (long) firstRide.getEstimatedTimeInMinutes());
-        Date secondRideStart = secondRide.getStartTime();
-        Date secondRideEnd = addMinutesToDate(secondRide.getStartTime(), (long) secondRide.getEstimatedTimeInMinutes());
+        Date firstRideStart = firstRide.getScheduledTime();
+        Date firstRideEnd = addMinutesToDate(firstRide.getScheduledTime(), (long) firstRide.getEstimatedTimeInMinutes());
+        Date secondRideStart = secondRide.getScheduledTime();
+        Date secondRideEnd = addMinutesToDate(secondRide.getScheduledTime(), (long) secondRide.getEstimatedTimeInMinutes());
         if (firstRideStart.before(secondRideStart) && firstRideEnd.before(secondRideStart)) return false;
         else return !firstRideStart.after(secondRideEnd) || !firstRideEnd.after(secondRideEnd);
     }
@@ -228,8 +228,8 @@ public class SelectionDriver implements ISelectionDriver {
         rides.add(currentRide.get(0));
         rides.sort(new sortItems());
         for (int i = 0; i < rides.size() - 1; i++) {
-            Date estimatedEndTime = addMinutesToDate(rides.get(i).getStartTime(), (long)rides.get(i).getEstimatedTimeInMinutes());
-            double minutes = calculateMinutesDifference(estimatedEndTime, rides.get(i+1).getStartTime());
+            Date estimatedEndTime = addMinutesToDate(rides.get(i).getScheduledTime(), (long)rides.get(i).getEstimatedTimeInMinutes());
+            double minutes = calculateMinutesDifference(estimatedEndTime, rides.get(i+1).getScheduledTime());
             if (minutes > estimatedTime) {
                 return estimatedEndTime;
             }
@@ -237,9 +237,9 @@ public class SelectionDriver implements ISelectionDriver {
         // TODO : then find how many minutes driver has between two accepted rides
         // TODO : if there is enough time for new ride, save in hash map when finishes ride
         Date end;
-        if (rides.size() > 1) end = addMinutesToDate(rides.get(rides.size()-1).getStartTime(),
+        if (rides.size() > 1) end = addMinutesToDate(rides.get(rides.size()-1).getScheduledTime(),
                                          (long)rides.get(rides.size()-1).getEstimatedTimeInMinutes());
-        else end = addMinutesToDate(rides.get(0).getStartTime(),
+        else end = addMinutesToDate(rides.get(0).getScheduledTime(),
                 (long)rides.get(0).getEstimatedTimeInMinutes());
         return end;
     }
@@ -288,8 +288,8 @@ class sortItems implements Comparator<Ride> {
     {
         // Returning the value after comparing the objects
         // this will sort the data in Ascending order
-        Date firstEndTime =  new Date(a.getStartTime().getTime() + ((long)a.getEstimatedTimeInMinutes() * 60000));
-        Date secondEndTime =  new Date(b.getStartTime().getTime() + ((long)b.getEstimatedTimeInMinutes() * 60000));
+        Date firstEndTime =  new Date(a.getScheduledTime().getTime() + ((long)a.getEstimatedTimeInMinutes() * 60000));
+        Date secondEndTime =  new Date(b.getScheduledTime().getTime() + ((long)b.getEstimatedTimeInMinutes() * 60000));
         return firstEndTime.compareTo(secondEndTime);
     }
 }
