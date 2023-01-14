@@ -1,9 +1,10 @@
-package com.example.test.service;
+package com.example.test.service.implementation;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Rejection;
 import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
@@ -17,6 +18,7 @@ import com.example.test.repository.ride.IFavoriteOrderRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.interfaces.IRideService;
+import com.example.test.service.interfaces.ISelectionDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +38,11 @@ public class RideService implements IRideService {
     private IRejectionRepository rejectionRepository;
     @Autowired
     private IFavoriteOrderRepository favoriteOrderRepository;
+    private ISelectionDriver iSelectionDriver;
 
     @Transactional
     @Override
-    public RideDTO insert(RideDTO rideDTO) {
+    public RideDTO insert(RideDTO rideDTO) throws ParseException {
 
         Ride ride = new Ride(rideDTO);
         Set<Passenger> passengers = new HashSet<>();
@@ -48,19 +51,22 @@ public class RideService implements IRideService {
             Passenger p = passengerRepository.findById(u.getId()).orElse(null);
             passengers.add(p);
         }
+
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
-        findAvailableDriver(ride, rideDTO.getVehicleType());
-
+        ride.setLocations(rideDTO.getLocations());
+        Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
+        ride.setDriver(driver);
+        ride.setVehicle(driver.getVehicle());
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
 
-    private void findAvailableDriver(Ride ride, String vehicleType) {
+    private Driver findAvailableDriver(Ride ride, String vehicleType) {
         //metoda nalazi slobodnog aktivnog vozaca koji je najblizi polazistu i cije vozilo odgovara zeljenom tipu i ostalim zahtjevima (baby i pet i br putnika)
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
-        ride.setStartTime(new Date());
+        return iSelectionDriver.findDriver(ride, vehicleType);
     }
 
     @Transactional
@@ -131,6 +137,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if(ride == null) return null;
         ride.setStatus(RideStatus.FINISHED);
+        // TODO : call here calculate price
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }

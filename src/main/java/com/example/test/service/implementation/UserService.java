@@ -1,4 +1,4 @@
-package com.example.test.service;
+package com.example.test.service.implementation;
 
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
