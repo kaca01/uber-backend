@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.*;
 
 @Service
@@ -38,6 +39,7 @@ public class RideService implements IRideService {
     private IRejectionRepository rejectionRepository;
     @Autowired
     private IFavoriteOrderRepository favoriteOrderRepository;
+    @Autowired
     private ISelectionDriver iSelectionDriver;
 
     @Transactional
