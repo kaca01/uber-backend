@@ -6,9 +6,13 @@ import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.vehicle.Vehicle;
+import com.example.test.domain.vehicle.VehicleType;
 import com.example.test.enumeration.RideStatus;
+import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IDriverRepository;
+import com.example.test.repository.vehicle.IVehicleRepository;
+import com.example.test.repository.vehicle.IVehicleTypeRepository;
 import com.example.test.service.interfaces.ISelectionDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +29,18 @@ public class SelectionDriver implements ISelectionDriver {
     IRideRepository iRideRepository;
     @Autowired
     IDriverRepository iDriverRepository;
+    @Autowired
+    IVehicleTypeRepository iVehicleTypeRepository;
 
 
     // TODO : driver has less than 8 working hours in the last 24 hours (with estimated time?)
 
     @Override
     public Driver findDriver(Ride ride, String type) {
+        Optional<Route> location = ride.getLocations().stream().findFirst();
+        double kms = getDistance(location.get().getDeparture(), location.get().getDestination());
+        ride.setEstimatedTimeInMinutes(calculateEstimationTime(kms));
+        ride.setTotalCost(calculatePrice(type, kms));
         if (!refused.containsKey(ride)) refused.put(ride, new ArrayList<>());
         // here are also eliminated drivers with incompatibility of vehicle
         List<Driver> activeDrivers = getActiveDrivers(type, ride);
@@ -234,8 +244,6 @@ public class SelectionDriver implements ISelectionDriver {
                 return estimatedEndTime;
             }
         }
-        // TODO : then find how many minutes driver has between two accepted rides
-        // TODO : if there is enough time for new ride, save in hash map when finishes ride
         Date end;
         if (rides.size() > 1) end = addMinutesToDate(rides.get(rides.size()-1).getScheduledTime(),
                                          (long)rides.get(rides.size()-1).getEstimatedTimeInMinutes());
@@ -271,6 +279,18 @@ public class SelectionDriver implements ISelectionDriver {
         List<Driver> drivers = refused.get(ride);
         drivers.add(driver);
         refused.put(ride, drivers);
+    }
+
+    private double calculatePrice(String type, double distance) {
+        VehicleType vehicleType;
+        switch (type) {
+            case ("STANDARD") : vehicleType = iVehicleTypeRepository.getByName(VehicleTypeName.STANDARD);
+                break;
+            case ("LUXURY") : vehicleType = iVehicleTypeRepository.getByName(VehicleTypeName.LUXURY);
+                break;
+            default: vehicleType = iVehicleTypeRepository.getByName(VehicleTypeName.VAN);
+        }
+        return distance * 120 + vehicleType.getPricePerKm();
     }
 
     @Override

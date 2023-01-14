@@ -62,11 +62,7 @@ public class RideService implements IRideService {
         //metoda nalazi slobodnog aktivnog vozaca koji je najblizi polazistu i cije vozilo odgovara zeljenom tipu i ostalim zahtjevima (baby i pet i br putnika)
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
-        ride.setScheduledTime(ride.getScheduledTime());
-        // TODO : delete code below after testing
-        ride.setEstimatedTimeInMinutes(20);
-        Driver driver = iSelectionDriver.findDriver(ride, vehicleType);
-        return driver;
+        return iSelectionDriver.findDriver(ride, vehicleType);
     }
 
     @Transactional
@@ -153,8 +149,4 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
-    private double calculatePrice(Long id, double distance) {
-        Ride ride = findRideById(id);
-        return distance * 120 + ride.getVehicle().getType().getPricePerKm();
-    }
 }
