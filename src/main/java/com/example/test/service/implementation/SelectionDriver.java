@@ -20,8 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class SelectionDriver implements ISelectionDriver {
-    List<Driver> refused = new ArrayList<>();
-    HashMap<Driver, Date> whenFinishes = new HashMap<>();
+    HashMap<Ride, List<Driver>> refused = new HashMap<>();
     @Autowired
     IRideRepository iRideRepository;
     @Autowired
@@ -51,7 +50,7 @@ public class SelectionDriver implements ISelectionDriver {
         removeFinishedForToday(noScheduledRide);
         removeIncompatible(noScheduledRide, ride, type);
         // TODO : add driver to finish earliest
-        return getFinishEarliest(noScheduledRide, ride.getEstimatedTimeInMinutes());
+        return getFinishEarliest(noScheduledRide, ride);
     }
 
     @Override
@@ -235,7 +234,6 @@ public class SelectionDriver implements ISelectionDriver {
             Date estimatedEndTime = addMinutesToDate(rides.get(i).getStartTime(), (long)rides.get(i).getEstimatedTimeInMinutes());
             double minutes = calculateMinutesDifference(estimatedEndTime, rides.get(i+1).getStartTime());
             if (minutes > estimatedTime) {
-                whenFinishes.put(driver, estimatedEndTime);
                 return estimatedEndTime;
             }
         }
@@ -246,25 +244,23 @@ public class SelectionDriver implements ISelectionDriver {
                                          (long)rides.get(rides.size()-1).getEstimatedTimeInMinutes());
         else end = addMinutesToDate(rides.get(0).getStartTime(),
                 (long)rides.get(0).getEstimatedTimeInMinutes());
-        whenFinishes.put(driver, end);
         return end;
     }
 
-    private Driver getFinishEarliest(List<Driver> drivers, double estimatedTime) {
+    private Driver getFinishEarliest(List<Driver> drivers, Ride ride) {
         Driver minDriver = null;
         Date minFinishes = null;
-        refused.add(iDriverRepository.findById(6L));
         for (Driver driver : drivers) {
-            Date whenFinished = findWhenFinishes(driver, estimatedTime);
+            Date whenFinished = findWhenFinishes(driver, ride.getEstimatedTimeInMinutes());
             if (minDriver == null) {
-                if (!refused.contains(driver)) {
+                if (!refused.get(ride).contains(driver)) {
                     minDriver = driver;
                     minFinishes = whenFinished;
                 }
             }
             else {
                 if (minFinishes.after(whenFinished)) {
-                    if (!refused.contains(driver)) {
+                    if (!refused.get(ride).contains(driver)) {
                         minDriver = driver;
                         minFinishes = whenFinished;
                     }
@@ -274,8 +270,10 @@ public class SelectionDriver implements ISelectionDriver {
         return minDriver;
     }
 
-    public void refuseRide(Driver driver) {
-        refused.add(driver);
+    public void refuseRide(Driver driver, Ride ride) {
+        List<Driver> drivers = refused.get(ride);
+        drivers.add(driver);
+        refused.put(ride, drivers);
     }
 }
 
