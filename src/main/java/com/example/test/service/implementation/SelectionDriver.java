@@ -31,11 +31,11 @@ public class SelectionDriver implements ISelectionDriver {
 
     @Override
     public Driver findDriver(Ride ride, String type) {
+        if (!refused.containsKey(ride)) refused.put(ride, new ArrayList<>());
         // here are also eliminated drivers with incompatibility of vehicle
         List<Driver> activeDrivers = getActiveDrivers(type, ride);
         if (activeDrivers.size() == 0) return null;
         List<Driver> availableDrivers = getAvailableDrivers(activeDrivers, ride);
-        System.out.println("Prosao availableDrivers");
         removeFinishedForToday(availableDrivers);
         removeIncompatible(availableDrivers, ride, type);
         // if there are active available drivers, return them
@@ -44,12 +44,9 @@ public class SelectionDriver implements ISelectionDriver {
         }
         // if there are no active available drivers, find drivers that do not have scheduled ride
         List<Driver> noScheduledRide = getDriversWithNoScheduledRide(activeDrivers, ride);
-        System.out.println("Prosao do with no scheduled ride");
-        System.out.println(noScheduledRide);
         if (noScheduledRide.size() == 0) return null;
         removeFinishedForToday(noScheduledRide);
         removeIncompatible(noScheduledRide, ride, type);
-        // TODO : add driver to finish earliest
         return getFinishEarliest(noScheduledRide, ride);
     }
 
@@ -274,6 +271,13 @@ public class SelectionDriver implements ISelectionDriver {
         List<Driver> drivers = refused.get(ride);
         drivers.add(driver);
         refused.put(ride, drivers);
+    }
+
+    @Override
+    public int calculateEstimationTime(double kms) {
+        double kms_per_min = 0.5;
+        double min_taken = kms / kms_per_min;
+        return (int) min_taken;
     }
 }
 

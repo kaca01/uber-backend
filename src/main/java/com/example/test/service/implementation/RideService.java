@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class RideService implements IRideService {
 
     @Transactional
     @Override
-    public RideDTO insert(RideDTO rideDTO) {
+    public RideDTO insert(RideDTO rideDTO) throws ParseException {
 
         Ride ride = new Ride(rideDTO);
         Set<Passenger> passengers = new HashSet<>();
@@ -47,27 +48,24 @@ public class RideService implements IRideService {
             passengers.add(p);
         }
 
-        // TODO : this is only for testing
-        // TODO : this is not implemented
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         ride.setLocations(rideDTO.getLocations());
-        findAvailableDriver(ride, rideDTO.getVehicleType());
-
+        Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
+        ride.setDriver(driver);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
 
-    private void findAvailableDriver(Ride ride, String vehicleType) {
+    private Driver findAvailableDriver(Ride ride, String vehicleType) {
         //metoda nalazi slobodnog aktivnog vozaca koji je najblizi polazistu i cije vozilo odgovara zeljenom tipu i ostalim zahtjevima (baby i pet i br putnika)
         //ako nema slobodnog, trazi zauzetog bla bla
         //setuje vozaca, vozilo, pocetno vrijeme, kraj vremena, cijena, procijenjeno vrijeme
-        ride.setStartTime(new Date());
+        ride.setStartTime(ride.getScheduledTime());
         // TODO : delete code below after testing
         ride.setEstimatedTimeInMinutes(20);
         Driver driver = iSelectionDriver.findDriver(ride, vehicleType);
-        System.out.println("Printing driver");
-        System.out.println(driver.getEmail());
+        return driver;
     }
 
     @Transactional

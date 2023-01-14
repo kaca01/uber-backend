@@ -20,7 +20,7 @@ public class UnregisteredUserService implements IUnregisteredUserService {
         double kms = iSelectionDriver.getDistance(unregisteredUserDTO.getLocations().get(0).getDeparture(),
                                                   unregisteredUserDTO.getLocations().get(0).getDestination());
         List<Integer> estimationValues = new ArrayList<>();
-        int estimatedTime = calculateEstimationTime(kms);
+        int estimatedTime = iSelectionDriver.calculateEstimationTime(kms);
         estimationValues.add(estimatedTime);
         // price_by_type_of_vehicle + number_of_kilometers*120
         int estimationCost;
@@ -41,9 +41,5 @@ public class UnregisteredUserService implements IUnregisteredUserService {
         return null;
     }
 
-    private int calculateEstimationTime(double kms) {
-        double kms_per_min = 0.5;
-        double min_taken = kms / kms_per_min;
-        return (int) min_taken;
-    }
+
 }

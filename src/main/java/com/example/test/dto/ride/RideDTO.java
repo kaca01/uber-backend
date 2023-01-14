@@ -31,6 +31,7 @@ public class RideDTO {
     private String status;
     private UserDTO driver;
     private RejectionDTO rejection;
+    private String scheduledTime;
 
 
     public RideDTO(Ride ride) {
@@ -52,20 +53,20 @@ public class RideDTO {
 
     // request
     public RideDTO(Set<Route> locations, Set<UserDTO> passengers, String vehicleType,
-                   boolean babyTransport, boolean petTransport) {
+                   boolean babyTransport, boolean petTransport, String scheduledTime) {
         this.locations = locations;
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
         this.petTransport = petTransport;
+        this.scheduledTime = scheduledTime;
     }
-
 
     // response
     public RideDTO(Long id, String startTime, String endTime, double totalCost, Set<Route> locations,
                    Set<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
-                   RejectionDTO rejection) {
+                   RejectionDTO rejection, String scheduledTime) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -79,6 +80,7 @@ public class RideDTO {
         this.status = status;
         this.driver = driver;
         this.rejection = rejection;
+        this.scheduledTime = scheduledTime;
     }
 
     private Set<UserDTO> convertPassengersToUsersDTO(Ride ride) {
