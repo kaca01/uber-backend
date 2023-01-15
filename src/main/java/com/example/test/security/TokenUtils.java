@@ -22,6 +22,9 @@ public class TokenUtils {
     // 30 minutes
     @Value("1800000")
     private int EXPIRES_IN;
+    // 1 week
+    @Value("604800000")
+    private int REFRESH_EXPIRES_IN;
     @Value("Authorization")
     private String AUTH_HEADER;
 
@@ -48,6 +51,17 @@ public class TokenUtils {
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 
+    public String generateRefreshToken(String username) {
+
+        return Jwts.builder()
+                .setIssuer(APP_NAME)
+                .setSubject(username)
+                .setAudience(generateAudience())
+                .setIssuedAt(new Date())
+                .setExpiration(generateRefreshExpirationDate())
+                .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+    }
+
     /**
      * Funkcija za utvrđivanje tipa uređaja za koji se JWT kreira.
      * @return Tip uređaja.
@@ -63,6 +77,10 @@ public class TokenUtils {
      */
     private Date generateExpirationDate() {
         return new Date(new Date().getTime() + EXPIRES_IN);
+    }
+
+    private Date generateRefreshExpirationDate() {
+        return new Date(new Date().getTime() + REFRESH_EXPIRES_IN);
     }
 
     // =================================================================
