@@ -58,7 +58,7 @@ public class PassengerController {
     }
 
     //get passsenger details
-    @PreAuthorize("hasRole('PASSENGER')")
+    @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findOne(@PathVariable int id)
     {

@@ -50,7 +50,7 @@ public class RideService implements IRideService {
         Set<Passenger> passengers = new HashSet<>();
 
         for (UserDTO u : rideDTO.getPassengers()) {
-            Passenger p = passengerRepository.findById(u.getId()).orElse(null);
+            Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
 
@@ -160,6 +160,7 @@ public class RideService implements IRideService {
     public RideDTO startRide(Long id) {
         Ride ride = findRideById(id);
         if(ride == null) return null;
+        ride.setStartTime(new Date());
         ride.setStatus(RideStatus.ACTIVE);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);

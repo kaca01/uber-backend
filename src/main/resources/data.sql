@@ -77,7 +77,7 @@ insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some 
 
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2023-01-13T16:20:24.893Z', null, 550.45, 190, 3, false, false, 5, 1, 1, '2023-01-13T16:20:24.893Z');
+values ('2023-01-13T16:20:24.893Z', null, 550.45, 190, 4, false, false, 5, 1, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2023-01-13T16:00:24.893Z', null, 400.53, 180.89, 3, false, false, 6, 2, 2, '2023-01-13T16:20:24.893Z');
