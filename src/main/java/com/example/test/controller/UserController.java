@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -39,25 +40,35 @@ public class UserController {
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody ChangePasswordDTO changePasswordDTO)
     {
+        User user = service.changePassword(id, changePasswordDTO);
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // todo 400
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     // Reset password of user
     @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> sendResetEmail(@PathVariable Long id)
     {
+        User user = service.sendResetEmail(id);
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     // Change password of a user with the reset code
     @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
     {
+        User user = service.resetEmail(id, resetPasswordDTO);
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
     // Rides of the user
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +98,6 @@ public class UserController {
         return new ResponseEntity<>(new AllDTO<>(users.size(), users), HttpStatus.OK);
     }
 
-
     // login
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO) throws Exception
@@ -95,18 +105,21 @@ public class UserController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
 
-        // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security kontekst
+        // if authentication is successful, add user in current security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Kreiraj token za tog korisnika
+        // Create tokens for that user
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail());
-        int expiresIn = tokenUtils.getExpiredIn();
+        String access = tokenUtils.generateToken(user.getEmail());
+        String refresh = tokenUtils.generateRefreshToken(user.getEmail());
 
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        // return a token in response to successful authentication
+        return ResponseEntity.ok(new UserTokenState(access, refresh));
     }
 
+    @GetMapping("/refreshToken")
+    public void refreshToken(HttpServletRequest request) throws Exception {
+    }
 
     // Returns a list of user messages
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -120,7 +133,6 @@ public class UserController {
         return new ResponseEntity<>(new AllDTO<>(messages.size(), messages), HttpStatus.OK);
     }
 
-
     // Send a message to the user
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO)
@@ -133,7 +145,6 @@ public class UserController {
         // todo za 400
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
 
     // Blocking the user from the part of the administrator
     @PutMapping(value = "/user/{id}/block", produces = MediaType.APPLICATION_JSON_VALUE)
