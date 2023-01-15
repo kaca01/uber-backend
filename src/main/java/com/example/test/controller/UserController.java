@@ -1,11 +1,14 @@
 package com.example.test.controller;
 
+import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
+import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,8 @@ public class UserController {
     private TokenUtils tokenUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private IUserRepository userRepository;
 
 
     // Change password of a user
@@ -121,12 +126,15 @@ public class UserController {
     }
 
 
-    // Send a message to the user
+    // Send a message to the user, sender is received from the token
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO)
             throws Exception
     {
-        MessageDTO message = service.insertMessage((long) id, messageDTO);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User sender = userRepository.findByEmail(email).orElse(null);
+        MessageDTO message = service.insertMessage((long) id, messageDTO, sender);
         if(message == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -3,6 +3,7 @@ package com.example.test.service.implementation;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
@@ -88,10 +89,10 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public MessageDTO insertMessage(Long senderId, MessageDTO requestMessage) {
-        User sender = userRepository.findById(senderId).orElse(null);
+    public MessageDTO insertMessage(Long receiverId, MessageDTO requestMessage, User sender) {
+        User receiver = userRepository.findById(receiverId).orElse(null);
         Ride ride = rideRepository.findById(requestMessage.getRideId()).orElse(null);
-        User receiver = userRepository.findById(requestMessage.getReceiverId()).orElse(null);
+        sender = userRepository.findById(sender.getId()).orElse(null);
         if(sender == null || ride == null || receiver == null) return null;
 
         Message message = new Message();
@@ -101,6 +102,7 @@ public class UserService implements IUserService, UserDetailsService {
         message.setMessage(requestMessage.getMessage());
         message.setType(MessageType.valueOf(requestMessage.getType()));
         message.setRide(ride);
+        message = messageRepository.save(message);
         return new MessageDTO(message);
     }
 

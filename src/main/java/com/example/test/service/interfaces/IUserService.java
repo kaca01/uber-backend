@@ -3,6 +3,7 @@ package com.example.test.service.interfaces;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
+import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
@@ -23,7 +24,7 @@ public interface IUserService {
 
     List<MessageDTO> getMessages(Long id);
 
-    MessageDTO insertMessage(Long id, MessageDTO requestMessage);
+    MessageDTO insertMessage(Long id, MessageDTO requestMessage, User p);
 
     Boolean block(Long id);
 
