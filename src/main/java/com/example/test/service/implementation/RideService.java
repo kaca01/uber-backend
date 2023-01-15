@@ -140,6 +140,7 @@ public class RideService implements IRideService {
         if(ride == null) return null;
         ride.setStatus(RideStatus.FINISHED);
         // TODO : call here calculate price
+        ride.setEndTime(new Date());
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
