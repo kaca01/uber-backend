@@ -6,12 +6,16 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.RideStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +28,7 @@ public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "startTime")
     private Date startTime;
     @Column(name = "endTime")
     private Date endTime;
@@ -52,12 +56,15 @@ public class Ride {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ride_id")
     private Set<Review> reviews = new HashSet<>();
+    @Column(nullable = false)
+    private Date scheduledTime;
 
-    public Ride(RideDTO rideDTO)
-    {
-        //this.setLocations(rideDTO.getRoute());
+    public Ride(RideDTO rideDTO) throws ParseException {
+        this.setLocations(rideDTO.getLocations());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
+        this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                            .parse(rideDTO.getScheduledTime());
     }
 
     public Ride(Long id) {

@@ -6,9 +6,11 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 
+import java.text.ParseException;
+
 public interface IRideService {
 
-    RideDTO insert(RideDTO vehicleType);
+    RideDTO insert(RideDTO vehicleType) throws ParseException;
 
     RideDTO findDriversActiveRide(Long id);
 

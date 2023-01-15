@@ -1,4 +1,4 @@
-package com.example.test.service;
+package com.example.test.service.implementation;
 
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Location;
@@ -13,6 +13,7 @@ import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.DocumentDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.vehicle.VehicleDTO;
+import com.example.test.enumeration.RideStatus;
 import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.repository.business.IWorkingHourRepository;
 import com.example.test.repository.ride.ILocationRepository;
@@ -29,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -109,8 +112,7 @@ public class DriverService implements IDriverService {
         Document document = iDocumentRepository.findById(id);
         if (document == null) return null;
         iDocumentRepository.deleteDocumentById(id);
-        DocumentDTO documentDTO = new DocumentDTO(document);
-        return documentDTO;
+        return new DocumentDTO(document);
     }
 
     @Override
@@ -185,8 +187,7 @@ public class DriverService implements IDriverService {
         List<Ride> rides = iRideRepository.findRidesByDriverId(id);
         List<RideDTO> rideDTOS = new ArrayList<RideDTO>();
         for (Ride ride : rides)  rideDTOS.add(new RideDTO(ride));
-        AllDTO<RideDTO> allRidesDTO = new AllDTO<>(rideDTOS.size(), rideDTOS);
-        return allRidesDTO;
+        return new AllDTO<>(rideDTOS.size(), rideDTOS);
     }
 
     @Override
@@ -210,7 +211,7 @@ public class DriverService implements IDriverService {
     public VehicleDTO saveLocation(VehicleDTO vehicle) {
         // TODO : create function for this in vehicle service after everyone finishes services
         // we are not here just saving location because there can be locations with the same longitude and
-        // latitude but different address (address is a string so it is tricky)
+        // latitude but different address (address is a string, so it is tricky)
         // check if there is current location in database
         Location currentLocation = vehicle.getCurrentLocation();
         Location location = iLocationRepository.findByLatitudeAndLongitude(currentLocation.getLatitude(),

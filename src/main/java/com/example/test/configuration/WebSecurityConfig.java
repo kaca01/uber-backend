@@ -3,7 +3,7 @@ package com.example.test.configuration;
 import com.example.test.security.AuthenticationTokenFilter;
 import com.example.test.security.EntryPointUnauthorizedHandler;
 import com.example.test.security.TokenUtils;
-import com.example.test.service.UserService;
+import com.example.test.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
