@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,15 +24,9 @@ public class ReviewController {
     // Creating a review about the vehicle
     @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(value = "/{rideId}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReviewDTO> insertVehicleReview(@PathVariable int rideId, @RequestBody ReviewDTO reviewDTO)
-            throws Exception
+    public ResponseEntity<ReviewDTO> insertVehicleReview(@PathVariable int rideId, @Valid @RequestBody ReviewDTO reviewDTO)
     {
         ReviewDTO review = service.insertVehicleReview((long) rideId, reviewDTO);
-
-        if(review == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
@@ -40,24 +35,15 @@ public class ReviewController {
     public ResponseEntity<AllDTO<ReviewDTO>> getReviewByVehicle(@PathVariable int id) {
 
         AllDTO<ReviewDTO> reviews = service.getReviewByVehicle((long) id);
-        if(reviews == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
     // Creating a review about the driver
     @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(value = "/{rideId}/driver", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReviewDTO> insertDriverReview(@PathVariable Long rideId, @RequestBody ReviewDTO reviewDTO)
-            throws Exception {
-
+    public ResponseEntity<ReviewDTO> insertDriverReview(@PathVariable Long rideId, @Valid @RequestBody ReviewDTO reviewDTO)
+    {
         ReviewDTO review = service.insertDriverReview(rideId, reviewDTO);
-
-        if(review == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
@@ -66,9 +52,6 @@ public class ReviewController {
     public ResponseEntity<AllDTO<ReviewDTO>> getReviewByDriver(@PathVariable int id) {
 
         AllDTO<ReviewDTO> reviews = service.getReviewByDriver((long) id);
-        if(reviews == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
@@ -76,9 +59,6 @@ public class ReviewController {
     @GetMapping(value ="/{rideId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RideReviewDTO>> getReviewByRide(@PathVariable int rideId) {
         List<RideReviewDTO> reviews = service.getReviewByRide((long) rideId);
-        if(reviews == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 }

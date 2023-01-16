@@ -3,7 +3,7 @@ package com.example.test.service.implementation;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.ResetPassword;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
@@ -13,20 +13,21 @@ import com.example.test.dto.user.ChangePasswordDTO;
 import com.example.test.dto.user.ResetPasswordDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
+import com.example.test.exception.BadRequestException;
+import com.example.test.exception.NotFoundException;
 import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.repository.communication.INoteRepository;
 import com.example.test.repository.ride.IRideRepository;
+import com.example.test.repository.user.IResetPasswordRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -45,46 +46,46 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     IMessageRepository messageRepository;
     @Autowired
+    IResetPasswordRepository resetPasswordRepository;
+    @Autowired
     public BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
-        User user = userRepository.findById(id).orElse(null);
-        if(user == null) return null;
+    public void changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
-        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) return null;
+        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword()))
+            throw new BadRequestException("Current password is not matching!");
 
         user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         userRepository.save(user);
-        return user;
     }
 
     @Override
-    public User sendResetEmail(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if(user == null) return null;
-
-        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+    public void sendResetEmail(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
         userRepository.save(user);
-        return user;
     }
 
     @Override
-    public User resetEmail(Long id, ResetPasswordDTO resetPasswordDTO) {
-        User user = userRepository.findById(id).orElse(null);
-        if(user == null) return null;
+    public void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+        ResetPassword resetPassword = resetPasswordRepository.findResetPasswordByUserId(id);
+
+        Date expiredDate = resetPassword.getExpiredDate();
+
+        if(!resetPasswordDTO.getCode().equals(resetPassword.getCode()) || expiredDate.before(new Date()))
+            throw new BadRequestException("Code is expired or not correct!");
 
         user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
         userRepository.save(user);
-        return user;
     }
 
     @Override
     @Transactional
     public List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to) {
-        // todo page, size
-        User user = userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
         if(user == null) return null;
         List<Ride> rides = rideRepository.findByPassengers_id(id);
         if (rides.isEmpty()) {
@@ -112,13 +113,10 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public List<String> login(String email, String password) {
-        return null;
-    }
-
-    @Override
     @Transactional
     public List<MessageDTO> getMessages(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+
         List<Message> messages = messageRepository.findMessageBySenderIdOrReceiverId(id, id);
         if(messages.isEmpty()) return null;
         // convert to DTO
@@ -131,10 +129,9 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public MessageDTO insertMessage(Long receiverId, MessageDTO requestMessage, User sender) {
-        User receiver = userRepository.findById(receiverId).orElse(null);
-        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElse(null);
-        sender = userRepository.findById(sender.getId()).orElse(null);
-        if(sender == null || ride == null || receiver == null) return null;
+        User receiver = userRepository.findById(receiverId).orElseThrow(() -> new NotFoundException("Receiver does not exist!"));
+        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
+        sender = userRepository.findById(sender.getId()).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
         Message message = new Message();
         message.setTimeOfSending(new Date());
@@ -148,27 +145,27 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public Boolean block(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) return false;
+    public void block(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+        if(user.isBlocked())
+            throw new BadRequestException("User already blocked!");
         user.setBlocked(true);
         userRepository.save(user);
-        return true;
     }
 
     @Override
-    public Boolean unblock(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) return false;
+    public void unblock(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+        if(!user.isBlocked())
+            throw new BadRequestException("User is not blocked!");
         user.setBlocked(false);
         userRepository.save(user);
-        return true;
     }
 
     @Override
     public NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+
         Note note = new Note(requestNote);
         note.setUser(user);
         noteRepository.save(note);
@@ -180,6 +177,8 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public AllDTO<NoteDTO> getNotes(Long id, int page, int size) {
+        userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+
         List<Note> userNotes = noteRepository.findByUserId(id);
         List<NoteDTO> userNoteDTOs = new ArrayList<>();
         for (Note note : userNotes) userNoteDTOs.add(new NoteDTO(note));

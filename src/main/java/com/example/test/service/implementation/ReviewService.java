@@ -4,18 +4,21 @@ import com.example.test.domain.communication.Review;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
-import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.ReviewDTO;
 import com.example.test.dto.ride.RideReviewDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.ReviewType;
+import com.example.test.exception.NotFoundException;
 import com.example.test.repository.communication.IReviewRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IDriverRepository;
+import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.service.interfaces.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,8 @@ public class ReviewService implements IReviewService {
     IVehicleRepository vehicleRepository;
     @Autowired
     IDriverRepository driverRepository;
+    @Autowired
+    IPassengerRepository passengerRepository;
 
     @Override
     @Transactional
@@ -43,8 +48,8 @@ public class ReviewService implements IReviewService {
     public AllDTO<ReviewDTO> getReviewByVehicle(Long vehicleId) {
         List<Review> vehicleReviews = new ArrayList<>();
 
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElse(null);
-        if(vehicle == null) return null;
+        vehicleRepository.findById(vehicleId).orElseThrow(() -> new NotFoundException("Vehicle does not exist!"));
+
         List<Ride> rides = rideRepository.findRidesByVehicleId(vehicleId);
         for(Ride ride: rides) {
             for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
@@ -62,7 +67,7 @@ public class ReviewService implements IReviewService {
     @Override
     @Transactional
     public ReviewDTO insertDriverReview(Long rideId, ReviewDTO reviewDTO) {
-        return insertReview(rideId,reviewDTO, ReviewType.DRIVER);
+        return insertReview(rideId, reviewDTO, ReviewType.DRIVER);
     }
 
     @Override
@@ -70,7 +75,8 @@ public class ReviewService implements IReviewService {
         List<Review> vehicleReviews = new ArrayList<>();
 
         Driver driver = driverRepository.findById(driverId);
-        if(driver == null) return null;
+        if(driver == null) throw new NotFoundException("Driver does not exist!");
+
         List<Ride> rides = rideRepository.findRidesByVehicleId(driverId);
         for(Ride ride: rides) {
             for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
@@ -88,8 +94,7 @@ public class ReviewService implements IReviewService {
     @Override
     @Transactional
     public List<RideReviewDTO> getReviewByRide(Long rideId) {
-        Ride ride = rideRepository.findById(rideId).orElse(null);
-        if(ride == null) return null;
+        rideRepository.findById(rideId).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
 
         List<Review> reviews = rideRepository.findReviewsByRideId(rideId);
         reviews.sort(Comparator.comparing(Review::getPassengerId));
@@ -124,17 +129,23 @@ public class ReviewService implements IReviewService {
     }
 
     private ReviewDTO  insertReview(Long rideId, ReviewDTO reviewDTO, ReviewType type) {
-        Ride ride = rideRepository.findById(rideId).orElse(null);
-        if(ride == null) return null;
-        Set<Passenger> passengers = ride.getPassengers();
+        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
         Review review = new Review(reviewDTO);
-        // how to know which passenger is leaving a review ????
-        review.setPassenger(passengers.toArray(new Passenger[0])[0]);
+
+        // get passenger from token
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Passenger passenger = passengerRepository.findByEmail(email);
+        review.setPassenger(passenger);
+
         review.setType(type);
+
         Set<Review> reviews = ride.getReviews();
         reviews.add(review);
         ride.setReviews(reviews);
+
         rideRepository.save(ride);
+
         reviewDTO.setId(review.getId());
         reviewDTO.setPassenger(new UserDTO(review.getPassenger()));
         return reviewDTO;
