@@ -1,4 +1,4 @@
-package com.example.test.excepetion;
+package com.example.test.exception;
 
 @SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException {

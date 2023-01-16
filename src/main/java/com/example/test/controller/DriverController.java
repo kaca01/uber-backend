@@ -25,49 +25,36 @@ public class DriverController {
     @Autowired
     IDriverService service;
 
+    // add new driver
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO driverDTO) throws Exception{
         UserDTO returnedDriver = service.insert(driverDTO);
-        if (returnedDriver == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
     }
 
+    // get all drivers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<UserDTO>> getAll() throws Exception{
         AllDTO<UserDTO> drivers = service.getAll();
-
-        if (drivers == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('DRIVER')")
+    // get driver by id
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         UserDTO driver = service.get(id);
-        if (driver == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
-        }
-        // TODO : add 400 status
         return new ResponseEntity<UserDTO>(driver, HttpStatus.OK);
     }
 
-    //TODO
+    // update existing driver
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update (@PathVariable Long id, @RequestBody UserDTO driverDTO) throws Exception {
         UserDTO returnedDriver = service.update(id, driverDTO);
-        if (returnedDriver == null) {
-            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
-        }
-        // TODO : add 400 status
-
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
     }
 
@@ -89,10 +76,6 @@ public class DriverController {
                                                              @RequestBody DocumentDTO documentDTO)
             throws Exception{
         DocumentDTO returnedDriverDocument = service.insertDriverDocument(id, documentDTO);
-        // TODO : add 400 status
-        if (returnedDriverDocument == null) {
-            return new ResponseEntity<DocumentDTO>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<DocumentDTO>(returnedDriverDocument, HttpStatus.OK);
     }
 
@@ -188,6 +171,7 @@ public class DriverController {
     //details about the working hour of the driver
     // id of working hour
     @PreAuthorize("hasRole('DRIVER')")
+    // TODO : if added new role, service needs to be changed
     @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long id) throws Exception {
         WorkingHourDTO workingHour = service.getWorkTime(id);
