@@ -2,16 +2,16 @@ package com.example.test.dto.user;
 
 public class UserTokenState {
     private String accessToken;
-    private Long expiresIn;
+    private String refreshToken;
 
     public UserTokenState() {
         this.accessToken = null;
-        this.expiresIn = null;
+        this.refreshToken = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn) {
+    public UserTokenState(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
-        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
     }
 
     public String getAccessToken() {
@@ -22,11 +22,11 @@ public class UserTokenState {
         this.accessToken = accessToken;
     }
 
-    public Long getExpiresIn() {
-        return expiresIn;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setExpiresIn(Long expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

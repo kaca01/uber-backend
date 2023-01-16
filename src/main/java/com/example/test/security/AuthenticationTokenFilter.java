@@ -3,6 +3,7 @@ package com.example.test.security;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,9 +46,25 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             }
 
         } catch (ExpiredJwtException ex) {
-            LOGGER.debug("Token expired!");
-        }
+            // add refresh token
+            String isRefreshToken = request.getHeader("isRefreshToken");
+            String requestURL = request.getRequestURL().toString();
+            // allow for refresh token creation if following conditions are true
+            if(isRefreshToken != null && isRefreshToken.equals("true") && requestURL.contains("refreshtoken"))
+                allowForRefreshToken(ex, request);
+            else request.setAttribute("exception", ex);
 
+        } catch (BadCredentialsException ex) {
+            request.setAttribute("exception", ex);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         filterChain.doFilter(request, response);
+    }
+
+    private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {
+        TokenBasedAuthentication authentication = new TokenBasedAuthentication(null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        request.setAttribute("claims", ex.getClaims());
     }
 }

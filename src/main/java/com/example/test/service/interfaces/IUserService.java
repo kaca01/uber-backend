@@ -9,12 +9,21 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.ChangePasswordDTO;
+import com.example.test.dto.user.ResetPasswordDTO;
 import com.example.test.dto.user.UserDTO;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.ParseException;
 import java.util.List;
 
 public interface IUserService {
+
+    User changePassword(Long id, ChangePasswordDTO changePasswordDTO);
+
+    User sendResetEmail(Long id);
+
+    User resetEmail(Long id, ResetPasswordDTO resetPasswordDTO);
 
     List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to);
 

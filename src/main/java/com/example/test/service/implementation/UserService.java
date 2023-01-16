@@ -9,6 +9,8 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.ChangePasswordDTO;
+import com.example.test.dto.user.ResetPasswordDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
 import com.example.test.repository.communication.IMessageRepository;
@@ -17,12 +19,16 @@ import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -38,6 +44,41 @@ public class UserService implements IUserService, UserDetailsService {
     IRideRepository rideRepository;
     @Autowired
     IMessageRepository messageRepository;
+    @Autowired
+    public BCryptPasswordEncoder passwordEncoder;
+
+    @Override
+    public User changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null) return null;
+
+        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) return null;
+
+        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User sendResetEmail(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null) return null;
+
+        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User resetEmail(Long id, ResetPasswordDTO resetPasswordDTO) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null) return null;
+
+        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+        userRepository.save(user);
+        return user;
+    }
 
     @Override
     @Transactional
