@@ -111,7 +111,7 @@ public class SelectionDriver implements ISelectionDriver {
         List<Driver> noScheduled = getDriversWithNoScheduledRide(activeDrivers, newRide);
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver : activeDrivers) {
-            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driver.getId());
+            Ride ride = iRideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driver.getId()).orElse(null);
             if (ride == null) {
                 if (noScheduled.contains(driver)) drivers.add(driver);
             }

@@ -1,5 +1,6 @@
 package com.example.test.service.interfaces;
 
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
 
@@ -17,5 +18,5 @@ public interface IPassengerService {
 
     UserDTO findOne(Long id);
 
-    Boolean activatePassenger(Long activationId);
+    ErrorDTO activatePassenger(Long activationId);
 }

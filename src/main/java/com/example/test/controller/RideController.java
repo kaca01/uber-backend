@@ -2,10 +2,13 @@ package com.example.test.controller;
 
 import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IRideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/ride")
@@ -26,15 +31,16 @@ public class RideController {
     IRideService service;
     @Autowired
     IPassengerRepository passengerRepository;
+    @Autowired
+    IUserRepository userRepository;
 
     //creating a ride
     @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> insert(@RequestBody RideDTO rideDTO) throws Exception
+    public ResponseEntity<RideDTO> insert(@Valid @RequestBody RideDTO rideDTO) throws Exception
     {
         RideDTO newRide = service.insert(rideDTO);  // returns ride with set id and other data
 
-        // todo newRide will never be null. Error 404 should be sent when there is invalid data
         return new ResponseEntity<RideDTO>(newRide, HttpStatus.OK);
     }
 
@@ -43,10 +49,6 @@ public class RideController {
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
         RideDTO ride = service.findDriversActiveRide(driverId);
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
@@ -55,10 +57,6 @@ public class RideController {
     public ResponseEntity<RideDTO> findPassengersActiveRide(@PathVariable Long passengerId)
     {
         RideDTO ride = service.findPassengersActiveRide(passengerId);
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
@@ -68,105 +66,73 @@ public class RideController {
     {
         RideDTO ride = service.findOne(id);
 
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     // cancel existing ride (perspective of passenger - before the driver has arrived at the destination)
     @PreAuthorize("hasRole('PASSENGER')")
     @PutMapping(value = "/{id}/withdraw")
-    public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id) throws Exception
+    public ResponseEntity<RideDTO> cancelExistingRide(@PathVariable Long id)
     {
         RideDTO ride = service.cancelExistingRide(id);
-
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PanicDTO> setPanic(@RequestBody PanicDTO reason, @PathVariable Long id) throws Exception
+    public ResponseEntity<PanicDTO> setPanic(@Valid @RequestBody PanicDTO reason, @PathVariable Long id)
     {
-        PanicDTO message = service.setPanic(reason, id);
-
-        if (message == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        User sender = userRepository.findByEmail(email).orElse(null);
+        PanicDTO message = service.setPanic(reason, id, sender);
         return new ResponseEntity<PanicDTO>(message, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('DRIVER')")
     //accept the ride
     @PutMapping(value = "/{id}/accept", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> acceptRide(@PathVariable Long id) throws Exception
+    public ResponseEntity<RideDTO> acceptRide(@PathVariable Long id)
     {
         RideDTO ride = service.acceptRide(id);
-
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //todo error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('DRIVER')")
     @PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> startRide(@PathVariable Long id) throws Exception {
-        RideDTO ride = service.startRide(id);
+    public ResponseEntity<RideDTO> startRide(@PathVariable Long id) {
 
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //todo error 400
+        RideDTO ride = service.startRide(id);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('DRIVER')")
     //end the ride
     @PutMapping(value = "/{id}/end", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> endRide(@PathVariable Long id) throws Exception
+    public ResponseEntity<RideDTO> endRide(@PathVariable Long id)
     {
         RideDTO ride = service.endRide(id);
-
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //todo error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('DRIVER')")
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@RequestBody PanicDTO reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody PanicDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
-
-        if (ride == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //todo error 400
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
     @PostMapping(value = "/favorites", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PASSENGER')")
-    public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@RequestBody FavoriteOrder favoriteOrder) throws Exception
+    public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@Valid @RequestBody FavoriteOrder favoriteOrder)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Passenger p = passengerRepository.findByEmail(email);
         FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, email);
-
-        if (order == null) {return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
 
         return new ResponseEntity<FavoriteOrder>(order, HttpStatus.OK);
     }
@@ -185,15 +151,12 @@ public class RideController {
 
     @DeleteMapping(value = "/favorites/{id}")
     @PreAuthorize("hasRole('PASSENGER')")
-    public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Passenger p = passengerRepository.findByEmail(email);
-        boolean successful = service.deleteFavoriteLocation(id, p);
+        service.deleteFavoriteLocation(id, p);
 
-        if (!successful) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

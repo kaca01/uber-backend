@@ -2,7 +2,9 @@ package com.example.test.service.interfaces;
 
 import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.ride.RideDTO;
 
@@ -20,7 +22,7 @@ public interface IRideService {
 
     RideDTO cancelExistingRide(Long id);
 
-    PanicDTO setPanic(PanicDTO reason, Long id);
+    PanicDTO setPanic(PanicDTO reason, Long id, User sender);
 
     RideDTO acceptRide(Long id);
 
@@ -34,5 +36,5 @@ public interface IRideService {
 
     AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p);
 
-    boolean deleteFavoriteLocation(Long id, Passenger p);
+    void deleteFavoriteLocation(Long id, Passenger p);
 }
