@@ -119,7 +119,7 @@ public class RideController {
     @PreAuthorize("hasRole('DRIVER')")
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody ErrorDTO reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody PanicDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);

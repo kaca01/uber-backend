@@ -147,11 +147,11 @@ public class RideService implements IRideService {
 
     //perspective of driver
     @Override
-    public RideDTO cancelRide(ErrorDTO reason, Long id) {
+    public RideDTO cancelRide(PanicDTO reason, Long id) {
         Ride ride = findRideById(id);
         if (ride.getStatus()!= RideStatus.PENDING && ride.getStatus()!= RideStatus.ACCEPTED) throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or ACCEPTED!");
         ride.setStatus(RideStatus.REJECTED);
-        Rejection rejection = new Rejection(reason.getMessage(), ride.getDriver(), new Date());
+        Rejection rejection = new Rejection(reason.getReason(), ride.getDriver(), new Date());
         ride.setRejection(rejection);
         rejectionRepository.save(rejection);
         ride = rideRepository.save(ride);

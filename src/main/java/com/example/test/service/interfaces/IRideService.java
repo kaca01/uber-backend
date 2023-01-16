@@ -28,7 +28,7 @@ public interface IRideService {
 
     RideDTO endRide(Long id);
 
-    RideDTO cancelRide(ErrorDTO reason, Long id);
+    RideDTO cancelRide(PanicDTO reason, Long id);
 
     RideDTO startRide(Long id);
 
