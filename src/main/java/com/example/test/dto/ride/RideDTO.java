@@ -8,6 +8,9 @@ import com.example.test.dto.communication.RejectionDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,16 +24,26 @@ public class RideDTO {
     private Long id;
     private String startTime;
     private String endTime;
+    @Min(0)
     private double totalCost;
+    @NotNull
+    @NotEmpty
     private Set<Route> locations;
+    @NotNull
+    @NotEmpty
     private Set<UserDTO> passengers;
+    @NotEmpty
     private String vehicleType;
+    @NotNull
     private boolean babyTransport;
+    @NotNull
     private boolean petTransport;
+    @Min(0)
     private double estimatedTimeInMinutes;
     private String status;
     private UserDTO driver;
     private RejectionDTO rejection;
+    @NotEmpty
     private String scheduledTime;
 
 

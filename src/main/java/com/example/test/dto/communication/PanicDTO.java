@@ -5,13 +5,20 @@ import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Data
 public class PanicDTO {
 
-    private String reason;
     private Long id;
+    @Length(max = 500)
+    private String reason;
     private UserDTO user;
     private RideDTO ride;
     private String time;

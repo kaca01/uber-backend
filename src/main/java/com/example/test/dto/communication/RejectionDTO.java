@@ -3,6 +3,7 @@ package com.example.test.dto.communication;
 import com.example.test.domain.communication.Rejection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 public class RejectionDTO {
 
+    @Length(max = 500)
     private String reason;
     private String timeOfRejection;
 
