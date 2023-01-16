@@ -1,5 +1,6 @@
 package com.example.test.exception;
 
+import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
