@@ -18,8 +18,10 @@ public class MessageDTO {
     private Long senderId;
     private Long receiverId;
     @NotEmpty
+    @NotNull
     private String message;
     @NotEmpty
+    @NotNull
     private String type;
     @NotNull
     private Long rideId;

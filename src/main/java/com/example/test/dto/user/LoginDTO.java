@@ -4,12 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor
 @Data
 public class LoginDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotEmpty
+    @NotNull
     private String email;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotEmpty
+    @NotNull
     private String password;
     private String accessToken;
     private String refreshToken;

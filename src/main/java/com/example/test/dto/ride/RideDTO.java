@@ -33,6 +33,7 @@ public class RideDTO {
     @NotEmpty
     private Set<UserDTO> passengers;
     @NotEmpty
+    @NotNull
     private String vehicleType;
     @NotNull
     private boolean babyTransport;
@@ -44,6 +45,7 @@ public class RideDTO {
     private UserDTO driver;
     private RejectionDTO rejection;
     @NotEmpty
+    @NotNull
     private String scheduledTime;
 
 

@@ -21,6 +21,7 @@ public class ReviewDTO {
     private int rating;
     @Length(max = 500)
     @NotEmpty
+    @NotNull
     private String comment;
     private UserDTO passenger;
 
