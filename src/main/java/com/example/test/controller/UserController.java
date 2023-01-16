@@ -1,13 +1,12 @@
 package com.example.test.controller;
 
-import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
-import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.exception.BadRequestException;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
@@ -23,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -30,7 +30,6 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/api")
 public class UserController {
-
     @Autowired
     private IUserService service;
     @Autowired
@@ -43,36 +42,26 @@ public class UserController {
 
     // Change password of a user
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody ChangePasswordDTO changePasswordDTO)
+    public ResponseEntity<Void> changePassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordDTO changePasswordDTO)
     {
-        User user = service.changePassword(id, changePasswordDTO);
-        if(user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo 400
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        service.changePassword(id, changePasswordDTO);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Reset password of user
     @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> sendResetEmail(@PathVariable Long id)
     {
-        User user = service.sendResetEmail(id);
-        if(user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        service.sendResetEmail(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Change password of a user with the reset code
     @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
+    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @Valid @RequestBody ResetPasswordDTO resetPasswordDTO)
     {
-        User user = service.resetEmail(id, resetPasswordDTO);
-        if(user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        service.resetEmail(id, resetPasswordDTO);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Rides of the user
@@ -82,14 +71,8 @@ public class UserController {
                                            @RequestParam(defaultValue = "10") int size,
                                            @RequestParam String sort,
                                            @RequestParam String from,
-                                           @RequestParam String to)
-    {
+                                           @RequestParam String to) {
         List<RideDTO> rides = service.getRides(id, page, size, sort, from, to);
-
-        if(rides == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(new AllDTO<>(rides.size(), rides), HttpStatus.OK);
     }
 
@@ -97,15 +80,14 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<UserDTO>> get(@RequestParam(defaultValue = "1") int page,
-                                               @RequestParam(defaultValue = "10") int size)
-    {
+                                               @RequestParam(defaultValue = "10") int size) {
         List<UserDTO> users = service.get(page, size);
         return new ResponseEntity<>(new AllDTO<>(users.size(), users), HttpStatus.OK);
     }
 
     // login
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO) throws Exception
+    public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO)
     {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
@@ -115,6 +97,11 @@ public class UserController {
 
         // Create tokens for that user
         User user = (User) authentication.getPrincipal();
+
+        if(!user.getEmail().equals(loginDTO.getEmail()) ||
+                !user.getPassword().equals(loginDTO.getPassword()))
+            throw new BadRequestException("Wrong username or password!!");
+
         String access = tokenUtils.generateToken(user.getEmail());
         String refresh = tokenUtils.generateRefreshToken(user.getEmail());
 
@@ -123,87 +110,60 @@ public class UserController {
     }
 
     @GetMapping("/refreshToken")
-    public void refreshToken(HttpServletRequest request) throws Exception {
-    }
+    public void refreshToken(HttpServletRequest request) throws Exception { }
 
     // Returns a list of user messages
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO<MessageDTO>> getMessages(@PathVariable int id)
-    {
+    public ResponseEntity<AllDTO<MessageDTO>> getMessages(@PathVariable int id) {
         List<MessageDTO> messages = service.getMessages((long) id);
-        if(messages == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(new AllDTO<>(messages.size(), messages), HttpStatus.OK);
     }
 
     // Send a message to the user, sender is received from the token
     @PostMapping(value = "/user/{id}/message", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @RequestBody MessageDTO messageDTO)
-            throws Exception
+    public ResponseEntity<MessageDTO> insertMessage(@PathVariable int id, @Valid @RequestBody MessageDTO messageDTO)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         User sender = userRepository.findByEmail(email).orElse(null);
         MessageDTO message = service.insertMessage((long) id, messageDTO, sender);
-        if(message == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     // Blocking the user from the part of the administrator
     @PutMapping(value = "/user/{id}/block", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Boolean> block(@PathVariable int id) throws Exception
+    public ResponseEntity<Void> block(@PathVariable int id)
     {
-        Boolean blockedUser = service.block((long) id);
-        if (!blockedUser) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo 400
-        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
+        service.block((long) id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Unblocking user from the administrator
     @PutMapping(value = "/user/{id}/unblock", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Boolean> unblock(@PathVariable int id) throws Exception
+    public ResponseEntity<Void> unblock(@PathVariable int id)
     {
-        Boolean unblockedUser = service.unblock((long) id);
-        if (!unblockedUser) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(true, HttpStatus.NO_CONTENT);
+        service.unblock((long) id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Creating note
     @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE,
                                                produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @RequestBody NoteDTO requestNote) throws Exception
+    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @Valid @RequestBody NoteDTO requestNote) throws Exception
     {
         NoteDTO noteDTO = service.insertNote((long) id, requestNote);
-        if(noteDTO == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(noteDTO, HttpStatus.OK);
     }
 
     // Getting notes for the user
     @GetMapping(value ="/user/{id}/note", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @RequestParam int page,
-                                                    @RequestParam int size)
-    {
+    public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @Valid @RequestParam int page,
+                                                    @RequestParam int size) {
         AllDTO<NoteDTO> noteDTOS = service.getNotes((long) id, page, size);
-        if(noteDTOS == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // todo za 400
         return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
     }
 
