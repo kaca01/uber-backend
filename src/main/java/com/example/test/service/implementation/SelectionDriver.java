@@ -161,7 +161,7 @@ public class SelectionDriver implements ISelectionDriver {
     }
 
     // checks if driver has more than 8 hours in the last 24 hours
-    private boolean isFinishedForToday(Set<WorkingHour> workingHours) {
+    public boolean isFinishedForToday(Set<WorkingHour> workingHours) {
         // this should be called from the function that chooses one driver
         double sumOfHours = 0;
         Date date = find24HoursAgo();
