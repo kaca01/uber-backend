@@ -51,8 +51,7 @@ public class UserService implements IUserService, UserDetailsService {
         User user = userRepository.findById(id).orElse(null);
         if(user == null) return null;
 
-        if(!passwordEncoder.encode(changePasswordDTO.getOldPassword())
-                .equals(user.getPassword())) return null;
+        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) return null;
 
         user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
