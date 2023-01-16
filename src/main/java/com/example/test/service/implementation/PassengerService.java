@@ -3,11 +3,15 @@ package com.example.test.service.implementation;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.UserActivation;
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
+import com.example.test.exception.BadRequestException;
+import com.example.test.exception.NotFoundException;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserActivationRepository;
+import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class PassengerService implements IPassengerService {
 
     @Autowired
     private IPassengerRepository passengerRepository;
+    @Autowired
+    private IUserRepository userRepository;
     @Autowired
     private IRideRepository rideRepository;
     @Autowired
@@ -45,6 +51,9 @@ public class PassengerService implements IPassengerService {
     @Override
     public UserDTO insert(UserDTO passengerDTO)
     {
+        if (this.userRepository.existsByEmail(passengerDTO.getEmail())) {
+            throw new BadRequestException("\t\n" +"User with that email already exists!");
+        }
         Passenger passenger = new Passenger(passengerDTO);
         passenger.setActive(false);
         passenger.setBlocked(false);
@@ -58,7 +67,6 @@ public class PassengerService implements IPassengerService {
     {
         Passenger passenger = new Passenger(passengerDTO);
         Passenger p = findUserById(passengerId);
-        if (p == null) return null;
         p.setName(passenger.getName());
         p.setSurname(passenger.getSurname());
         if (passenger.getProfilePicture() != null) p.setProfilePicture(passenger.getProfilePicture());
@@ -74,8 +82,8 @@ public class PassengerService implements IPassengerService {
     @Override
     public List<RideDTO> getRidesByPassenger(Long passengerId)
     {
+        Passenger p = findUserById(passengerId);
         List<Ride> rides = rideRepository.findByPassengers_id(passengerId);
-        if(rides == null) return null;
 
         // convert rides to DTOs
         List<RideDTO> ridesDTO = new ArrayList<>();
@@ -90,28 +98,29 @@ public class PassengerService implements IPassengerService {
     public UserDTO findOne(Long id)
     {
         Passenger p = findUserById(id);
-        if (p == null) return null;
         return new UserDTO(p);
     }
 
     private Passenger findUserById(Long id)
     {
-        return passengerRepository.findById(id).orElse(null);
+        return passengerRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("\t\n" +"Passenger does not exist!"));
     }
 
     @Override
-    public Boolean activatePassenger(Long activationId) {
+    public ErrorDTO activatePassenger(Long activationId) {
         Passenger p = findUserById(activationId);
-        UserActivation activation = userActivationRepository.findByUser_id(activationId);
+        UserActivation activation = userActivationRepository.findByUser_id(activationId).orElseThrow(
+                () -> new NotFoundException("Activation with entered id does not exist!"));
         if (new Date().before(new Date(activation.getDate().getTime() + activation.getLife()*1000L))) {
             p.setActive(true);
             passengerRepository.save(p);
-            userActivationRepository.delete(activation); //todo discuss with the team whether to delete this or not
-            return true;
+            userActivationRepository.delete(activation);
+            return new ErrorDTO("Successful account activation!");
         } else {
             userActivationRepository.delete(activation);
             passengerRepository.delete(p);
-            return false;
+            throw new BadRequestException("Activation expired. Register again!");
         }
     }
 }
