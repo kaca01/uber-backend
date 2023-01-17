@@ -35,7 +35,7 @@ public class UserDTO {
     @NotNull
     @NotEmpty
     @Length(max = 100)
-    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Bad email format.")
     private String email;
     @JsonInclude( JsonInclude.Include.NON_NULL)
     @NotNull
