@@ -8,8 +8,8 @@ import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
-import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
+import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.MessageType;
@@ -147,7 +147,7 @@ public class RideService implements IRideService {
 
     //perspective of driver
     @Override
-    public RideDTO cancelRide(PanicDTO reason, Long id) {
+    public RideDTO cancelRide(RejectionDTO reason, Long id) {
         Ride ride = findRideById(id);
         if (ride.getStatus()!= RideStatus.PENDING && ride.getStatus()!= RideStatus.ACCEPTED) throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or ACCEPTED!");
         ride.setStatus(RideStatus.REJECTED);

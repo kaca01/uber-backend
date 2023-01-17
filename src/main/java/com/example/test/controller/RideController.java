@@ -6,6 +6,7 @@ import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
+import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserRepository;
@@ -119,7 +120,7 @@ public class RideController {
     @PreAuthorize("hasRole('DRIVER')")
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody PanicDTO reason, @PathVariable Long id)
+    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody RejectionDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);

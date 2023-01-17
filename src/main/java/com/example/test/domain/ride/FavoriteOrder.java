@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,8 +23,11 @@ public class FavoriteOrder {
     private Long id;
     @Column(name = "favoriteName", nullable = false)
     @Length(max = 100)
+    @NotNull
+    @NotEmpty
     private String favoriteName;
     @Column(name = "vehicleType", nullable = false)
+    @NotNull
     private VehicleTypeName vehicleType;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Passenger passenger;
