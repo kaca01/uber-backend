@@ -22,7 +22,7 @@ public class WorkingHour {
     @Column(name = "start", nullable = false)
     @PastOrPresent
     private Date start;
-    @Column(name = "end", nullable = false)
+    @Column(name = "end")
     @PastOrPresent
     private Date end;
 }

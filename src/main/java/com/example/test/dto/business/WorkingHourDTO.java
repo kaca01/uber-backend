@@ -27,10 +27,15 @@ public class WorkingHourDTO {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         this.id = wh.getId();
         this.start = format.format(wh.getStart());
-        this.end = format.format(wh.getEnd());
+        if (wh.getEnd() != null) this.end = format.format(wh.getEnd());
     }
 
-    //response and request
+    //request
+    public WorkingHourDTO(String start) {
+        this.start = start;
+    }
+
+    //response
     public WorkingHourDTO(Long id, String start, String end) {
         this.id = id;
         this.start = start;

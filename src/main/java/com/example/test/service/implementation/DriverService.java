@@ -187,10 +187,11 @@ public class DriverService implements IDriverService {
         for (WorkingHour workingHour : workingHours) if (workingHour.getEnd() == null)
             throw new BadRequestException("Shifth already ongoing!");
         Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
-        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
-        WorkingHour workingHour = new WorkingHour(workingHourDTO.getId(), start, end);
-        workingHours.add(workingHour);
+        WorkingHour workingHour = new WorkingHour();
+        workingHour.setStart(start);
+        workingHour = iWorkingHourRepository.save(workingHour);
         // TODO : check if working hour is added
+        workingHours.add(workingHour);
         iDriverRepository.save(driver);
         workingHourDTO.setId(workingHour.getId());
         return workingHourDTO;
