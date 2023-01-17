@@ -115,7 +115,7 @@ public class DriverController {
 
     //returns history of the driver working hours that can be filtered by data
     //id of the driver
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<WorkingHourDTO>> getWorkTimes(@PathVariable Long id) throws Exception{
         AllDTO<WorkingHourDTO> workingHours = service.getWorkTimes(id);
@@ -141,7 +141,7 @@ public class DriverController {
 
     //details about the working hour of the driver
     //id of working hour
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     // TODO : if added new role, service needs to be changed
     @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long id) throws Exception {

@@ -30,6 +30,7 @@ import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,12 +57,16 @@ public class DriverService implements IDriverService {
     IWorkingHourRepository iWorkingHourRepository;
     @Autowired
     IVehicleTypeRepository iVehicleTypeRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO insert(UserDTO driverDTO) {
         Optional<User> user = iUserRepository.findByEmail(driverDTO.getEmail().trim());
         if (user.isPresent()) throw new BadRequestException("User with that email already exists!");
         Driver driver = new Driver(driverDTO);
+        driver.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
+        driver.setActive(true);
         iDriverRepository.save(driver);
         driverDTO.setId(driver.getId());
         return driverDTO;
@@ -85,9 +90,11 @@ public class DriverService implements IDriverService {
     @Override
     @Transactional
     public UserDTO update(Long id, UserDTO driverDTO) {
+        Driver oldDriver = iDriverRepository.findById(id);
         driverDTO.setId(id);
         if (getDriver(id) == null) throw new NotFoundException("Driver does not exist!");
         Driver driver = new Driver(driverDTO);
+        driver.setPassword(oldDriver.getPassword());
         iUserRepository.save(driver);
         return driverDTO;
     }
