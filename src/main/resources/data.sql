@@ -56,10 +56,10 @@ values ('879-T-446', 'Hummer H2 Limuzina', 2, 4, false, true, 9);
 insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
 values ('123-T-321', 'Toyota Hiace Van', 3, 2, false, true, 6);
 
-insert into driver (id, driving_license, vehicle_id) values (5, 00198456, 1);
-insert into driver (id, driving_license, vehicle_id) values (6, 00223789, 2);
-insert into driver (id, driving_license, vehicle_id) values (7, 00346523, 3);
-insert into driver (id, driving_license, vehicle_id) values (8, 00478956, 4);
+insert into driver (id, driving_license, vehicle_id) values (5, '00198456', 1);
+insert into driver (id, driving_license, vehicle_id) values (6, '00223789', 2);
+insert into driver (id, driving_license, vehicle_id) values (7, '00346523', 3);
+insert into driver (id, driving_license, vehicle_id) values (8, '00478956', 4);
 
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document1', 5);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document2', 6);

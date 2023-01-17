@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @NoArgsConstructor
 @Data
@@ -34,6 +35,7 @@ public class UserDTO {
     @NotNull
     @NotEmpty
     @Length(max = 100)
+    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
     private String email;
     @JsonInclude( JsonInclude.Include.NON_NULL)
     @NotNull

@@ -19,9 +19,9 @@ import java.util.*;
 @Entity
 public class Driver extends User {
 
-    @Column(name = "drivingLicense", nullable = false)
+    @Column(name = "drivingLicense")
     @Length(max = 100)
-    private int drivingLicense;
+    private String drivingLicense;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "driver_id")
@@ -41,7 +41,7 @@ public class Driver extends User {
 
     public Driver(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
                   String address, String password, boolean blocked, boolean active,
-                  int drivingLicense, Set<WorkingHour> workingHours, Vehicle vehicle) {
+                  String drivingLicense, Set<WorkingHour> workingHours, Vehicle vehicle) {
         super(id, name, surname, profilePicture, telephoneNumber, email, address, password, new Timestamp(new Date().getTime()), blocked, active, new ArrayList<>());
         this.drivingLicense = drivingLicense;
         this.workingHours = workingHours;
