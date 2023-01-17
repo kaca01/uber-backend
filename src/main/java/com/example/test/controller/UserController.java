@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,7 +62,7 @@ public class UserController {
 
     // Change password of a user with the reset code
     @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @Valid @RequestBody ResetPasswordDTO resetPasswordDTO)
+    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
     {
         service.resetEmail(id, resetPasswordDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -69,22 +70,16 @@ public class UserController {
 
     // Rides of the user
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id,
-                                           @RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "10") int size,
-                                           @RequestParam String sort,
-                                           @RequestParam String from,
-                                           @RequestParam String to) {
-        List<RideDTO> rides = service.getRides(id, page, size, sort, from, to);
+    public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id) {
+        List<RideDTO> rides = service.getRides(id);
         return new ResponseEntity<>(new AllDTO<>(rides.size(), rides), HttpStatus.OK);
     }
 
     // Getting multiple of them for the reason of showing a list
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value ="/user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllDTO<UserDTO>> get(@RequestParam(defaultValue = "1") int page,
-                                               @RequestParam(defaultValue = "10") int size) {
-        List<UserDTO> users = service.get(page, size);
+    public ResponseEntity<AllDTO<UserDTO>> get() {
+        List<UserDTO> users = service.get();
         return new ResponseEntity<>(new AllDTO<>(users.size(), users), HttpStatus.OK);
     }
 
@@ -92,10 +87,10 @@ public class UserController {
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO)
     {
-        User check = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!!"));
+        User check = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
         if(!check.getEmail().equals(loginDTO.getEmail()) ||
         !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
-            throw new BadRequestException("Wrong username or password!!");
+            throw new BadRequestException("Wrong username or password!");
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));

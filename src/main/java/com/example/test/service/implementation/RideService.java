@@ -63,7 +63,9 @@ public class RideService implements IRideService {
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         ride.setLocations(rideDTO.getLocations());
-        if (ride.getScheduledTime() == null) ride.setScheduledTime(new Date());
+
+        if(ride.getScheduledTime() == null) ride.setScheduledTime(new Date());
+        
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
         if (driver != null) {

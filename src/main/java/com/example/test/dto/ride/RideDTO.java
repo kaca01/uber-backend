@@ -46,7 +46,6 @@ public class RideDTO {
     private RejectionDTO rejection;
     private String scheduledTime;
 
-
     public RideDTO(Ride ride) {
         this.id = ride.getId();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

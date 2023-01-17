@@ -12,11 +12,11 @@ import javax.validation.constraints.Pattern;
 public class ChangePasswordDTO {
     @NotEmpty
     @NotNull
-    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
+//    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
     private String newPassword;
     @NotEmpty
     @NotNull
-    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
+//    @Pattern(regexp = "'^(?=.\\d)(?=.[A-Z])(?!.*[^a-zA-Z0-9@#$^+=])(.{8,15})$'\n")
     private String oldPassword;
 
     // request
