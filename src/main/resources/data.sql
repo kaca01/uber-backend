@@ -31,10 +31,10 @@ insert into admin values(10);
 insert into admin values(11);
 
 insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 5A', 10.22, 25.94);
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 788.23, 124.78);
-insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 1004.2, 5.26);
-insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 199.4758);
-insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 199.4758);
+insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 78.23, 124.78);
+insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 14.2, 5.26);
+insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 19.4758);
+insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 19.4758);
 
 insert into route(departure_id, destination_id) values (1, 3);
 insert into route(departure_id, destination_id) values (1, 4);
