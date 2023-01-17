@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,7 +28,7 @@ public class DriverController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO driverDTO) throws Exception{
-        UserDTO returnedDriver = service.insert(driverDTO);
+        UserDTO returnedDriver = service.insertDriver(driverDTO);
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
     }
 
@@ -86,6 +84,7 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     // get vehicle for a driver
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> getVehicle(@PathVariable Long id) throws Exception {
@@ -123,7 +122,7 @@ public class DriverController {
     }
 
     // creating information about the drivers working hours
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
                                                          @Valid @RequestBody WorkingHourDTO workingHourDTO) throws Exception {

@@ -5,6 +5,7 @@ import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
+import com.example.test.domain.user.Role;
 import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.domain.vehicle.VehicleType;
@@ -22,6 +23,7 @@ import com.example.test.repository.ride.ILocationRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IDocumentRepository;
 import com.example.test.repository.user.IDriverRepository;
+import com.example.test.repository.user.IRoleRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
@@ -58,17 +60,24 @@ public class DriverService implements IDriverService {
     @Autowired
     IVehicleTypeRepository iVehicleTypeRepository;
     @Autowired
+    IRoleRepository iRoleRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO insert(UserDTO driverDTO) {
+    public UserDTO insertDriver(UserDTO driverDTO) {
         Optional<User> user = iUserRepository.findByEmail(driverDTO.getEmail().trim());
         if (user.isPresent()) throw new BadRequestException("User with that email already exists!");
         Driver driver = new Driver(driverDTO);
         driver.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
         driver.setActive(true);
+        List<Role> roles = new ArrayList<>();
+        roles.add(iRoleRepository.findById(2L).get());
+        driver.setRoles(roles);
         iDriverRepository.save(driver);
+        iUserRepository.save(driver);
         driverDTO.setId(driver.getId());
+        driverDTO.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
         return driverDTO;
     }
 
@@ -95,6 +104,9 @@ public class DriverService implements IDriverService {
         if (getDriver(id) == null) throw new NotFoundException("Driver does not exist!");
         Driver driver = new Driver(driverDTO);
         driver.setPassword(oldDriver.getPassword());
+        List<Role> roles = new ArrayList<>();
+        roles.add(iRoleRepository.findById(2L).get());
+        driver.setRoles(roles);
         iUserRepository.save(driver);
         return driverDTO;
     }
@@ -147,9 +159,10 @@ public class DriverService implements IDriverService {
         VehicleType vehicleType = iVehicleTypeRepository.getByName(VehicleTypeName.valueOf(name));
         Vehicle vehicle = new Vehicle(vehicleDTO);
         vehicle.setType(vehicleType);
-        iVehicleRepository.save(vehicle);
         driver.setVehicle(vehicle);
+        iVehicleRepository.save(vehicle);
         iDriverRepository.save(driver);
+        vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
     }
@@ -165,6 +178,7 @@ public class DriverService implements IDriverService {
         driver.setVehicle(vehicle);
         iVehicleRepository.save(vehicle);
         iDriverRepository.save(driver);
+        vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
     }
