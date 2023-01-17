@@ -56,10 +56,10 @@ public class PassengerService implements IPassengerService {
     public UserDTO insert(UserDTO passengerDTO)
     {
         if (this.userRepository.existsByEmail(passengerDTO.getEmail())) {
-            throw new BadRequestException("\t\n" +"User with that email already exists!");
+            throw new BadRequestException("User with that email already exists!");
         }
         Passenger passenger = new Passenger(passengerDTO);
-        passenger.setPassword(passwordEncoder.encode(passengerDTO.getPassword()));
+        passenger.setPassword(passengerDTO.getPassword());
         passenger.setActive(false);
         passenger.setBlocked(false);
         passenger = passengerRepository.save(passenger);
@@ -109,7 +109,7 @@ public class PassengerService implements IPassengerService {
     private Passenger findUserById(Long id)
     {
         return passengerRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("\t\n" +"Passenger does not exist!"));
+                () -> new NotFoundException("Passenger does not exist!"));
     }
 
     @Override
