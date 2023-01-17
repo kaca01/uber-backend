@@ -66,7 +66,8 @@ public class Ride {
         this.setLocations(rideDTO.getLocations());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
-        this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        if(rideDTO.getScheduledTime() != null)
+            this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                             .parse(rideDTO.getScheduledTime());
     }
 

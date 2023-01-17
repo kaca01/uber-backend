@@ -78,19 +78,21 @@ public class UserService implements IUserService, UserDetailsService {
         if(!resetPasswordDTO.getCode().equals(resetPassword.getCode()) || expiredDate.before(new Date()))
             throw new BadRequestException("Code is expired or not correct!");
 
+        resetPassword.setCode(resetPasswordDTO.getCode());
+        resetPasswordRepository.save(resetPassword);
+
         user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
-        if(user == null) return null;
+    public List<RideDTO> getRides(Long id) {
+        userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+
         List<Ride> rides = rideRepository.findByPassengers_id(id);
         if (rides.isEmpty()) {
             rides = rideRepository.findRidesByDriverId(id);
-            System.out.println(rides);
             if (rides.isEmpty()) return null;
         }
         // convert to DTO
@@ -103,7 +105,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     // page:1, size:5
-    public List<UserDTO> get(int page, int size) {
+    public List<UserDTO> get() {
         List<UserDTO> userDTOS = new ArrayList<>();
         // list of users is never empty or null
         for(User user : userRepository.findAll()) {

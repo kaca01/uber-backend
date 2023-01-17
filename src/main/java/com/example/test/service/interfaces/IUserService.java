@@ -20,9 +20,9 @@ public interface IUserService {
 
     void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO);
 
-    List<RideDTO> getRides(Long id, int page, int size, String sort, String from, String to);
+    List<RideDTO> getRides(Long id);
 
-    List<UserDTO> get(int page, int size);
+    List<UserDTO> get();
 
     List<MessageDTO> getMessages(Long id);
 
