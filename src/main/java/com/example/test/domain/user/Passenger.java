@@ -30,7 +30,6 @@ public class Passenger extends User {
         this.setProfilePicture(passengerDTO.getProfilePicture());
         this.setAddress(passengerDTO.getAddress());
         this.setTelephoneNumber(passengerDTO.getTelephoneNumber());
-        this.setPassword(passengerDTO.getPassword());
     }
 
     @JsonIgnore

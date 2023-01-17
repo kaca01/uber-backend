@@ -22,7 +22,6 @@ public class PassengerController {
     @Autowired
     IPassengerService service;
 
-    @PreAuthorize("hasRole('PASSENGER')")
     // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO)

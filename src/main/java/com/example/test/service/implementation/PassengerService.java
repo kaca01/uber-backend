@@ -14,6 +14,8 @@ import com.example.test.repository.user.IUserActivationRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,8 @@ public class PassengerService implements IPassengerService {
     private IRideRepository rideRepository;
     @Autowired
     private IUserActivationRepository userActivationRepository;
+    @Autowired
+    public BCryptPasswordEncoder passwordEncoder;
 
     //get only those whose active status is true
     @Override
@@ -55,6 +59,7 @@ public class PassengerService implements IPassengerService {
             throw new BadRequestException("\t\n" +"User with that email already exists!");
         }
         Passenger passenger = new Passenger(passengerDTO);
+        passenger.setPassword(passwordEncoder.encode(passengerDTO.getPassword()));
         passenger.setActive(false);
         passenger.setBlocked(false);
         passenger = passengerRepository.save(passenger);

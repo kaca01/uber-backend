@@ -40,9 +40,9 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private IUserRepository userRepository;
-
     @Autowired
     public BCryptPasswordEncoder passwordEncoder;
+
     // Change password of a user
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> changePassword(@PathVariable Long id, @Valid @RequestBody ChangePasswordDTO changePasswordDTO)
