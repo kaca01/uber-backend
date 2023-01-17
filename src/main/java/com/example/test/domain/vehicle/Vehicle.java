@@ -23,7 +23,7 @@ public class Vehicle {
     private String licenseNumber;
     @Column(name = "passengerSeats", nullable = false)
     private int passengerSeats;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private Location currentLocation;
     @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;

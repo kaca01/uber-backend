@@ -28,4 +28,6 @@ public interface IRideRepository extends JpaRepository<Ride, Long> {
 
     @Query("select r.reviews from Ride r where r.id = ?1")
     public List<Review> findReviewsByRideId(Long id);
+
+    List<Ride> findByStatus(RideStatus status);
 }
