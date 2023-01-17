@@ -3,13 +3,19 @@ package com.example.test.dto.communication;
 import com.example.test.domain.communication.Rejection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @NoArgsConstructor
 @Data
 public class RejectionDTO {
 
+    @Length(max = 500)
+    @NotEmpty
+    @NotNull
     private String reason;
     private String timeOfRejection;
 

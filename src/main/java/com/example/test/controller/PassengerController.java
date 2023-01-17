@@ -1,8 +1,7 @@
 package com.example.test.controller;
 
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
 import com.example.test.dto.AllDTO;
+import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.service.interfaces.IPassengerService;
@@ -10,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/passenger")
 public class PassengerController {
@@ -25,17 +24,15 @@ public class PassengerController {
 
     // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO passengerDTO) throws Exception
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO)
     {
         UserDTO passenger = service.insert(passengerDTO);  // returns passenger with set id
-        if (passenger == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            // todo passenger will never be null. This request should be sent when there is invalid data
         return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //getting passengers
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<UserDTO>> getPassengers()
     {
         List<UserDTO> passengersDTO = service.getAll(0, 0);
@@ -46,55 +43,39 @@ public class PassengerController {
     }
 
     //activate passenger account
+//    @PreAuthorize("hasRole('PASSENGER')")
     @GetMapping(value = "/activate/{activationId}")
-    public ResponseEntity<Boolean> activatePassenger(@PathVariable int activationId) throws Exception
+    public ResponseEntity<ErrorDTO> activatePassenger(@PathVariable int activationId)
     {
-        Boolean flag = service.activatePassenger((long) activationId);
-        if (!flag) {
-            return new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
-        }
-        //TODO add error 400 (bad request=invalid data)
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        ErrorDTO message = service.activatePassenger((long) activationId);
+        return new ResponseEntity<ErrorDTO>(message, HttpStatus.OK);
     }
 
     //get passsenger details
+    @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findOne(@PathVariable int id)
     {
         UserDTO passenger = service.findOne((long) id);
-
-        if (passenger == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
         return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //Update existing passenger
+    @PreAuthorize("hasRole('PASSENGER')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> update(@RequestBody UserDTO passengerDTO, @PathVariable int id) throws Exception
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO passengerDTO, @PathVariable int id)
     {
         UserDTO passenger = service.update(passengerDTO, (long) id);
-
-        if (passenger == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
         return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
 
     //get passenger rides
     //todo PAGINATED RIDES
+    @PreAuthorize("hasAnyRole('ADMIN', 'PASSENGER')")
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {
         List<RideDTO> rides = service.getRidesByPassenger((long)id);
-
-        // ako ne postoji korisnik. Ako postoji korisnik a nema voznji, vraca praznu listu
-        if (rides == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        //TODO error 400
 
         AllDTO<RideDTO> allRides = new AllDTO<>(rides.size(), rides);
         return new ResponseEntity<>(allRides, HttpStatus.OK);

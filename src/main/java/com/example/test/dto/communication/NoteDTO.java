@@ -4,12 +4,17 @@ import com.example.test.domain.communication.Note;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor
 @Data
 public class NoteDTO {
 
     private Long id;
     private String date;
+    @NotEmpty
+    @NotNull
     private String message;
 
     public NoteDTO(Note note)

@@ -7,7 +7,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 @NoArgsConstructor
@@ -16,12 +21,26 @@ public class VehicleDTO {
 
     private Long id;
     private Long driverId;
+    @NotEmpty
+    @NotNull
     private String vehicleType;
+    @NotEmpty
+    @NotNull
+    @Length(max = 100)
     private String model;
+    @NotEmpty
+    @NotNull
+    @Length(max = 20)
     private String licenseNumber;
+    @NotNull
     private Location currentLocation;
+    @NotNull
+    @Min(1)
+    @Max(20)
     private int passengerSeats;
+    @NotNull
     private boolean babyTransport;
+    @NotNull
     private boolean petTransport;
 
     public VehicleDTO(Driver driver, Vehicle vehicle) {

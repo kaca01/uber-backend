@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -26,6 +27,7 @@ public class Message {
     @Column(name = "message", nullable = false)
     private String message;
     @Column(name = "timeOfSending", nullable = false)
+    @PastOrPresent
     private Date timeOfSending;
     @Column(name = "type", nullable = false)
     private MessageType type;

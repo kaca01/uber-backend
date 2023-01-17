@@ -1,25 +1,25 @@
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '123', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '000', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '111', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '222', false, true);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '333', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Boris', 'Petrov', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2', '444', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Dusko', 'Dabić', 'U3dhZ2dlciByb2Nrcw==', '+381133333', 'duki@gmail.com', 'Omladinska 3', '555', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Danka', 'Danić', 'U3dhZ2dlciByb2Nrcw==', '+381222222', 'danka@gmail.com', 'Fruskogorska 23', '666', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '777', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '888', false, false);
-insert into user (name, surname, profile_picture, telephone_number, email, address, password, blocked, active) values
-    ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '999', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Marko', 'Markovic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'marko@gmail.com', 'Bulevar Oslobodjenja 23', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Ana', 'Pajić', 'U3dhZ2dlciByb2Nrcw==', '+381124343', 'ana@gmail.com', 'Backa 41', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Pera', 'Perić', 'U3dhZ2dlciByb2Nrcw==', '+381444123', 'pera@gmail.com', 'Sremska 22', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Boris', 'Petrov', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Dusko', 'Dabić', 'U3dhZ2dlciByb2Nrcw==', '+381133333', 'duki@gmail.com', 'Omladinska 3', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Danka', 'Danić', 'U3dhZ2dlciByb2Nrcw==', '+381222222', 'danka@gmail.com', 'Fruskogorska 23', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 
 insert into passenger values(1);
 insert into passenger values(2);
@@ -31,15 +31,10 @@ insert into admin values(10);
 insert into admin values(11);
 
 insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 5A', 10.22, 25.94);
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 788.23, 124.78);
-insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 1004.2, 5.26);
-insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 199.4758);
-insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 199.4758);
-
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (1, 1);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (2, 2);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (3, 3);
-insert into passenger_favorite_locations (passenger_id, favorite_locations_id) values (4, 4);
+insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 78.23, 124.78);
+insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 14.2, 5.26);
+insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 19.4758);
+insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 19.4758);
 
 insert into route(departure_id, destination_id) values (1, 3);
 insert into route(departure_id, destination_id) values (1, 4);
@@ -61,10 +56,10 @@ values ('879-T-446', 'Hummer H2 Limuzina', 2, 4, false, true, 9);
 insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
 values ('123-T-321', 'Toyota Hiace Van', 3, 2, false, true, 6);
 
-insert into driver (id, driving_license, vehicle_id) values (5, 00198456, 1);
-insert into driver (id, driving_license, vehicle_id) values (6, 00223789, 2);
-insert into driver (id, driving_license, vehicle_id) values (7, 00346523, 3);
-insert into driver (id, driving_license, vehicle_id) values (8, 00478956, 4);
+insert into driver (id, driving_license, vehicle_id) values (5, '00198456', 1);
+insert into driver (id, driving_license, vehicle_id) values (6, '00223789', 2);
+insert into driver (id, driving_license, vehicle_id) values (7, '00346523', 3);
+insert into driver (id, driving_license, vehicle_id) values (8, '00478956', 4);
 
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document1', 5);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document2', 6);
@@ -81,23 +76,23 @@ insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some 
                                                                   '2022-11-22T18:43:24.893Z', 5);
 
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-12-24T22:42:24.893Z', '2022-12-24T22:55:24.893Z', 550.45, 12.34, 4, false, false, 5, 1, 1);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2023-01-13T16:20:24.893Z', null, 550.45, 190, 4, false, false, 5, 1, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-11-22T18:32:24.893Z', '2022-11-22T18:45:24.893Z', 400.53, 10.89, 4, false, false, 6, 2, 2);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2023-01-13T16:00:24.893Z', null, 400.53, 180.89, 3, false, false, 6, 2, 2, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-12-15T20:30:24.893Z', '2022-12-15T22:00:24.893Z', 10000, 90, 4, false, true, 7, null, 3);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2023-01-13T19:00:24.893Z', null, 10000, 180, 1, false, true, 7, null, 3, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-12-22T13:42:24.893Z', null, 450, 8.12, 3, false, false, 8, null, 4);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2023-01-13T19:00:24.893Z', null, 450, 180, 1, false, false, 8, null, 4, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 2, false, false, 8, 1, 2);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
-                 driver_id, rejection_id, vehicle_id)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1);
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 1);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -149,15 +144,46 @@ insert into note(date, message, user_id) values ('2022-10-11T09:11:07.893Z', 'Wa
 insert into review(comment, rating, type, passenger_id, ride_id) values ('I did not like the driver at all', 1, 0, 1, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values (null, 4, 0, 1, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Comfortable car!!!', 5, 1, 3, 2);
+insert into review(comment, rating, type, passenger_id, ride_id) values ('', 0, 0, 3, 2);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Everything was great', 5, 0, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Great car', 5, 1, 3, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Music was toooooo loud', 3, 0, 4, 4);
 insert into review(comment, rating, type, passenger_id, ride_id) values ('Car is could be newer -.-', 2, 1, 4, 4);
 
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Home to work', 1, 0, true, false);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Home to university', 1, 1, false, false);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('Work to Cinema', 2, 2, false, true);
+insert into favorite_order(favorite_name, passenger_id, vehicle_type, baby_transport, pet_transport) values ('University to home', 2, 0, true, false);
 
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (1, 1);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (1, 2);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (1, 3);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (2, 4);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (2, 1);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (3, 2);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (4, 3);
+insert into favorite_order_passengers(favorite_order_id, passengers_id) values (4, 4);
 
+insert into favorite_order_locations(favorite_order_id, locations_id) values (1, 1);
+insert into favorite_order_locations(favorite_order_id, locations_id) values (2, 2);
+insert into favorite_order_locations(favorite_order_id, locations_id) values (3, 3);
+insert into favorite_order_locations(favorite_order_id, locations_id) values (4, 4);
 
+insert into role (name) values ('ROLE_PASSENGER');
+insert into role (name) values ('ROLE_DRIVER');
+insert into role (name) values ('ROLE_ADMIN');
 
+insert into user_role (user_id, role_id) VALUES (1, 1); 
+insert into user_role (user_id, role_id) VALUES (2, 1); 
+insert into user_role (user_id, role_id) VALUES (3, 1);
+insert into user_role (user_id, role_id) VALUES (4, 1); 
+insert into user_role (user_id, role_id) VALUES (5, 2); 
+insert into user_role (user_id, role_id) VALUES (6, 2);
+insert into user_role (user_id, role_id) VALUES (7, 2); 
+insert into user_role (user_id, role_id) VALUES (8, 2); 
+insert into user_role (user_id, role_id) VALUES (9, 3); 
+insert into user_role (user_id, role_id) VALUES (10, 3); 
+insert into user_role (user_id, role_id) VALUES (11, 3);
 
-
-
+insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2022-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
+insert into reset_password (user_id, expired_date, code, password) VALUES (2, '2022-12-24T20:54:24.893Z', '111111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');

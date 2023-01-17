@@ -1,10 +1,5 @@
 package com.example.test.service.interfaces;
 
-import com.example.test.domain.business.WorkingHour;
-import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Driver;
-import com.example.test.domain.user.Document;
-import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -14,11 +9,10 @@ import com.example.test.dto.vehicle.VehicleDTO;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Set;
 
 public interface IDriverService {
 
-    public UserDTO insert(UserDTO driver);
+    public UserDTO insertDriver(UserDTO driver);
 
     // TODO : check this later (paginated drivers???)
     public AllDTO<UserDTO> getAll();
