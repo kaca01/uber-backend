@@ -41,8 +41,6 @@ public class UserDTO {
     @Length(max = 100)
     private String address;
     @JsonInclude( JsonInclude.Include.NON_NULL)
-    @NotNull
-    @NotEmpty
     private String password;
     private boolean isBlocked;
 

@@ -72,8 +72,8 @@ public class PassengerService implements IPassengerService {
         if (passenger.getProfilePicture() != null) p.setProfilePicture(passenger.getProfilePicture());
         if (passenger.getTelephoneNumber() != null) p.setTelephoneNumber(passenger.getTelephoneNumber());
         p.setEmail(passenger.getEmail());
-        if (passenger.getAddress() != null) p.setAddress(passenger.getAddress());
-        p.setPassword(passenger.getPassword());
+        p.setAddress(passenger.getAddress());
+        if (passenger.getPassword() != null) p.setPassword(passenger.getPassword());
         p = passengerRepository.save(p);
         return new UserDTO(p);
     }

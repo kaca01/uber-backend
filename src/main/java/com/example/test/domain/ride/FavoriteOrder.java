@@ -24,9 +24,9 @@ public class FavoriteOrder {
     private String favoriteName;
     @Column(name = "vehicleType", nullable = false)
     private VehicleTypeName vehicleType;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Passenger passenger;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;

@@ -168,6 +168,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    @Transactional
     @Override
     public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
         Passenger passengerT = passengerRepository.findByEmail(email);
@@ -184,6 +185,7 @@ public class RideService implements IRideService {
         return favoriteOrderRepository.save(favoriteOrder);
     }
 
+    @Transactional
     @Override
     public AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p) {
         List<FavoriteOrder> orders = favoriteOrderRepository.findByPassenger_Id(p.getId());
