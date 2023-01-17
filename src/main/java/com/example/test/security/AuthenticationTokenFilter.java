@@ -1,5 +1,6 @@
 package com.example.test.security;
 
+import com.example.test.exception.BadRequestException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +46,8 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             }
 
+        } catch (BadCredentialsException ex) {
+            throw new BadRequestException("Wrong username or password!!");
         } catch (ExpiredJwtException ex) {
             // add refresh token
             String isRefreshToken = request.getHeader("isRefreshToken");
@@ -53,9 +56,6 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             if(isRefreshToken != null && isRefreshToken.equals("true") && requestURL.contains("refreshtoken"))
                 allowForRefreshToken(ex, request);
             else request.setAttribute("exception", ex);
-
-        } catch (BadCredentialsException ex) {
-            request.setAttribute("exception", ex);
         } catch (Exception ex) {
             System.out.println(ex);
         }
