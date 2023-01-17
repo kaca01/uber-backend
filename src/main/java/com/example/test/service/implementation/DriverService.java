@@ -5,6 +5,7 @@ import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.Document;
+import com.example.test.domain.user.Role;
 import com.example.test.domain.user.User;
 import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.domain.vehicle.VehicleType;
@@ -22,6 +23,7 @@ import com.example.test.repository.ride.ILocationRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IDocumentRepository;
 import com.example.test.repository.user.IDriverRepository;
+import com.example.test.repository.user.IRoleRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
@@ -58,16 +60,24 @@ public class DriverService implements IDriverService {
     @Autowired
     IVehicleTypeRepository iVehicleTypeRepository;
     @Autowired
+    IRoleRepository iRoleRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO insert(UserDTO driverDTO) {
+    public UserDTO insertDriver(UserDTO driverDTO) {
         Optional<User> user = iUserRepository.findByEmail(driverDTO.getEmail().trim());
         if (user.isPresent()) throw new BadRequestException("User with that email already exists!");
         Driver driver = new Driver(driverDTO);
         driver.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
+        driver.setActive(true);
+        List<Role> roles = new ArrayList<>();
+        roles.add(iRoleRepository.findById(2L).get());
+        driver.setRoles(roles);
         iDriverRepository.save(driver);
+        iUserRepository.save(driver);
         driverDTO.setId(driver.getId());
+        driverDTO.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
         return driverDTO;
     }
 
@@ -89,9 +99,14 @@ public class DriverService implements IDriverService {
     @Override
     @Transactional
     public UserDTO update(Long id, UserDTO driverDTO) {
+        Driver oldDriver = iDriverRepository.findById(id);
         driverDTO.setId(id);
         if (getDriver(id) == null) throw new NotFoundException("Driver does not exist!");
         Driver driver = new Driver(driverDTO);
+        driver.setPassword(oldDriver.getPassword());
+        List<Role> roles = new ArrayList<>();
+        roles.add(iRoleRepository.findById(2L).get());
+        driver.setRoles(roles);
         iUserRepository.save(driver);
         return driverDTO;
     }
@@ -144,9 +159,10 @@ public class DriverService implements IDriverService {
         VehicleType vehicleType = iVehicleTypeRepository.getByName(VehicleTypeName.valueOf(name));
         Vehicle vehicle = new Vehicle(vehicleDTO);
         vehicle.setType(vehicleType);
-        iVehicleRepository.save(vehicle);
         driver.setVehicle(vehicle);
+        iVehicleRepository.save(vehicle);
         iDriverRepository.save(driver);
+        vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
     }
@@ -162,6 +178,7 @@ public class DriverService implements IDriverService {
         driver.setVehicle(vehicle);
         iVehicleRepository.save(vehicle);
         iDriverRepository.save(driver);
+        vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
     }
@@ -189,8 +206,11 @@ public class DriverService implements IDriverService {
         if (driver.getVehicle() == null)
             throw new BadRequestException("Cannot start shift because the vehicle is not defined!");
         for (WorkingHour workingHour : workingHours) if (workingHour.getEnd() == null)
-            throw new BadRequestException("Shifth already ongoing!");
-        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+            throw new BadRequestException("Shift already ongoing!");
+        Date start;
+        if (workingHourDTO.getStart() != null)
+            start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+        else throw new BadRequestException("Wrong data input!");
         WorkingHour workingHour = new WorkingHour();
         workingHour.setStart(start);
         workingHour = iWorkingHourRepository.save(workingHour);
@@ -241,7 +261,10 @@ public class DriverService implements IDriverService {
         if (onGoingWorkingHour == null) throw new BadRequestException("No shift is ongoing!");
         workingHourDTO.setId(workTimeId);
         workingHourDTO.setStart(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(workingHour.getStart()));
-        Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
+        Date end;
+        if (workingHourDTO.getEnd() != null)
+            end= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
+        else throw new BadRequestException("Null not allowed!");
         workingHour.setEnd(end);
         iWorkingHourRepository.save(workingHour);
         return workingHourDTO;
