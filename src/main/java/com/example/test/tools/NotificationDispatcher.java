@@ -33,8 +33,6 @@ public class NotificationDispatcher {
             SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
             headerAccessor.setSessionId(listener);
             headerAccessor.setLeaveMutable(true);
-            //todo moze li iz session id-a da se dobije korisnik? i onda nadjemo voznju i ispisemo scheduled time za
-            // sve voznje jer set nema duplikata (ako ima vise rezervisanih voznji, nece se dodati vise puta)
             String value = "You have a scheduled ride";
             template.convertAndSendToUser(
                     listener,
