@@ -215,8 +215,10 @@ public class DriverService implements IDriverService {
         return new WorkingHourDTO(workingHour);
     }
 
+    @Transactional
     @Override
     public WorkingHourDTO updateWorkTime(Long workTimeId, WorkingHourDTO workingHourDTO) throws ParseException {
+        WorkingHour workingHour = iWorkingHourRepository.findById(workTimeId);
         if (iWorkingHourRepository.findById(workTimeId) == null)
             throw new NotFoundException("Working hour does not exist!");
         // get driver
@@ -226,17 +228,17 @@ public class DriverService implements IDriverService {
         if (driver.getVehicle() == null) throw new BadRequestException("Cannot end shift because the vehicle is not defined!");
         Set<WorkingHour> workingHours = driver.getWorkingHours();
         WorkingHour onGoingWorkingHour = null;
-        for (WorkingHour workingHour : workingHours) {
-            if (workingHour.getEnd() == null) {
-                onGoingWorkingHour = workingHour;
+        for (WorkingHour wh : workingHours) {
+            if (wh.getEnd() == null) {
+                onGoingWorkingHour = wh;
                 break;
             }
         }
-        if (onGoingWorkingHour == null) throw new BadRequestException("No shift is ongoing");
+        if (onGoingWorkingHour == null) throw new BadRequestException("No shift is ongoing!");
         workingHourDTO.setId(workTimeId);
-        Date start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+        workingHourDTO.setStart(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(workingHour.getStart()));
         Date end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
-        WorkingHour workingHour = new WorkingHour(workTimeId, start, end);
+        workingHour.setEnd(end);
         iWorkingHourRepository.save(workingHour);
         return workingHourDTO;
     }

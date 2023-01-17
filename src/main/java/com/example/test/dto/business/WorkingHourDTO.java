@@ -17,8 +17,6 @@ import java.util.Date;
 public class WorkingHourDTO {
 
     private Long id;
-    @NotNull
-    @NotEmpty
     private String start;
     private String end;
 
@@ -31,9 +29,6 @@ public class WorkingHourDTO {
     }
 
     //request
-    public WorkingHourDTO(String start) {
-        this.start = start;
-    }
 
     //response
     public WorkingHourDTO(Long id, String start, String end) {
