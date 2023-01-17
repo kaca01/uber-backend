@@ -44,8 +44,6 @@ public class RideDTO {
     private String status;
     private UserDTO driver;
     private RejectionDTO rejection;
-    @NotEmpty
-    @NotNull
     private String scheduledTime;
 
 

@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,7 +28,7 @@ public class DriverController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO driverDTO) throws Exception{
-        UserDTO returnedDriver = service.insert(driverDTO);
+        UserDTO returnedDriver = service.insertDriver(driverDTO);
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
     }
 
@@ -86,6 +84,7 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     // get vehicle for a driver
     @GetMapping(value = "/{id}/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> getVehicle(@PathVariable Long id) throws Exception {
@@ -115,7 +114,7 @@ public class DriverController {
 
     //returns history of the driver working hours that can be filtered by data
     //id of the driver
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @GetMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<WorkingHourDTO>> getWorkTimes(@PathVariable Long id) throws Exception{
         AllDTO<WorkingHourDTO> workingHours = service.getWorkTimes(id);
@@ -123,7 +122,7 @@ public class DriverController {
     }
 
     // creating information about the drivers working hours
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @PostMapping(value = "/{id}/working-hour", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> insertWorkTime(@PathVariable Long id,
                                                          @Valid @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
@@ -141,7 +140,7 @@ public class DriverController {
 
     //details about the working hour of the driver
     //id of working hour
-    @PreAuthorize("hasRole('DRIVER')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     // TODO : if added new role, service needs to be changed
     @GetMapping(value = "/working-hour/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WorkingHourDTO> getWorkTime(@PathVariable Long id) throws Exception {
