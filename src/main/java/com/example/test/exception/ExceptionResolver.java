@@ -1,5 +1,6 @@
 package com.example.test.exception;
 
+import com.example.test.dto.ErrorDTO;
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class ExceptionResolver {
     public ResponseEntity<?> badRequestException(BadRequestException exception) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ErrorDTO>(new ErrorDTO(exception.getMessage()), headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
