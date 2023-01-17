@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +30,10 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "startTime")
+    @PastOrPresent
     private Date startTime;
     @Column(name = "endTime")
+    @PastOrPresent
     private Date endTime;
     @Column(name = "totalCost")
     private double totalCost;

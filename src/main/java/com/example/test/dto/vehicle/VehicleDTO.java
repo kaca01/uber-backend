@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,9 +26,11 @@ public class VehicleDTO {
     private String vehicleType;
     @NotEmpty
     @NotNull
+    @Length(max = 100)
     private String model;
     @NotEmpty
     @NotNull
+    @Length(max = 20)
     private String licenseNumber;
     @NotNull
     private Location currentLocation;

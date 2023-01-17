@@ -4,6 +4,7 @@ import com.example.test.enumeration.VehicleTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class FavoriteOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "favoriteName", nullable = false)
+    @Length(max = 100)
     private String favoriteName;
     @Column(name = "vehicleType", nullable = false)
     private VehicleTypeName vehicleType;

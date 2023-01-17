@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -20,6 +21,7 @@ public class Rejection {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     @Column(name = "timeOfRejection", nullable = false)
+    @PastOrPresent
     private Date timeOfRejection;
 
     public Rejection(String reason, User user, Date timeOfRejection) {
