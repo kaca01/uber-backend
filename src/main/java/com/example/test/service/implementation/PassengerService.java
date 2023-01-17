@@ -41,7 +41,7 @@ public class PassengerService implements IPassengerService {
     @Override
     public List<UserDTO> getAll(Integer page, Integer size)
     {
-        List<Passenger> passengers = passengerRepository.findAllByActiveIsTrue();
+        List<Passenger> passengers = passengerRepository.findAll();
 
         // convert passengers to DTOs
         List<UserDTO> passengersDTO = new ArrayList<>();
@@ -114,9 +114,9 @@ public class PassengerService implements IPassengerService {
 
     @Override
     public ErrorDTO activatePassenger(Long activationId) {
-        Passenger p = findUserById(activationId);
         UserActivation activation = userActivationRepository.findByUser_id(activationId).orElseThrow(
                 () -> new NotFoundException("Activation with entered id does not exist!"));
+        Passenger p = findUserById(activationId);
         if (new Date().before(new Date(activation.getDate().getTime() + activation.getLife()*1000L))) {
             p.setActive(true);
             passengerRepository.save(p);
