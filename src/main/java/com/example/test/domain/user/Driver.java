@@ -5,6 +5,7 @@ import com.example.test.domain.vehicle.Vehicle;
 import com.example.test.dto.user.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.*;
 public class Driver extends User {
 
     @Column(name = "drivingLicense", nullable = false)
+    @Length(max = 100)
     private int drivingLicense;
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Data
@@ -12,17 +17,32 @@ public class UserDTO {
 
     private Long id;
     @JsonInclude( JsonInclude.Include.NON_NULL)
+    @NotNull
+    @NotEmpty
+    @Length(max = 100)
     private String name;
     @JsonInclude( JsonInclude.Include.NON_NULL)
+    @NotNull
+    @NotEmpty
+    @Length(max = 100)
     private String surname;
     @JsonInclude( JsonInclude.Include.NON_NULL)
     private String profilePicture;
     @JsonInclude( JsonInclude.Include.NON_NULL)
+    @Length(max = 18)
     private String telephoneNumber;
+    @NotNull
+    @NotEmpty
+    @Length(max = 100)
     private String email;
     @JsonInclude( JsonInclude.Include.NON_NULL)
+    @NotNull
+    @NotEmpty
+    @Length(max = 100)
     private String address;
     @JsonInclude( JsonInclude.Include.NON_NULL)
+    @NotNull
+    @NotEmpty
     private String password;
     private boolean isBlocked;
 

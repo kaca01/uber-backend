@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor
 @Data
 public class MessageDTO {
@@ -14,8 +17,13 @@ public class MessageDTO {
     private String timeOfSending;
     private Long senderId;
     private Long receiverId;
+    @NotEmpty
+    @NotNull
     private String message;
+    @NotEmpty
+    @NotNull
     private String type;
+    @NotNull
     private Long rideId;
 
     public MessageDTO(Message message)

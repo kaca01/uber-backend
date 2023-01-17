@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,8 +14,10 @@ import javax.persistence.*;
 public class Route {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST) //moglo bi i all jer lokacije ipak nisu dijeljenje jer se ne proslijedjuje njihov id?
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
+    @NotNull
     private Location departure;
     @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
+    @NotNull
     private Location destination;
 }
