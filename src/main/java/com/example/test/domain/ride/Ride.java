@@ -39,7 +39,7 @@ public class Ride {
     private double totalCost;
     @Column(name = "estimatedTimeInMinutes")
     private double estimatedTimeInMinutes;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Vehicle vehicle;
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;

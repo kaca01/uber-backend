@@ -14,6 +14,7 @@ import com.example.test.repository.user.IDriverRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
 import com.example.test.service.interfaces.ISelectionDriver;
+import com.example.test.tools.SortItems;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -236,7 +237,7 @@ public class SelectionDriver implements ISelectionDriver {
         List<Ride> rides = iRideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driver.getId());
         List<Ride> currentRide = iRideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACTIVE, driver.getId());
         rides.add(currentRide.get(0));
-        rides.sort(new sortItems());
+        rides.sort(new SortItems());
         for (int i = 0; i < rides.size() - 1; i++) {
             Date estimatedEndTime = addMinutesToDate(rides.get(i).getScheduledTime(), (long)rides.get(i).getEstimatedTimeInMinutes());
             double minutes = calculateMinutesDifference(estimatedEndTime, rides.get(i+1).getScheduledTime());
@@ -301,15 +302,3 @@ public class SelectionDriver implements ISelectionDriver {
     }
 }
 
-class sortItems implements Comparator<Ride> {
-    // Method of this class
-    // @Override
-    public int compare(Ride a, Ride b)
-    {
-        // Returning the value after comparing the objects
-        // this will sort the data in Ascending order
-        Date firstEndTime =  new Date(a.getScheduledTime().getTime() + ((long)a.getEstimatedTimeInMinutes() * 60000));
-        Date secondEndTime =  new Date(b.getScheduledTime().getTime() + ((long)b.getEstimatedTimeInMinutes() * 60000));
-        return firstEndTime.compareTo(secondEndTime);
-    }
-}
