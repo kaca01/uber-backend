@@ -76,7 +76,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/user/login", "/api/passenger")
+        return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/user/login", "/api/passenger", "/api/unregisteredUser/")
                 .antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "favicon.ico",
                         "/**/*.html", "/**/*.css", "/**/*.js");
     }

@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,9 +20,8 @@ public class UnregisteredUserController {
 
     // Getting the assumption about the time and cost of the ride
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UnregisteredUserDTO> calculateEstimatedValues(@RequestBody UnregisteredUserDTO unregisteredUserDTO)
-            throws Exception {
-
+    public ResponseEntity<UnregisteredUserDTO> calculateEstimatedValues(@Valid @RequestBody UnregisteredUserDTO unregisteredUserDTO)
+    {
         // the data is not stored in the database, so we can pass the dto object to the service
         List<Integer> estimatedValues = service.getEstimationTimeAndCost(unregisteredUserDTO);
 
