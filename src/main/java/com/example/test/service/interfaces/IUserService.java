@@ -34,7 +34,7 @@ public interface IUserService {
 
     NoteDTO insertNote(Long id, NoteDTO requestNote) throws ParseException;
 
-    AllDTO<NoteDTO> getNotes(Long id, int page, int size);
+    AllDTO<NoteDTO> getNotes(Long id);
 
     User findByEmail(String email);
 }

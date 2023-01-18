@@ -3,6 +3,7 @@ package com.example.test.dto.communication;
 import com.example.test.domain.communication.Note;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ public class NoteDTO {
     private String date;
     @NotEmpty
     @NotNull
+    @Length(max = 250)
     private String message;
 
     public NoteDTO(Note note)
