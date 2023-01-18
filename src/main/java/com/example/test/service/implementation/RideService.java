@@ -84,7 +84,7 @@ public class RideService implements IRideService {
     @Override
     public RideDTO findDriversActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, id).orElseThrow(
-                () -> new NotFoundException("Active ride does not exist"));
+                () -> new NotFoundException("Active ride does not exist!"));
         return new RideDTO(ride);
     }
 
@@ -92,7 +92,7 @@ public class RideService implements IRideService {
     @Override
     public RideDTO findPassengersActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, id).orElseThrow(
-                () -> new NotFoundException("Active ride does not exist"));
+                () -> new NotFoundException("Active ride does not exist!"));
         return new RideDTO(ride);
     }
 
@@ -105,7 +105,7 @@ public class RideService implements IRideService {
 
     private Ride findRideById(Long id){
         return rideRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Ride does not exist"));
+                () -> new NotFoundException("Ride does not exist!"));
     }
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
