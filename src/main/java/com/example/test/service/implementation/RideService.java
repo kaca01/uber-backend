@@ -105,7 +105,7 @@ public class RideService implements IRideService {
 
     private Ride findRideById(Long id){
         return rideRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("\t\n" +"Ride does not exist!"));
+                () -> new NotFoundException("Ride does not exist!"));
     }
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
@@ -127,7 +127,9 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         ride.setStatus(RideStatus.REJECTED);
         ride = rideRepository.save(ride);
-        Message panic = new Message(sender, null, reason.getReason(), new Date(), MessageType.PANIC, ride);
+        String msg;
+        if (reason != null) msg= reason.getReason(); else msg = "";
+        Message panic = new Message(sender, null, msg, new Date(), MessageType.PANIC, ride);
         panic = messageRepository.save(panic);
         return new PanicDTO(panic);
     }
@@ -201,7 +203,7 @@ public class RideService implements IRideService {
     @Override
     public void deleteFavoriteLocation(Long id, Passenger p) {
         FavoriteOrder order = favoriteOrderRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("\t\n" +"Favorite location does not exist!"));
+                () -> new NotFoundException("Favorite location does not exist!"));
         if (Objects.equals(order.getPassenger().getId(), p.getId())){
             favoriteOrderRepository.delete(order);
         }

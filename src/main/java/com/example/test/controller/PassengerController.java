@@ -43,7 +43,6 @@ public class PassengerController {
     }
 
     //activate passenger account
-//    @PreAuthorize("hasRole('PASSENGER')")
     @GetMapping(value = "/activate/{activationId}")
     public ResponseEntity<ErrorDTO> activatePassenger(@PathVariable int activationId)
     {

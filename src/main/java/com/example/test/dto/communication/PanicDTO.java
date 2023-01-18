@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.text.SimpleDateFormat;
 
 @NoArgsConstructor
 @Data
@@ -33,7 +34,8 @@ public class PanicDTO {
         this.id = message.getId();
         this.user = new UserDTO(message.getSender());
         this.ride = new RideDTO(message.getRide());
-        this.time = message.getTimeOfSending().toString();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        if (message.getTimeOfSending() != null) this.time = format.format(message.getTimeOfSending());
         this.reason = message.getMessage();
     }
 

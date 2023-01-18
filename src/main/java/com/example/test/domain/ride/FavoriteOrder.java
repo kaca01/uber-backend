@@ -29,15 +29,15 @@ public class FavoriteOrder {
     @Column(name = "vehicleType", nullable = false)
     @NotNull
     private VehicleTypeName vehicleType;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Passenger passenger;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Passenger> passengers = new HashSet<>();
     @Column(name = "babyTransport", nullable = false)
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Route> locations = new HashSet<>();
 
 }
