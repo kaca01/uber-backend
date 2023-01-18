@@ -80,6 +80,8 @@ public class WebSecurityConfig {
                         "/api/unregisteredUser/")
                 .antMatchers(HttpMethod.GET, "/api/user/{id}/resetPassword", "/", "/webjars/**", "/*.html", "favicon.ico",
                         "/**/*.html", "/**/*.css", "/**/*.js")
+                .antMatchers(HttpMethod.GET, "/api/passenger/activate/{activationId}", "/", "/webjars/**", "/*.html", "favicon.ico",
+                        "/**/*.html", "/**/*.css", "/**/*.js")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}/resetPassword");
     }
 }
