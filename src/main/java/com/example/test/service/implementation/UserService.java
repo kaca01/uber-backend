@@ -159,7 +159,7 @@ public class UserService implements IUserService, UserDetailsService {
     public void unblock(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
         if(!user.isBlocked())
-            throw new BadRequestException("User is not blocked!");
+            throw new BadRequestException("User already blocked!");
         user.setBlocked(false);
         userRepository.save(user);
     }
@@ -172,7 +172,7 @@ public class UserService implements IUserService, UserDetailsService {
         note.setUser(user);
         noteRepository.save(note);
         requestNote.setId(note.getId());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         requestNote.setDate(formatter.format(note.getDate()));
         return requestNote;
     }
