@@ -20,11 +20,14 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
     ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Milan', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'milan@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 
 insert into passenger values(1);
 insert into passenger values(2);
 insert into passenger values(3);
 insert into passenger values(4);
+insert into passenger values(12);
 
 insert into admin values(9);
 insert into admin values(10);
@@ -70,6 +73,7 @@ insert into user_activation (date, life, user_id) values ('2022-01-01T12:33:24.8
 insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.893Z', 180, 2);
 insert into user_activation (date, life, user_id) values ('2022-12-11T21:57:24.893Z', 180, 3);
 insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 4);
+insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 12);
 
 insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 1);
 insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some inappropriate comments',
