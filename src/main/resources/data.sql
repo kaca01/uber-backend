@@ -185,5 +185,5 @@ insert into user_role (user_id, role_id) VALUES (9, 3);
 insert into user_role (user_id, role_id) VALUES (10, 3); 
 insert into user_role (user_id, role_id) VALUES (11, 3);
 
-insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2022-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
+insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2023-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
 insert into reset_password (user_id, expired_date, code, password) VALUES (2, '2022-12-24T20:54:24.893Z', '111111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');

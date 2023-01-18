@@ -71,8 +71,8 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
-        ResetPassword resetPassword = resetPasswordRepository.findResetPasswordByUserId(id);
 
+        ResetPassword resetPassword = resetPasswordRepository.findResetPasswordByUserId(id);
         Date expiredDate = resetPassword.getExpiredDate();
 
         if(!resetPasswordDTO.getCode().equals(resetPassword.getCode()) || expiredDate.before(new Date()))
@@ -178,7 +178,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public AllDTO<NoteDTO> getNotes(Long id, int page, int size) {
+    public AllDTO<NoteDTO> getNotes(Long id) {
         userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
         List<Note> userNotes = noteRepository.findByUserId(id);

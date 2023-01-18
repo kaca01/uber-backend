@@ -69,6 +69,7 @@ public class UserController {
     }
 
     // Rides of the user
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id) {
@@ -92,7 +93,7 @@ public class UserController {
         if(!check.getEmail().equals(loginDTO.getEmail()) ||
         !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
             throw new BadRequestException("Wrong username or password!");
-
+        
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
 
@@ -152,8 +153,8 @@ public class UserController {
     @PostMapping(value = "/user/{id}/note", consumes = MediaType.APPLICATION_JSON_VALUE,
                                                produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @Valid @RequestBody NoteDTO requestNote) throws Exception
-    {
+    public ResponseEntity<NoteDTO> insertNote(@PathVariable int id, @Valid @RequestBody NoteDTO requestNote)
+            throws Exception {
         NoteDTO noteDTO = service.insertNote((long) id, requestNote);
         return new ResponseEntity<>(noteDTO, HttpStatus.OK);
     }
@@ -161,9 +162,8 @@ public class UserController {
     // Getting notes for the user
     @GetMapping(value ="/user/{id}/note", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id, @Valid @RequestParam int page,
-                                                    @RequestParam int size) {
-        AllDTO<NoteDTO> noteDTOS = service.getNotes((long) id, page, size);
+    public ResponseEntity<AllDTO<NoteDTO>> getNotes(@PathVariable int id) {
+        AllDTO<NoteDTO> noteDTOS = service.getNotes((long) id);
         return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
     }
 
