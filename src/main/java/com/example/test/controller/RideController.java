@@ -46,6 +46,7 @@ public class RideController {
     }
 
     //active ride for driver
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @GetMapping(value = "/driver/{driverId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
@@ -54,6 +55,7 @@ public class RideController {
     }
 
     //active ride for passenger
+    @PreAuthorize("hasAnyRole('PASSENGER', 'ADMIN')")
     @GetMapping(value = "/passenger/{passengerId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findPassengersActiveRide(@PathVariable Long passengerId)
     {
@@ -117,9 +119,9 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('DRIVER')")
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DRIVER')")
     public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody RejectionDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
