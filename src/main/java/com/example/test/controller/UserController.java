@@ -71,7 +71,6 @@ public class UserController {
     // Rides of the user
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value ="/user/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AllDTO<RideDTO>> getRides(@PathVariable Long id) {
         List<RideDTO> rides = service.getRides(id);
         return new ResponseEntity<>(new AllDTO<>(rides.size(), rides), HttpStatus.OK);
