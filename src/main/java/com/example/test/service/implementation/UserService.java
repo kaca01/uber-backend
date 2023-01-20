@@ -159,7 +159,7 @@ public class UserService implements IUserService, UserDetailsService {
     public void unblock(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
         if(!user.isBlocked())
-            throw new BadRequestException("User already blocked!");
+            throw new BadRequestException("User is not blocked!");
         user.setBlocked(false);
         userRepository.save(user);
     }

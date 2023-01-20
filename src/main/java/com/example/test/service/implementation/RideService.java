@@ -71,7 +71,6 @@ public class RideService implements IRideService {
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
         if (driver != null) {
-            ride.setStatus(RideStatus.ACCEPTED);
             ride.setVehicle(driver.getVehicle());
         }
         ride = rideRepository.save(ride);
@@ -111,11 +110,11 @@ public class RideService implements IRideService {
     }
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
+    //!ride.getLocations().stream().findFirst().get().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
     @Override
     public RideDTO cancelExistingRide(Long id) {
         Ride ride = findRideById(id);
-        if ( !ride.getLocations().stream().findFirst().get().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
-                (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING)){
+        if (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING){
             ride.setStatus(RideStatus.REJECTED);
             ride = rideRepository.save(ride);
             return new RideDTO(ride);
@@ -161,7 +160,9 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if (ride.getStatus()!= RideStatus.PENDING && ride.getStatus()!= RideStatus.ACCEPTED) throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or ACCEPTED!");
         ride.setStatus(RideStatus.REJECTED);
-        Rejection rejection = new Rejection(reason.getReason(), ride.getDriver(), new Date());
+        String msg;
+        if (reason == null) msg = ""; else msg = reason.getReason();;
+        Rejection rejection = new Rejection(msg, ride.getDriver(), new Date());
         ride.setRejection(rejection);
         rejectionRepository.save(rejection);
         ride = rideRepository.save(ride);

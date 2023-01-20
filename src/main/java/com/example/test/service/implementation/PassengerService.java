@@ -115,9 +115,9 @@ public class PassengerService implements IPassengerService {
     @Override
     public ErrorDTO
     activatePassenger(Long activationId) {
-        UserActivation activation = userActivationRepository.findByUser_id(activationId).orElseThrow(
+        UserActivation activation = userActivationRepository.findById(activationId).orElseThrow(
                 () -> new NotFoundException("Activation with entered id does not exist!"));
-        Passenger p = findUserById(activationId);
+        Passenger p = findUserById(activation.getUser().getId());
         if (new Date().before(new Date(activation.getDate().getTime() + activation.getLife()*1000L))) {
             p.setActive(true);
             passengerRepository.save(p);

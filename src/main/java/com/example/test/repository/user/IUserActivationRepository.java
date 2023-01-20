@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface IUserActivationRepository extends JpaRepository<UserActivation, Long> {
 
-    Optional<UserActivation> findByUser_id(Long passengerId);
+    Optional<UserActivation> findByUserId(Long passengerId);
     //findFirstByUser_idOrderByDateDesc
 }

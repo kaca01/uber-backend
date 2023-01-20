@@ -77,7 +77,7 @@ public class ReviewService implements IReviewService {
         Driver driver = driverRepository.findById(driverId);
         if(driver == null) throw new NotFoundException("Driver does not exist!");
 
-        List<Ride> rides = rideRepository.findRidesByVehicleId(driverId);
+        List<Ride> rides = rideRepository.findRidesByDriverId(driverId);
         for(Ride ride: rides) {
             for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
                 if(review.getType() == ReviewType.DRIVER)
