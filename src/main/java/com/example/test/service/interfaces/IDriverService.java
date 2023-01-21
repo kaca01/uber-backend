@@ -42,4 +42,8 @@ public interface IDriverService {
     public WorkingHourDTO getWorkTime(Long workTimeId);
 
     public WorkingHourDTO updateWorkTime(Long workTimeId, WorkingHourDTO workingHour) throws ParseException;
+
+    public UserDTO getChanges(Long id);
+
+    public void addChanges(Long id, UserDTO userDTO);
 }
