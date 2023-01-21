@@ -93,13 +93,16 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2023-01-13T19:00:24.893Z', null, 450, 180, 4, false, false, 8, null, 4, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 0, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
+insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 3);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -113,6 +116,7 @@ insert into ride_passengers(ride_id, passengers_id) values (4, 4);
 insert into ride_passengers(ride_id, passengers_id) values (5, 2);
 insert into ride_passengers(ride_id, passengers_id) values (6, 4);
 insert into ride_passengers(ride_id, passengers_id) values (7, 2);
+insert into ride_passengers(ride_id, passengers_id) values (8, 2);
 
 insert into ride_locations(ride_id, locations_id) values (1, 1);
 insert into ride_locations(ride_id, locations_id) values (2, 2);
@@ -121,6 +125,8 @@ insert into ride_locations(ride_id, locations_id) values (4, 4);
 insert into ride_locations(ride_id, locations_id) values (5, 5);
 insert into ride_locations(ride_id, locations_id) values (6, 1);
 insert into ride_locations(ride_id, locations_id) values (6, 6);
+insert into ride_locations(ride_id, locations_id) values (7, 1);
+insert into ride_locations(ride_id, locations_id) values (8, 2);
 
 insert into working_hour(start, end, driver_id) values ('2022-12-24T20:54:24.893Z', '2022-12-24T23:54:24.893Z', 5);
 insert into working_hour(start, end, driver_id) values ('2022-12-25T12:00:04.893Z', '2022-12-25T20:07:11.193Z', 5);
@@ -147,6 +153,8 @@ insert into message(message, time_of_sending, type, receiver_id, ride_id, sender
                                                                                              '2022-12-15T20:17:24.893Z', 0, 3, null, 9);
 insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
                                                                                              '2022-12-24T22:17:24.893Z', 0, 4, null, 10);
+insert into message(message, time_of_sending, type, receiver_id, ride_id, sender_id) values ('Your ride is here!',
+                                                                                             '2022-12-24T22:17:24.893Z', 1, 2, 5, 8);
 
 insert into note(date, message, user_id) values ('2022-12-24T22:17:24.893Z', 'He is always late for his rides', 5);
 insert into note(date, message, user_id) values ('2022-12-20T04:58:57.893Z', 'Sent inappropriate message to passenger', 6);

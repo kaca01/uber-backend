@@ -152,7 +152,8 @@ public class UserService implements IUserService, UserDetailsService {
     public MessageDTO insertMessage(Long receiverId, MessageDTO requestMessage, User sender) {
         //User receiver = userRepository.findById(receiverId).orElseThrow(() -> new NotFoundException("Receiver does not exist!"));
         User receiver = userRepository.findById(receiverId).orElse(null);
-        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
+        //Ride ride = rideRepository.findById(requestMessage.getRideId()).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
+        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElse(null);
         sender = userRepository.findById(sender.getId()).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
         Message message = new Message();
