@@ -152,8 +152,6 @@ public class SelectionDriver implements ISelectionDriver {
 
     @Override
     public Date addMinutesToDate(Date date, long minutes) {
-        System.out.println("DATEEEEE");
-        System.out.println(date);
         long start = date.getTime();
         return new Date(start + (minutes * 60000));
     }
