@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 
 @NoArgsConstructor
@@ -23,17 +24,19 @@ public class UnregisteredUserDTO {
     @NotNull
     private String vehicleType;
     @NotNull
-    private boolean petTransport;
+    @Pattern(regexp = "^true$|^false$")
+    private String petTransport;
     @NotNull
-    private boolean babyTransport;
+    @Pattern(regexp = "^true$|^false$")
+    private String babyTransport;
     @Min(0)
     private int estimatedTimeInMinutes;
     @Min(0)
     private double estimatedCost;
 
     //request
-    public UnregisteredUserDTO(ArrayList<Route> locations, String vehicleType, boolean petTransport,
-                               boolean babyTransport) {
+    public UnregisteredUserDTO(ArrayList<Route> locations, String vehicleType, String petTransport,
+                               String babyTransport) {
         this.locations = locations;
         this.vehicleType = vehicleType;
         this.petTransport = petTransport;

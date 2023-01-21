@@ -58,8 +58,10 @@ public class RideService implements IRideService {
             Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
-        List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().stream().reduce((one, two) -> two).get().getEmail()));
-        if(!rides.isEmpty()) throw new BadRequestException("Cannot create a ride while you have one already pending!");
+        if(rideDTO.getPassengers().size() != 0) {
+            List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().stream().reduce((one, two) -> two).get().getEmail()));
+            if(!rides.isEmpty()) throw new BadRequestException("Cannot create a ride while you have one already pending!");
+        }
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         ride.setLocations(rideDTO.getLocations());
@@ -69,7 +71,6 @@ public class RideService implements IRideService {
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
         if (driver != null) {
-            ride.setStatus(RideStatus.ACCEPTED);
             ride.setVehicle(driver.getVehicle());
         }
         ride = rideRepository.save(ride);
@@ -105,15 +106,15 @@ public class RideService implements IRideService {
 
     private Ride findRideById(Long id){
         return rideRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("\t\n" +"Ride does not exist!"));
+                () -> new NotFoundException("Ride does not exist!"));
     }
 
     //The passenger should have the possibility to cancel an existing ride before the driver has arrived at the destination
+    //!ride.getLocations().stream().findFirst().get().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
     @Override
     public RideDTO cancelExistingRide(Long id) {
         Ride ride = findRideById(id);
-        if ( !ride.getLocations().stream().findFirst().get().getDeparture().equals(ride.getVehicle().getCurrentLocation()) &&
-                (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING)){
+        if (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING){
             ride.setStatus(RideStatus.REJECTED);
             ride = rideRepository.save(ride);
             return new RideDTO(ride);
@@ -127,7 +128,9 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         ride.setStatus(RideStatus.REJECTED);
         ride = rideRepository.save(ride);
-        Message panic = new Message(sender, null, reason.getReason(), new Date(), MessageType.PANIC, ride);
+        String msg;
+        if (reason != null) msg= reason.getReason(); else msg = "";
+        Message panic = new Message(sender, null, msg, new Date(), MessageType.PANIC, ride);
         panic = messageRepository.save(panic);
         return new PanicDTO(panic);
     }
@@ -157,7 +160,9 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if (ride.getStatus()!= RideStatus.PENDING && ride.getStatus()!= RideStatus.ACCEPTED) throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or ACCEPTED!");
         ride.setStatus(RideStatus.REJECTED);
-        Rejection rejection = new Rejection(reason.getReason(), ride.getDriver(), new Date());
+        String msg;
+        if (reason == null) msg = ""; else msg = reason.getReason();;
+        Rejection rejection = new Rejection(msg, ride.getDriver(), new Date());
         ride.setRejection(rejection);
         rejectionRepository.save(rejection);
         ride = rideRepository.save(ride);
@@ -201,7 +206,7 @@ public class RideService implements IRideService {
     @Override
     public void deleteFavoriteLocation(Long id, Passenger p) {
         FavoriteOrder order = favoriteOrderRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("\t\n" +"Favorite location does not exist!"));
+                () -> new NotFoundException("Favorite location does not exist!"));
         if (Objects.equals(order.getPassenger().getId(), p.getId())){
             favoriteOrderRepository.delete(order);
         }

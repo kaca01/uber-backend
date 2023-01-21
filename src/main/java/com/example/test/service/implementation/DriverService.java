@@ -209,7 +209,7 @@ public class DriverService implements IDriverService {
             throw new BadRequestException("Shift already ongoing!");
         Date start;
         if (workingHourDTO.getStart() != null)
-            start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getStart());
+            start = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getStart());
         else throw new BadRequestException("Wrong data input!");
         WorkingHour workingHour = new WorkingHour();
         workingHour.setStart(start);
@@ -260,10 +260,10 @@ public class DriverService implements IDriverService {
         }
         if (onGoingWorkingHour == null) throw new BadRequestException("No shift is ongoing!");
         workingHourDTO.setId(workTimeId);
-        workingHourDTO.setStart(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(workingHour.getStart()));
+        workingHourDTO.setStart(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(workingHour.getStart()));
         Date end;
         if (workingHourDTO.getEnd() != null)
-            end= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(workingHourDTO.getEnd());
+            end= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(workingHourDTO.getEnd());
         else throw new BadRequestException("Null not allowed!");
         workingHour.setEnd(end);
         iWorkingHourRepository.save(workingHour);

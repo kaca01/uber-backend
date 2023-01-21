@@ -20,11 +20,14 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
     ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Milan', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'milan@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 
 insert into passenger values(1);
 insert into passenger values(2);
 insert into passenger values(3);
 insert into passenger values(4);
+insert into passenger values(12);
 
 insert into admin values(9);
 insert into admin values(10);
@@ -70,6 +73,7 @@ insert into user_activation (date, life, user_id) values ('2022-01-01T12:33:24.8
 insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.893Z', 180, 2);
 insert into user_activation (date, life, user_id) values ('2022-12-11T21:57:24.893Z', 180, 3);
 insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 4);
+insert into user_activation (date, life, user_id) values ('2022-02-18T14:18:24.893Z', 180, 12);
 
 insert into rejection(reason, time_of_rejection, user_id) values ('Was rude to me', '2022-12-24T22:56:24.893Z', 1);
 insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some inappropriate comments',
@@ -93,6 +97,9 @@ values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 8, 1, 2, '202
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z');
+insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 0, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 1);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -185,5 +192,5 @@ insert into user_role (user_id, role_id) VALUES (9, 3);
 insert into user_role (user_id, role_id) VALUES (10, 3); 
 insert into user_role (user_id, role_id) VALUES (11, 3);
 
-insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2022-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
+insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2023-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
 insert into reset_password (user_id, expired_date, code, password) VALUES (2, '2022-12-24T20:54:24.893Z', '111111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');

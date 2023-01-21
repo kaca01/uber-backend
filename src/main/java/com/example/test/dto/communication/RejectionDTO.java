@@ -14,8 +14,6 @@ import java.util.Date;
 public class RejectionDTO {
 
     @Length(max = 500)
-    @NotEmpty
-    @NotNull
     private String reason;
     private String timeOfRejection;
 

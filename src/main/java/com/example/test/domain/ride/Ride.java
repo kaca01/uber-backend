@@ -50,7 +50,6 @@ public class Ride {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Rejection rejection;
     @Column(name = "babyTransport", nullable = false)
-    //private Message panic;          bidirectional relation!!!
     private boolean babyTransport;
     @Column(name = "petTransport", nullable = false)
     private boolean petTransport;

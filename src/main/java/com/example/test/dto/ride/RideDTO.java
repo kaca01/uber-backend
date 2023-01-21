@@ -30,7 +30,6 @@ public class RideDTO {
     @NotEmpty
     private Set<Route> locations;
     @NotNull
-    @NotEmpty
     private Set<UserDTO> passengers;
     @NotEmpty
     @NotNull

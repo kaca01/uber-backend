@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,7 @@ public class RideController {
     //creating a ride
     @PreAuthorize("hasRole('PASSENGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> insert(@Valid @RequestBody RideDTO rideDTO) throws Exception
+    public ResponseEntity<RideDTO> insert(@Nullable @Valid @RequestBody RideDTO rideDTO) throws Exception
     {
         RideDTO newRide = service.insert(rideDTO);  // returns ride with set id and other data
 
@@ -46,6 +47,7 @@ public class RideController {
     }
 
     //active ride for driver
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @GetMapping(value = "/driver/{driverId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
@@ -54,6 +56,7 @@ public class RideController {
     }
 
     //active ride for passenger
+    @PreAuthorize("hasAnyRole('PASSENGER', 'ADMIN')")
     @GetMapping(value = "/passenger/{passengerId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findPassengersActiveRide(@PathVariable Long passengerId)
     {
@@ -82,7 +85,7 @@ public class RideController {
     @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
     //panic button pressed
     @PutMapping(value = "/{id}/panic", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PanicDTO> setPanic(@Valid @RequestBody PanicDTO reason, @PathVariable Long id)
+    public ResponseEntity<PanicDTO> setPanic(@Nullable @Valid @RequestBody PanicDTO reason, @PathVariable Long id)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
@@ -117,10 +120,10 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('DRIVER')")
     //cancel the ride with an explanation (perspective of driver)
     @PutMapping(value = "/{id}/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> cancelRide(@Valid @RequestBody RejectionDTO reason, @PathVariable Long id)
+    @PreAuthorize("hasRole('DRIVER')")
+    public ResponseEntity<RideDTO> cancelRide(@Nullable @Valid @RequestBody RejectionDTO reason, @PathVariable Long id)
     {
         RideDTO ride = service.cancelRide(reason, id);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
@@ -128,7 +131,7 @@ public class RideController {
 
     @PostMapping(value = "/favorites", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PASSENGER')")
-    public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@Valid @RequestBody FavoriteOrder favoriteOrder)
+    public ResponseEntity<FavoriteOrder> insertFavoriteLocation(@Nullable @Valid @RequestBody FavoriteOrder favoriteOrder)
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

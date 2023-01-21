@@ -78,7 +78,7 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers(HttpMethod.POST, "/api/user/login", "/api/passenger",
                         "/api/unregisteredUser/")
-                .antMatchers(HttpMethod.GET, "/api/user/{id}/resetPassword", "/", "/webjars/**", "/*.html", "favicon.ico",
+                .antMatchers(HttpMethod.GET, "/api/passenger/activate/{activationId}", "/api/user/{id}/resetPassword", "/", "/webjars/**", "/*.html", "favicon.ico",
                         "/**/*.html", "/**/*.css", "/**/*.js")
                 .antMatchers(HttpMethod.PUT, "/api/user/{id}/resetPassword");
     }

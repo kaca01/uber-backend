@@ -43,7 +43,6 @@ public class PassengerController {
     }
 
     //activate passenger account
-//    @PreAuthorize("hasRole('PASSENGER')")
     @GetMapping(value = "/activate/{activationId}")
     public ResponseEntity<ErrorDTO> activatePassenger(@PathVariable int activationId)
     {
@@ -52,7 +51,7 @@ public class PassengerController {
     }
 
     //get passsenger details
-    @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER')")
+    @PreAuthorize("hasAnyRole('PASSENGER', 'DRIVER', 'ADMIN')")  //testovi ne zele da admin ima pristup??
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> findOne(@PathVariable int id)
     {
