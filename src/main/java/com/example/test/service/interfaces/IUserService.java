@@ -5,9 +5,7 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.ChangePasswordDTO;
-import com.example.test.dto.user.ResetPasswordDTO;
-import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.user.*;
 
 import java.text.ParseException;
 import java.util.List;
@@ -23,6 +21,8 @@ public interface IUserService {
     List<RideDTO> getRides(Long id);
 
     List<UserDTO> get();
+
+    UserTokenState login(LoginDTO loginDTO);
 
     List<MessageDTO> getMessages(Long id);
 

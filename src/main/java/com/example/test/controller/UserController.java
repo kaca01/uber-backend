@@ -6,22 +6,15 @@ import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
-import com.example.test.exception.BadRequestException;
-import com.example.test.exception.NotFoundException;
 import com.example.test.repository.user.IUserRepository;
-import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,13 +29,7 @@ public class UserController {
     @Autowired
     private IUserService service;
     @Autowired
-    private TokenUtils tokenUtils;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
     private IUserRepository userRepository;
-    @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
 
     // Change password of a user
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,27 +73,9 @@ public class UserController {
 
     // login
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO)
-    {
-        User check = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
-        if(!check.getEmail().equals(loginDTO.getEmail()) ||
-        !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
-            throw new BadRequestException("Wrong username or password!");
-        
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDTO.getEmail(), loginDTO.getPassword()));
-
-        // if authentication is successful, add user in current security context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Create tokens for that user
-        User user = (User) authentication.getPrincipal();
-
-        String access = tokenUtils.generateToken(user.getEmail());
-        String refresh = tokenUtils.generateRefreshToken(user.getEmail());
-
-        // return a token in response to successful authentication
-        return ResponseEntity.ok(new UserTokenState(access, refresh));
+    public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO) {
+        UserTokenState userTokenState = service.login(loginDTO);
+        return ResponseEntity.ok(userTokenState);
     }
 
     @GetMapping("/refreshToken")

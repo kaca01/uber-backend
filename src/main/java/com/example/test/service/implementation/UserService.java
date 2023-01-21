@@ -9,9 +9,7 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.ChangePasswordDTO;
-import com.example.test.dto.user.ResetPasswordDTO;
-import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.user.*;
 import com.example.test.enumeration.MessageType;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
@@ -20,8 +18,13 @@ import com.example.test.repository.communication.INoteRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IResetPasswordRepository;
 import com.example.test.repository.user.IUserRepository;
+import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -48,7 +51,11 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     IResetPasswordRepository resetPasswordRepository;
     @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
+    TokenUtils tokenUtils;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
@@ -112,6 +119,29 @@ public class UserService implements IUserService, UserDetailsService {
             userDTOS.add(new UserDTO(user));
         }
         return userDTOS;
+    }
+
+    @Override
+    public UserTokenState login(LoginDTO loginDTO) {
+        User check = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
+        if(!check.getEmail().equals(loginDTO.getEmail()) ||
+                !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
+            throw new BadRequestException("Wrong username or password!");
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDTO.getEmail(), loginDTO.getPassword()));
+
+        // if authentication is successful, add user in current security context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Create tokens for that user
+        User user = (User) authentication.getPrincipal();
+
+        String access = tokenUtils.generateToken(user.getEmail());
+        String refresh = tokenUtils.generateRefreshToken(user.getEmail());
+
+        // return a token in response to successful authentication
+        return new UserTokenState(access, refresh);
     }
 
     @Override
