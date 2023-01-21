@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -116,6 +117,13 @@ public class UserController {
     @GetMapping(value ="/user/{id}/message", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<MessageDTO>> getMessages(@PathVariable int id) {
         List<MessageDTO> messages = service.getMessages((long) id);
+        return new ResponseEntity<>(new AllDTO<>(messages.size(), messages), HttpStatus.OK);
+    }
+
+    @GetMapping(value ="/user/{id}/message/support", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AllDTO<MessageDTO>> getSupportMessages(@PathVariable int id) {
+        List<MessageDTO> messages = service.getSupportMessages((long) id);
+        if(messages == null) messages = new ArrayList<>();
         return new ResponseEntity<>(new AllDTO<>(messages.size(), messages), HttpStatus.OK);
     }
 

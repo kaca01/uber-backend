@@ -26,6 +26,8 @@ public interface IUserService {
 
     List<MessageDTO> getMessages(Long id);
 
+    List<MessageDTO> getSupportMessages(Long id);
+
     MessageDTO insertMessage(Long id, MessageDTO requestMessage, User p);
 
     void block(Long id);

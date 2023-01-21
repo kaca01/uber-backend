@@ -23,7 +23,6 @@ public class MessageDTO {
     @NotEmpty
     @NotNull
     private String type;
-    @NotNull
     private Long rideId;
 
     public MessageDTO(Message message)
@@ -31,10 +30,10 @@ public class MessageDTO {
         this.id = message.getId();
         this.timeOfSending = message.getTimeOfSending().toString();
         this.senderId = message.getSender().getId();
-        this.receiverId = message.getReceiver().getId();
+        if(message.getReceiver()!= null)this.receiverId = message.getReceiver().getId();
         this.message = message.getMessage();
         this.type = message.getType().toString();
-        this.rideId = message.getRide().getId();
+        if(message.getRide()!=null)this.rideId = message.getRide().getId();
     }
 
     //request
