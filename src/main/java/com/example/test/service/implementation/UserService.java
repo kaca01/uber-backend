@@ -152,9 +152,30 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
+    public List<MessageDTO> getSupportMessages(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+
+        List<Message> messages = messageRepository.findMessageBySenderIdOrReceiverId(id, id);
+        if(messages.isEmpty()) return null;
+
+        messages.removeIf(m -> !m.getType().equals(MessageType.SUPPORT));
+        if(messages.isEmpty()) return null;
+
+        // convert to DTO
+        List<MessageDTO> messageDTOS = new ArrayList<>();
+        for(Message message : messages) {
+            messageDTOS.add(new MessageDTO(message));
+        }
+        return messageDTOS;
+    }
+
+    @Override
     public MessageDTO insertMessage(Long receiverId, MessageDTO requestMessage, User sender) {
-        User receiver = userRepository.findById(receiverId).orElseThrow(() -> new NotFoundException("Receiver does not exist!"));
-        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
+        //User receiver = userRepository.findById(receiverId).orElseThrow(() -> new NotFoundException("Receiver does not exist!"));
+        User receiver = userRepository.findById(receiverId).orElse(null);
+        //Ride ride = rideRepository.findById(requestMessage.getRideId()).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
+        Ride ride = rideRepository.findById(requestMessage.getRideId()).orElse(null);
         sender = userRepository.findById(sender.getId()).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
         Message message = new Message();

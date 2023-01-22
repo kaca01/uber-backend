@@ -30,7 +30,7 @@ public class RideDTO {
     @NotEmpty
     private Set<Route> locations;
     @NotNull
-    private Set<UserDTO> passengers;
+    private List<UserDTO> passengers;
     @NotEmpty
     @NotNull
     private String vehicleType;
@@ -64,7 +64,7 @@ public class RideDTO {
     }
 
     // request
-    public RideDTO(Set<Route> locations, Set<UserDTO> passengers, String vehicleType,
+    public RideDTO(Set<Route> locations, List<UserDTO> passengers, String vehicleType,
                    boolean babyTransport, boolean petTransport, String scheduledTime) {
         this.locations = locations;
         this.passengers = passengers;
@@ -76,7 +76,7 @@ public class RideDTO {
 
     // response
     public RideDTO(Long id, String startTime, String endTime, double totalCost, Set<Route> locations,
-                   Set<UserDTO> passengers, String vehicleType, boolean babyTransport,
+                   List<UserDTO> passengers, String vehicleType, boolean babyTransport,
                    boolean petTransport, double estimatedTimeInMinutes, String status, UserDTO driver,
                    RejectionDTO rejection, String scheduledTime) {
         this.id = id;
@@ -95,8 +95,8 @@ public class RideDTO {
         this.scheduledTime = scheduledTime;
     }
 
-    private Set<UserDTO> convertPassengersToUsersDTO(Ride ride) {
-        Set<UserDTO> users = new HashSet<>();
+    private List<UserDTO> convertPassengersToUsersDTO(Ride ride) {
+        List<UserDTO> users = new ArrayList<>();
         for (Passenger passenger: ride.getPassengers()) {
             users.add(new UserDTO(passenger.getId(), passenger.getEmail()));
         }

@@ -52,14 +52,14 @@ public class RideService implements IRideService {
         //Cannot create a ride while you have one already pending!
 
         Ride ride = new Ride(rideDTO);
-        Set<Passenger> passengers = new HashSet<>();
+        List<Passenger> passengers = new ArrayList<>();
 
         for (UserDTO u : rideDTO.getPassengers()) {
             Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
         if(rideDTO.getPassengers().size() != 0) {
-            List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().stream().reduce((one, two) -> two).get().getEmail()));
+            List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().get(rideDTO.getPassengers().size()-1).getEmail()));
             if(!rides.isEmpty()) throw new BadRequestException("Cannot create a ride while you have one already pending!");
         }
         ride.setPassengers(passengers);

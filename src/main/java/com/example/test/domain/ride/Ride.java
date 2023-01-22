@@ -17,9 +17,7 @@ import javax.validation.constraints.PastOrPresent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +42,7 @@ public class Ride {
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Passenger> passengers = new HashSet<>();
+    private List<Passenger> passengers = new ArrayList<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
