@@ -2,25 +2,35 @@ package com.example.test.controller;
 
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
+import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
+import com.example.test.exception.BadRequestException;
 import com.example.test.repository.user.IUserRepository;
+import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -30,6 +40,12 @@ public class UserController {
     private IUserService service;
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    TokenUtils tokenUtils;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     // Change password of a user
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,8 +90,24 @@ public class UserController {
     // login
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserTokenState> login(@RequestBody LoginDTO loginDTO) {
-        UserTokenState userTokenState = service.login(loginDTO);
-        return ResponseEntity.ok(userTokenState);
+//        UserTokenState userTokenState = service.login(loginDTO);
+        User check = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
+        if(!check.getEmail().equals(loginDTO.getEmail()) ||
+                !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
+            throw new BadRequestException("Wrong username or password!");
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDTO.getEmail(), loginDTO.getPassword()));
+
+        // if authentication is successful, add user in current security context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Create tokens for that user
+        User user = (User) authentication.getPrincipal();
+
+        String access = tokenUtils.generateToken(user.getEmail());
+        String refresh = tokenUtils.generateRefreshToken(user.getEmail());
+        return ResponseEntity.ok(new UserTokenState(access, refresh));
     }
 
     @GetMapping("/refreshToken")
@@ -138,5 +170,25 @@ public class UserController {
     @GetMapping("/currentUser")
     public User user(Principal user) {
         return this.service.findByEmail(user.getName());
+    }
+
+    @PutMapping("/picture/{id}")
+    public ResponseEntity<Void> uploadImage(@PathVariable Long id, @RequestParam MultipartFile file) throws IOException {
+        service.uploadImage(id, file);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/picture/{id}")
+    public ResponseEntity<?> downloadImage(@PathVariable Long id) {
+        byte[] imageData = service.downloadImage(id);
+        Map<String, byte[]> map = new HashMap<>();
+        map.put("byte", imageData);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/picture/{id}")
+    public ResponseEntity<?> deleteImage(@PathVariable Long id) {
+        service.deleteImage(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
