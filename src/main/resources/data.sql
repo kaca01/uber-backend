@@ -59,10 +59,10 @@ values ('879-T-446', 'Hummer H2 Limuzina', 2, 4, false, true, 9);
 insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
 values ('123-T-321', 'Toyota Hiace Van', 3, 2, false, true, 6);
 
-insert into driver (id, driving_license, vehicle_id) values (5, '00198456', 1);
-insert into driver (id, driving_license, vehicle_id) values (6, '00223789', 2);
-insert into driver (id, driving_license, vehicle_id) values (7, '00346523', 3);
-insert into driver (id, driving_license, vehicle_id) values (8, '00478956', 4);
+insert into driver (id, driving_license, vehicle_id, changes) values (5, '00198456', 1, false);
+insert into driver (id, driving_license, vehicle_id, changes) values (6, '00223789', 2, true);
+insert into driver (id, driving_license, vehicle_id, changes) values (7, '00346523', 3, false);
+insert into driver (id, driving_license, vehicle_id, changes) values (8, '00478956', 4, false);
 
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document1', 5);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document2', 6);
@@ -194,3 +194,5 @@ insert into user_role (user_id, role_id) VALUES (11, 3);
 
 insert into reset_password (user_id, expired_date, code, password) VALUES (1, '2023-12-24T20:54:24.893Z', '123456', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
 insert into reset_password (user_id, expired_date, code, password) VALUES (2, '2022-12-24T20:54:24.893Z', '111111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra');
+
+insert into user_changes (driver_id, name, surname, profile_picture, telephone_number, email, address) VALUES (6, 'Mirko', 'Nesic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2');

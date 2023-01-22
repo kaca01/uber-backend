@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/driver")
 public class DriverController {
 
@@ -155,5 +156,19 @@ public class DriverController {
                                                          @Valid @RequestBody WorkingHourDTO workingHourDTO) throws Exception {
         WorkingHourDTO workingHour = service.updateWorkTime(id, workingHourDTO);
         return new ResponseEntity<WorkingHourDTO>(workingHour, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(value = "/changes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> editData(@PathVariable Long id) {
+        UserDTO changes = service.getChanges(id);
+        return new ResponseEntity<>(changes, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
+    @PostMapping(value = "/changes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addChanges(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+        service.addChanges(id, userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

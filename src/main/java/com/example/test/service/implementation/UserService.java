@@ -1,5 +1,6 @@
 package com.example.test.service.implementation;
 
+import com.example.test.domain.account.ImageData;
 import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
@@ -9,26 +10,33 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
 import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.dto.user.ChangePasswordDTO;
-import com.example.test.dto.user.ResetPasswordDTO;
-import com.example.test.dto.user.UserDTO;
+import com.example.test.dto.user.*;
 import com.example.test.enumeration.MessageType;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
+import com.example.test.repository.account.IImageDataRepository;
 import com.example.test.repository.communication.IMessageRepository;
 import com.example.test.repository.communication.INoteRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IResetPasswordRepository;
 import com.example.test.repository.user.IUserRepository;
+import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
+import com.example.test.util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,7 +56,13 @@ public class UserService implements IUserService, UserDetailsService {
     @Autowired
     IResetPasswordRepository resetPasswordRepository;
     @Autowired
-    public BCryptPasswordEncoder passwordEncoder;
+    IImageDataRepository imageDataRepository;
+//    @Autowired
+//    TokenUtils tokenUtils;
+//    @Autowired
+//    AuthenticationManager authenticationManager;
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
@@ -112,6 +126,14 @@ public class UserService implements IUserService, UserDetailsService {
             userDTOS.add(new UserDTO(user));
         }
         return userDTOS;
+    }
+
+    @Override
+    public void login(LoginDTO loginDTO) {
+
+
+        // return a token in response to successful authentication
+//        return new UserTokenState(access, refresh);
     }
 
     @Override
@@ -198,4 +220,27 @@ public class UserService implements IUserService, UserDetailsService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
+    public void uploadImage(Long id, MultipartFile file) throws IOException {
+        ImageData imageData = imageDataRepository.findByUserId(id);
+        if(imageData != null) imageDataRepository.delete(imageData);
+
+        imageDataRepository.save(ImageData.builder()
+                .userId(id)
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtils.compressImage(file.getBytes())).build());
+    }
+
+    public byte[] downloadImage(Long id) {
+        ImageData image = imageDataRepository.findByUserId(id);
+        if(image == null)
+            throw new NotFoundException("User hasn't image!");
+
+        return ImageUtils.decompressImage(image.getImageData());
+    }
+
+    public void deleteImage(Long id) {
+        ImageData imageData = imageDataRepository.findByUserId(id);
+        if(imageData != null) imageDataRepository.delete(imageData);
+    }
 }

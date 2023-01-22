@@ -1,5 +1,6 @@
 package com.example.test.dto.user;
 
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -46,10 +47,18 @@ public class UserDTO {
     private String password;
     private boolean isBlocked;
 
+    private boolean isChanged;
+
     public UserDTO(User user)
     {
         this(user.getId(), user.getName(), user.getSurname(), user.getProfilePicture(), user.getTelephoneNumber(),
                 user.getEmail(), user.getAddress(), user.isBlocked());
+    }
+
+    public UserDTO(Driver driver) {
+        this(driver.getId(), driver.getName(), driver.getSurname(), driver.getProfilePicture(), driver.getTelephoneNumber(),
+                driver.getEmail(), driver.getAddress(), driver.isBlocked());
+        this.isChanged = driver.isChanges();
     }
 
     // response

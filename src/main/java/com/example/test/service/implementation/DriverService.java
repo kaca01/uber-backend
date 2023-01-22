@@ -1,5 +1,6 @@
 package com.example.test.service.implementation;
 
+import com.example.test.domain.account.UserChanges;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
@@ -18,6 +19,7 @@ import com.example.test.dto.vehicle.VehicleDTO;
 import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
+import com.example.test.repository.account.IUserChangesRepository;
 import com.example.test.repository.business.IWorkingHourRepository;
 import com.example.test.repository.ride.ILocationRepository;
 import com.example.test.repository.ride.IRideRepository;
@@ -61,6 +63,8 @@ public class DriverService implements IDriverService {
     IVehicleTypeRepository iVehicleTypeRepository;
     @Autowired
     IRoleRepository iRoleRepository;
+    @Autowired
+    IUserChangesRepository iUserChangesRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -108,6 +112,10 @@ public class DriverService implements IDriverService {
         roles.add(iRoleRepository.findById(2L).get());
         driver.setRoles(roles);
         iUserRepository.save(driver);
+
+        // delete change in user changes
+        iUserChangesRepository.deleteAllByDriverId(id);
+
         return driverDTO;
     }
 
@@ -284,6 +292,35 @@ public class DriverService implements IDriverService {
             // if there is set location from database
         else vehicle.setCurrentLocation(location);
         return vehicle;
+    }
+
+    @Override
+    public UserDTO getChanges(Long id) {
+        UserChanges changes =  iUserChangesRepository.findByDriverId(id);
+        if (changes == null) throw new NotFoundException("Changes for this driver does not exist!");
+        return new UserDTO(changes.getName(), changes.getSurname(), changes.getProfilePicture(),
+                changes.getTelephoneNumber(), changes.getEmail(), changes.getAddress(), "");
+    }
+
+    @Override
+    public void addChanges(Long id, UserDTO userDTO) {
+        Driver driver = iDriverRepository.findById(id);
+
+        UserChanges changes = iUserChangesRepository.findByDriverId(id);
+        if(changes == null) {
+            UserChanges newChanges = new UserChanges(userDTO, driver);
+            iUserChangesRepository.save(newChanges);
+            driver.setChanges(true);
+            iUserRepository.save(driver);
+        }
+        else {
+            changes.setName(userDTO.getName());
+            changes.setSurname(userDTO.getSurname());
+            changes.setTelephoneNumber(userDTO.getTelephoneNumber());
+            changes.setAddress(userDTO.getAddress());
+            changes.setEmail(userDTO.getEmail());
+            iUserChangesRepository.save(changes);
+        }
     }
 
     private Driver getDriver(Long id) {
