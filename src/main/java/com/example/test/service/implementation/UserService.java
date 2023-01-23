@@ -85,8 +85,8 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void sendResetEmail(Long id) throws MessagingException, UnsupportedEncodingException {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+    public void sendResetEmail(String email) throws MessagingException, UnsupportedEncodingException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User does not exist!"));
         // change toAddress
         String toAddress = "anastasijas557@gmail.com";
         String fromAddress = "anastasijas557@gmail.com";
@@ -132,10 +132,10 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+    public void resetEmail(String email, ResetPasswordDTO resetPasswordDTO) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User does not exist!"));
 
-        ResetPassword resetPassword = resetPasswordRepository.findResetPasswordByUserId(id);
+        ResetPassword resetPassword = resetPasswordRepository.findResetPasswordByUserId(user.getId());
         Date expiredDate = resetPassword.getExpiredDate();
 
         if(!resetPasswordDTO.getCode().equals(resetPassword.getCode()) || expiredDate.before(new Date()))

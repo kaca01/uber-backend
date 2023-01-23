@@ -59,17 +59,17 @@ public class UserController {
     }
 
     // Reset password of user
-    @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> sendResetEmail(@PathVariable Long id) throws MessagingException, UnsupportedEncodingException {
-        service.sendResetEmail(id);
+    @GetMapping(value = "/user/{email}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> sendResetEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+        service.sendResetEmail(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Change password of a user with the reset code
-    @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
+    @PutMapping(value = "/user/{email}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> resetPassword(@PathVariable String email, @RequestBody ResetPasswordDTO resetPasswordDTO)
     {
-        service.resetEmail(id, resetPasswordDTO);
+        service.resetEmail(email, resetPasswordDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

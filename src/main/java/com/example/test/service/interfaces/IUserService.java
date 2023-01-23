@@ -18,9 +18,9 @@ public interface IUserService {
 
     void changePassword(Long id, ChangePasswordDTO changePasswordDTO);
 
-    void sendResetEmail(Long id) throws MessagingException, UnsupportedEncodingException;
+    void sendResetEmail(String email) throws MessagingException, UnsupportedEncodingException;
 
-    void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO);
+    void resetEmail(String email, ResetPasswordDTO resetPasswordDTO);
 
     List<RideDTO> getRides(Long id);
 
