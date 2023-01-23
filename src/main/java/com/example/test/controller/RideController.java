@@ -65,6 +65,7 @@ public class RideController {
     }
 
     //ride details
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findOne(@PathVariable Long id)
     {
