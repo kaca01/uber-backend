@@ -46,4 +46,6 @@ public interface IDriverService {
     public UserDTO getChanges(Long id);
 
     public void addChanges(Long id, UserDTO userDTO);
+
+    void deleteDriver(Long id);
 }

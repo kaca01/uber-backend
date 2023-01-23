@@ -74,14 +74,15 @@ public class DriverService implements IDriverService {
         if (user.isPresent()) throw new BadRequestException("User with that email already exists!");
         Driver driver = new Driver(driverDTO);
         driver.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
-        driver.setActive(true);
+        driver.setActive(false);
         List<Role> roles = new ArrayList<>();
         roles.add(iRoleRepository.findById(2L).get());
         driver.setRoles(roles);
-        iDriverRepository.save(driver);
-        iUserRepository.save(driver);
-        driverDTO.setId(driver.getId());
-        driverDTO.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
+        driver.setDrivingLicense(driverDTO.getDrivingLicense());
+        driver = iDriverRepository.save(driver);
+        String password = passwordEncoder.encode(driverDTO.getPassword());
+        driverDTO = new UserDTO(driver);
+        driverDTO.setPassword(password);
         return driverDTO;
     }
 
@@ -321,6 +322,13 @@ public class DriverService implements IDriverService {
             changes.setEmail(userDTO.getEmail());
             iUserChangesRepository.save(changes);
         }
+    }
+
+    @Override
+    public void deleteDriver(Long id) {
+        Driver driver = iDriverRepository.findById(id);
+        if (driver == null) return;
+        iDriverRepository.delete(driver);
     }
 
     private Driver getDriver(Long id) {

@@ -26,17 +26,17 @@ public class VehicleDTO {
     private String vehicleType;
     @NotEmpty
     @NotNull
-    @Length(max = 100)
+    @Length(max = 100,  message = "Max 100 characters allowed for vehicle model!")
     private String model;
     @NotEmpty
     @NotNull
-    @Length(max = 20)
+    @Length(max = 20, message = "Max 20 characters allowed for license number!")
     private String licenseNumber;
     @NotNull
     private Location currentLocation;
     @NotNull
-    @Min(1)
-    @Max(20)
+    @Min(value = 1, message = "There must be at least 1 seat!")
+    @Max(value = 20, message = "Max 18 seats allowed!")
     private int passengerSeats;
     @NotNull
     private boolean babyTransport;
