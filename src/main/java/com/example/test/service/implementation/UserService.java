@@ -23,7 +23,10 @@ import com.example.test.repository.user.IUserRepository;
 import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
 import com.example.test.util.ImageUtils;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +39,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,6 +69,8 @@ public class UserService implements IUserService, UserDetailsService {
 //    AuthenticationManager authenticationManager;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Override
     public void changePassword(Long id, ChangePasswordDTO changePasswordDTO) {
@@ -77,9 +85,50 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void sendResetEmail(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));        user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
-        userRepository.save(user);
+    public void sendResetEmail(Long id) throws MessagingException, UnsupportedEncodingException {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+        // change toAddress
+        String toAddress = "anastasijas557@gmail.com";
+        String fromAddress = "anastasijas557@gmail.com";
+        String senderName = "Uber Support";
+        String subject = "Reset Your Password";
+        String content = "Hi [[name]], let's reset your password.<br>"
+                + "Your verification code is:<br>"
+                + "<h2>[[code]]</h2>"
+                + "Thank you,<br>"
+                + "The Uber team.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getName() + " " + user.getSurname());
+
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+        String code = String.format("%06d", number);
+        content = content.replace("[[code]]", code);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 7);
+        Date toDate = cal.getTime();
+
+        ResetPassword reset = resetPasswordRepository.findResetPasswordByUserId(user.getId());
+        if(reset == null) {
+            reset = new ResetPassword(user, toDate, code);
+        }
+        else {
+            reset.setExpiredDate(toDate);
+            reset.setCode(code);
+        }
+        resetPasswordRepository.save(reset);
     }
 
     @Override
@@ -92,10 +141,8 @@ public class UserService implements IUserService, UserDetailsService {
         if(!resetPasswordDTO.getCode().equals(resetPassword.getCode()) || expiredDate.before(new Date()))
             throw new BadRequestException("Code is expired or not correct!");
 
-        resetPassword.setCode(resetPasswordDTO.getCode());
-        resetPasswordRepository.save(resetPassword);
-
         user.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+        user.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
         userRepository.save(user);
     }
 

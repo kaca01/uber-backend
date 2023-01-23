@@ -24,9 +24,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -58,8 +60,7 @@ public class UserController {
 
     // Reset password of user
     @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> sendResetEmail(@PathVariable Long id)
-    {
+    public ResponseEntity<Void> sendResetEmail(@PathVariable Long id) throws MessagingException, UnsupportedEncodingException {
         service.sendResetEmail(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
