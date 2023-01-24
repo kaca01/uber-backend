@@ -36,7 +36,7 @@ public class VehicleDTO {
     private Location currentLocation;
     @NotNull
     @Min(value = 1, message = "There must be at least 1 seat!")
-    @Max(value = 20, message = "Max 18 seats allowed!")
+    @Max(value = 15, message = "Max 15 seats allowed!")
     private int passengerSeats;
     @NotNull
     private boolean babyTransport;
