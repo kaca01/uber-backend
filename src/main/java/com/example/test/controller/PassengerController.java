@@ -71,7 +71,7 @@ public class PassengerController {
 
     //get passenger rides
     //todo PAGINATED RIDES
-    @PreAuthorize("hasRole('PASSENGER')")
+    @PreAuthorize("hasAnyRole('PASSENGER', 'ADMIN')")
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {
