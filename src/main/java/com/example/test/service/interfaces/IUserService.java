@@ -8,7 +8,9 @@ import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -16,9 +18,9 @@ public interface IUserService {
 
     void changePassword(Long id, ChangePasswordDTO changePasswordDTO);
 
-    void sendResetEmail(Long id);
+    void sendResetEmail(String email) throws MessagingException, UnsupportedEncodingException;
 
-    void resetEmail(Long id, ResetPasswordDTO resetPasswordDTO);
+    void resetEmail(String email, ResetPasswordDTO resetPasswordDTO);
 
     List<RideDTO> getRides(Long id);
 

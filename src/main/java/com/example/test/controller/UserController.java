@@ -24,9 +24,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -57,18 +59,17 @@ public class UserController {
     }
 
     // Reset password of user
-    @GetMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> sendResetEmail(@PathVariable Long id)
-    {
-        service.sendResetEmail(id);
+    @GetMapping(value = "/user/{email}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> sendResetEmail(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
+        service.sendResetEmail(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Change password of a user with the reset code
-    @PutMapping(value = "/user/{id}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @RequestBody ResetPasswordDTO resetPasswordDTO)
+    @PutMapping(value = "/user/{email}/resetPassword", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> resetPassword(@PathVariable String email, @RequestBody ResetPasswordDTO resetPasswordDTO)
     {
-        service.resetEmail(id, resetPasswordDTO);
+        service.resetEmail(email, resetPasswordDTO);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -96,6 +97,7 @@ public class UserController {
         if(!check.getEmail().equals(loginDTO.getEmail()) ||
                 !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
             throw new BadRequestException("Wrong username or password!");
+        if(!check.isActive()) throw new BadRequestException("This account has not yet been activated!");
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
