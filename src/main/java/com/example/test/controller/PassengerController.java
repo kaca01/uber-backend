@@ -82,4 +82,13 @@ public class PassengerController {
         AllDTO<RideDTO> allRides = new AllDTO<>(rides.size(), rides);
         return new ResponseEntity<>(allRides, HttpStatus.OK);
     }
+
+    // checks if invited passenger (for new ride) exists in database
+    // returns id of added passenger (so that user can create new ride)
+    @PreAuthorize("hasRole('PASSENGER')")
+    @GetMapping(value="/invitation/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getPassengerIdByEmail(@PathVariable String email) {
+        UserDTO passenger = service.getByEmail(email);
+        return new ResponseEntity<>(passenger, HttpStatus.OK);
+    }
 }

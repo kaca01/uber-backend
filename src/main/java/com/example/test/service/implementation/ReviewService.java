@@ -135,7 +135,8 @@ public class ReviewService implements IReviewService {
         // get passenger from token
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger passenger = passengerRepository.findByEmail(email);
+        Passenger passenger = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
         review.setPassenger(passenger);
 
         review.setType(type);

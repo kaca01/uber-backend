@@ -55,7 +55,8 @@ public class RideService implements IRideService {
         List<Passenger> passengers = new ArrayList<>();
 
         for (UserDTO u : rideDTO.getPassengers()) {
-            Passenger p = passengerRepository.findByEmail(u.getEmail());
+            Passenger p = passengerRepository.findByEmail(u.getEmail()).orElseThrow(()
+                    -> new NotFoundException("Passenger does not exist!"));
             passengers.add(p);
         }
         if(rideDTO.getPassengers().size() != 0) {
@@ -182,7 +183,8 @@ public class RideService implements IRideService {
     @Transactional
     @Override
     public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
-        Passenger passengerT = passengerRepository.findByEmail(email);
+        Passenger passengerT = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
         List<FavoriteOrder> fo = favoriteOrderRepository.findByPassenger_Id(passengerT.getId());
         if(fo.size() >=10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
         Set<Passenger> passengers = new HashSet<>();

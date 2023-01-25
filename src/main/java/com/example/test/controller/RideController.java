@@ -8,6 +8,7 @@ import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.exception.NotFoundException;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IRideService;
@@ -136,7 +137,8 @@ public class RideController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email);
+        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
         FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, email);
 
         return new ResponseEntity<FavoriteOrder>(order, HttpStatus.OK);
@@ -148,7 +150,8 @@ public class RideController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email);
+        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
         AllDTO<FavoriteOrder> allOrders = service.getFavoriteOrdersByPassenger(p);
 
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
@@ -159,7 +162,8 @@ public class RideController {
     public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email);
+        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
         service.deleteFavoriteLocation(id, p);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

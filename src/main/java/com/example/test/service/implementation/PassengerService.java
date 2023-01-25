@@ -18,7 +18,6 @@ import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,8 +145,7 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public ErrorDTO
-    activatePassenger(Long activationId) {
+    public ErrorDTO activatePassenger(Long activationId) {
         UserActivation activation = userActivationRepository.findById(activationId).orElseThrow(
                 () -> new NotFoundException("Activation with entered id does not exist!"));
         Passenger p = findUserById(activation.getUser().getId());
@@ -161,5 +159,13 @@ public class PassengerService implements IPassengerService {
             passengerRepository.delete(p);
             throw new BadRequestException("Activation expired. Register again!");
         }
+    }
+
+    @Override
+    public UserDTO getByEmail(String email) {
+        Passenger passenger = passengerRepository.findByEmail(email).orElseThrow(()
+                -> new NotFoundException("Passenger does not exist!"));
+        UserDTO userDTO = new UserDTO(passenger.getId(), email);
+        return userDTO;
     }
 }
