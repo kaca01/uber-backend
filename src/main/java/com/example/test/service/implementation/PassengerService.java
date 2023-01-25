@@ -78,7 +78,7 @@ public class PassengerService implements IPassengerService {
         User user = userRepository.findByEmail(activation.getUser().getEmail()).orElseThrow(()
                 -> new NotFoundException("User does not exist!"));
         String toAddress = "hristinacina@gmail.com";
-        String fromAddress = "hristinacina@gmail.com";
+        String fromAddress = "anastasijas557@gmail.com";
         String senderName = "Uber Support";
         String subject = "Activate Your Uber Account";
         String content = "Hello [[name]], thank you for joining us!<br>"
