@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -25,8 +28,7 @@ public class PassengerController {
 
     // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO)
-    {
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO) throws MessagingException, UnsupportedEncodingException {
         UserDTO passenger = service.insert(passengerDTO);  // returns passenger with set id
         return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }

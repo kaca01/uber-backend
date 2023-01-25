@@ -97,6 +97,7 @@ public class UserController {
         if(!check.getEmail().equals(loginDTO.getEmail()) ||
                 !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
             throw new BadRequestException("Wrong username or password!");
+        if(!check.isActive()) throw new BadRequestException("This account has not yet been activated!");
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
