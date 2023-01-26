@@ -2,7 +2,6 @@ package com.example.test.service.implementation;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
-import com.example.test.domain.user.ResetPassword;
 import com.example.test.domain.user.User;
 import com.example.test.domain.user.UserActivation;
 import com.example.test.dto.ErrorDTO;

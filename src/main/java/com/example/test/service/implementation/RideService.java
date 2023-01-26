@@ -54,12 +54,7 @@ public class RideService implements IRideService {
 
         List<Passenger> passengers = new ArrayList<>();
 
-        System.out.println("PASSENGERSSSSS");
-        System.out.println(rideDTO.getPassengers());
-
         for (UserDTO u : rideDTO.getPassengers()) {
-            System.out.println("PRINTAM KORISNIKE");
-            System.out.println(u);
             Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
@@ -67,7 +62,6 @@ public class RideService implements IRideService {
         if(rideDTO.getPassengers().size() != 0) {
             List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().get(rideDTO.getPassengers().size()-1).getEmail()));
             if(!rides.isEmpty()) {
-                System.out.println("PUKAO ZBOG ALREADY PENDING");
                 throw new BadRequestException("Cannot create a ride while you have one already pending!");
             }
         }

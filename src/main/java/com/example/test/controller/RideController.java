@@ -42,8 +42,6 @@ public class RideController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> insert(@Nullable @Valid @RequestBody RideDTO rideDTO) throws Exception
     {
-        System.out.println("RIDE DTOOOOOOO");
-        System.out.println(rideDTO);
         RideDTO newRide = service.insert(rideDTO);  // returns ride with set id and other data
 
         return new ResponseEntity<RideDTO>(newRide, HttpStatus.OK);
