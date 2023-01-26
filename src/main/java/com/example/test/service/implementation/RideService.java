@@ -50,25 +50,32 @@ public class RideService implements IRideService {
     @Override
     public RideDTO insert(RideDTO rideDTO) throws ParseException {
         //Cannot create a ride while you have one already pending!
-
         Ride ride = new Ride(rideDTO);
+
         List<Passenger> passengers = new ArrayList<>();
 
+        System.out.println("PASSENGERSSSSS");
+        System.out.println(rideDTO.getPassengers());
+
         for (UserDTO u : rideDTO.getPassengers()) {
-            Passenger p = passengerRepository.findByEmail(u.getEmail()).orElseThrow(()
-                    -> new NotFoundException("Passenger does not exist!"));
+            System.out.println("PRINTAM KORISNIKE");
+            System.out.println(u);
+            Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
+
         if(rideDTO.getPassengers().size() != 0) {
             List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().get(rideDTO.getPassengers().size()-1).getEmail()));
-            if(!rides.isEmpty()) throw new BadRequestException("Cannot create a ride while you have one already pending!");
+            if(!rides.isEmpty()) {
+                System.out.println("PUKAO ZBOG ALREADY PENDING");
+                throw new BadRequestException("Cannot create a ride while you have one already pending!");
+            }
         }
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         ride.setLocations(rideDTO.getLocations());
 
         if(ride.getScheduledTime() == null) ride.setScheduledTime(new Date());
-        
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
         if (driver != null) {
@@ -183,8 +190,7 @@ public class RideService implements IRideService {
     @Transactional
     @Override
     public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
-        Passenger passengerT = passengerRepository.findByEmail(email).orElseThrow(()
-                -> new NotFoundException("Passenger does not exist!"));
+        Passenger passengerT = passengerRepository.findByEmail(email);
         List<FavoriteOrder> fo = favoriteOrderRepository.findByPassenger_Id(passengerT.getId());
         if(fo.size() >=10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
         Set<Passenger> passengers = new HashSet<>();

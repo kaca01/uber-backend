@@ -42,6 +42,8 @@ public class RideController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> insert(@Nullable @Valid @RequestBody RideDTO rideDTO) throws Exception
     {
+        System.out.println("RIDE DTOOOOOOO");
+        System.out.println(rideDTO);
         RideDTO newRide = service.insert(rideDTO);  // returns ride with set id and other data
 
         return new ResponseEntity<RideDTO>(newRide, HttpStatus.OK);
@@ -137,8 +139,7 @@ public class RideController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
-                -> new NotFoundException("Passenger does not exist!"));
+        Passenger p = passengerRepository.findByEmail(email);
         FavoriteOrder order = service.insertFavoriteOrder(favoriteOrder, email);
 
         return new ResponseEntity<FavoriteOrder>(order, HttpStatus.OK);
@@ -150,8 +151,7 @@ public class RideController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
-                -> new NotFoundException("Passenger does not exist!"));
+        Passenger p = passengerRepository.findByEmail(email);
         AllDTO<FavoriteOrder> allOrders = service.getFavoriteOrdersByPassenger(p);
 
         return new ResponseEntity<>(allOrders, HttpStatus.OK);
@@ -162,8 +162,7 @@ public class RideController {
     public ResponseEntity<Void> deleteFavoriteLocation(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Passenger p = passengerRepository.findByEmail(email).orElseThrow(()
-                -> new NotFoundException("Passenger does not exist!"));
+        Passenger p = passengerRepository.findByEmail(email);
         service.deleteFavoriteLocation(id, p);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

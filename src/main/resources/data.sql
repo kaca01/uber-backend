@@ -15,7 +15,7 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Danka', 'Danić', 'U3dhZ2dlciByb2Nrcw==', '+381222222', 'danka@gmail.com', 'Fruskogorska 23', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
-    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+    ('Mara', 'Marić', 'U3dhZ2dlciByb2Nrcw==', '+381333333', 'mara@gmail.com', 'Crnogorska 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Siniša', 'Vasić', 'U3dhZ2dlciByb2Nrcw==', '+38189022', 'sinisa@gmail.com', 'Rumenacka 1', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
@@ -99,7 +99,7 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 0, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');

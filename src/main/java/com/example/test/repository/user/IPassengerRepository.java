@@ -9,5 +9,5 @@ public interface IPassengerRepository extends JpaRepository<Passenger, Long> {
 
     public List<Passenger> findAllByActiveIsTrue();
 
-    public Optional<Passenger> findByEmail(String email);
+    public Passenger findByEmail(String email);
 }
