@@ -1,10 +1,7 @@
 package com.example.test.service.implementation;
 
 import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.Passenger;
-import com.example.test.domain.user.ResetPassword;
-import com.example.test.domain.user.User;
-import com.example.test.domain.user.UserActivation;
+import com.example.test.domain.user.*;
 import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -12,6 +9,7 @@ import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.repository.user.IRoleRepository;
 import com.example.test.repository.user.IUserActivationRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IPassengerService;
@@ -43,6 +41,8 @@ public class PassengerService implements IPassengerService {
     public BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private IRoleRepository roleRepository;
 
     //get only those whose active status is true
     @Override
@@ -68,6 +68,11 @@ public class PassengerService implements IPassengerService {
         passenger.setPassword(passwordEncoder.encode(passengerDTO.getPassword()));
         passenger.setActive(false);
         passenger.setBlocked(false);
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findById(1L).get());
+        passenger.setRoles(roles);
+
         passenger = passengerRepository.save(passenger);
         UserActivation activation = userActivationRepository.save(new UserActivation(passenger, new Date(), 180));
         sendActivationEmail(activation);

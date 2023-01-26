@@ -203,5 +203,6 @@ insert into user_role (user_id, role_id) VALUES (8, 2);
 insert into user_role (user_id, role_id) VALUES (9, 3); 
 insert into user_role (user_id, role_id) VALUES (10, 3); 
 insert into user_role (user_id, role_id) VALUES (11, 3);
+insert into user_role (user_id, role_id) VALUES (12, 1);
 
 insert into user_changes (driver_id, name, surname, profile_picture, telephone_number, email, address) VALUES (6, 'Mirko', 'Nesic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2');
