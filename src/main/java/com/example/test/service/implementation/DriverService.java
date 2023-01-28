@@ -30,7 +30,6 @@ import com.example.test.repository.user.IUserRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
 import com.example.test.service.interfaces.IDriverService;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -174,6 +173,16 @@ public class DriverService implements IDriverService {
         vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
+    }
+
+    @Override
+    public VehicleDTO updateVehicleLocation(Long id, Location location) {
+        Vehicle vehicle = this.iVehicleRepository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle does not exist!"));
+        location = iLocationRepository.save(location);
+        vehicle.setCurrentLocation(location);
+        vehicle = iVehicleRepository.save(vehicle);
+        Driver d = iDriverRepository.findByVehicleId(vehicle.getId());
+        return new VehicleDTO(d, vehicle);
     }
 
     @Override

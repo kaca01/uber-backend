@@ -1,5 +1,6 @@
 package com.example.test.service.interfaces;
 
+import com.example.test.domain.ride.Location;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -30,6 +31,8 @@ public interface IDriverService {
     public VehicleDTO getVehicle(Long id);
 
     public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle);
+
+    VehicleDTO updateVehicleLocation(Long id, Location location);
 
     public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle);
 

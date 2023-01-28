@@ -1,5 +1,6 @@
 package com.example.test.controller;
 
+import com.example.test.domain.ride.Location;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,9 @@ public class DriverController {
 
     @Autowired
     IDriverService service;
+
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
     // add new driver
     @PreAuthorize("hasRole('ADMIN')")
@@ -107,6 +112,14 @@ public class DriverController {
     public ResponseEntity<VehicleDTO> insertVehicle(@PathVariable Long id, @Valid @RequestBody VehicleDTO vehicleDTO) {
         VehicleDTO returnedVehicle = service.insertVehicle(id, vehicleDTO);
         return new ResponseEntity<VehicleDTO>(returnedVehicle, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{id}/vehicle/location",consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VehicleDTO> updateVehicleLocation(@PathVariable Long id, @RequestBody Location location) {
+        VehicleDTO vehicle = this.service.updateVehicleLocation(id, location);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/update-vehicle-position", vehicle);
+        return new ResponseEntity<>(vehicle, HttpStatus.OK);
     }
 
     // update vehicle

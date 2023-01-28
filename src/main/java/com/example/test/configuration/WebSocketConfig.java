@@ -10,16 +10,22 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    //dodavanje tema
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/notification");
-        registry.setApplicationDestinationPrefixes("/swns");
+        //registry.enableSimpleBroker("/notification");  //teme
+        registry.enableSimpleBroker("/map-updates");  //teme
+        //registry.setApplicationDestinationPrefixes("/app"); //kada front salje apije, slace sa ovim prefiksom
     }
 
+    // otvaranje konekcije
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/notifications")
+        registry.addEndpoint("/socket")
                 .setAllowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
                 .withSockJS();
+/*        registry.addEndpoint("/notifications")
+                .setAllowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
+                .withSockJS();*/
     }
 }
