@@ -56,4 +56,6 @@ public interface IDriverService {
     void deleteDriver(Long id);
 
     AllDTO<Driver> getActiveDrivers();
+
+    Driver changeActivity(Long id, boolean b);
 }

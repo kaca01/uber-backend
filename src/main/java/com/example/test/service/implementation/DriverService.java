@@ -100,6 +100,15 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    public Driver changeActivity(Long id, boolean active) {
+        Driver user = iDriverRepository.findById(id);
+        if(user == null) throw new NotFoundException("Driver does not exist!");
+        user.setActive(active);
+        iDriverRepository.save(user);
+        return user;
+    }
+
+    @Override
     public UserDTO get(Long id) {
         Driver driver =  iDriverRepository.findById(id);
         if (driver == null) throw new NotFoundException("Driver does not exist!");

@@ -107,11 +107,14 @@ public class UserController {
         if(!check.isActive() && check.getRoles().get(0).getName().equals("ROLE_PASSENGER"))
             throw new BadRequestException("This account has not yet been activated!");
 
-        if(check.getRoles().get(0).getName().equals("ROLE_DRIVER"))
-        {
-            Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
-            this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", driver);
-        }
+            //don't forget to call function to change drivers activity from front !!!
+
+//        if(check.getRoles().get(0).getName().equals("ROLE_DRIVER"))
+//        {
+//            Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
+//            driver.setActive(true);
+//            driverRepository.save(driver);
+//        }
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
