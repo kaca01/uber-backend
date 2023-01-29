@@ -1,6 +1,7 @@
 package com.example.test.service.interfaces;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.domain.user.Driver;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -51,4 +52,6 @@ public interface IDriverService {
     public void addChanges(Long id, UserDTO userDTO);
 
     void deleteDriver(Long id);
+
+    AllDTO<Driver> getActiveDrivers();
 }

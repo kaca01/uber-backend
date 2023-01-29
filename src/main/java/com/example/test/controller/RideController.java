@@ -49,7 +49,6 @@ public class RideController {
     }
 
     //active ride for driver
-    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @GetMapping(value = "/driver/{driverId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {

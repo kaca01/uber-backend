@@ -1,6 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.domain.ride.Location;
+import com.example.test.domain.user.Driver;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -51,6 +52,12 @@ public class DriverController {
     public ResponseEntity<AllDTO<UserDTO>> getAll(){
         AllDTO<UserDTO> drivers = service.getAll();
         return new ResponseEntity<>(drivers, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/all/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AllDTO<Driver>> getActiveDrivers() {
+        AllDTO<Driver> drivers = service.getActiveDrivers();
+        return new ResponseEntity<AllDTO<Driver>>(drivers, HttpStatus.OK);
     }
 
     // get driver by id
