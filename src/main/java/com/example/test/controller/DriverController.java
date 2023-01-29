@@ -54,6 +54,7 @@ public class DriverController {
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
+    //used for simulation
     @GetMapping(value = "/all/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<Driver>> getActiveDrivers() {
         AllDTO<Driver> drivers = service.getActiveDrivers();
@@ -66,6 +67,13 @@ public class DriverController {
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         UserDTO driver = service.get(id);
         return new ResponseEntity<UserDTO>(driver, HttpStatus.OK);
+    }
+
+    //used for simulation
+    @GetMapping(value = "/{id}/driver/real", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> getRealDriver(@PathVariable Long id) throws Exception {
+        Driver driver = service.getRealDriver(id);
+        return new ResponseEntity<Driver>(driver, HttpStatus.OK);
     }
 
     // update existing driver

@@ -21,6 +21,8 @@ public interface IDriverService {
 
     public UserDTO get(Long id);
 
+    public Driver getRealDriver(Long id);
+
     public UserDTO update(Long id, UserDTO driverDTO);
 
     public List<DocumentDTO> getDriverDocuments(Long id);

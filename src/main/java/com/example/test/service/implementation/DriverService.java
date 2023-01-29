@@ -107,6 +107,13 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    public Driver getRealDriver(Long id) {
+        Driver driver =  iDriverRepository.findById(id);
+        if (driver == null) throw new NotFoundException("Driver does not exist!");
+        return driver;
+    }
+
+    @Override
     @Transactional
     public UserDTO update(Long id, UserDTO driverDTO) {
         Driver oldDriver = iDriverRepository.findById(id);

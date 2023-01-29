@@ -49,6 +49,7 @@ public class RideController {
     }
 
     //active ride for driver
+    //also used for simulation
     @GetMapping(value = "/driver/{driverId}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
