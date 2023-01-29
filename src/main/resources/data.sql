@@ -33,11 +33,11 @@ insert into admin values(9);
 insert into admin values(10);
 insert into admin values(11);
 
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 5A', 10.22, 25.94);
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 78.23, 124.78);
-insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 14.2, 5.26);
-insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 19.4758);
-insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 19.4758);
+insert into location(address, longitude, latitude) values ('Djordja Mikeša 2', 45.235866, 19.807387);
+insert into location(address, longitude, latitude) values ('Andje Rankovic 2', 45.247309, 19.796717);
+insert into location(address, longitude, latitude) values ('Veselina Maslese 62', 45.259711, 19.809787);
+insert into location(address, longitude, latitude) values ('Jovana Hranilovica 2', 45.261421, 19.823026);
+insert into location(address, longitude, latitude) values ('Bele njive 24', 45.265435, 19.847805);
 
 insert into route(departure_id, destination_id) values (1, 3);
 insert into route(departure_id, destination_id) values (1, 4);
@@ -102,7 +102,7 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 0, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 3);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
