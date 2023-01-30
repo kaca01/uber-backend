@@ -149,14 +149,6 @@ public class DriverController {
         return new ResponseEntity<VehicleDTO>(returnedVehicle, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{id}/vehicle/location",consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> updateVehicleLocation(@PathVariable Long id, @RequestBody Location location) {
-        VehicleDTO vehicle = this.service.updateVehicleLocation(id, location);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/update-vehicle-position", vehicle);
-        return new ResponseEntity<>(vehicle, HttpStatus.OK);
-    }
-
     // update vehicle
     @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
     @PutMapping(value = "/{id}/vehicle", consumes = MediaType.APPLICATION_JSON_VALUE,
