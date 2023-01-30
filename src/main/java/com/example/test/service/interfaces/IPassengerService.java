@@ -22,5 +22,5 @@ public interface IPassengerService {
 
     ErrorDTO activatePassenger(Long activationId);
 
-    UserDTO getByEmail(String email);
+    List<UserDTO> getByEmails(String[] emails);
 }

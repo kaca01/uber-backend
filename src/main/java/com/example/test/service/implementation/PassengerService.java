@@ -161,11 +161,15 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public UserDTO getByEmail(String email) {
-        Passenger passenger = passengerRepository.findByEmail(email);
-        if (passenger == null) throw new NotFoundException("Passenger not found");
-        UserDTO userDTO = new UserDTO(passenger.getId(), email);
-        return userDTO;
+    public List<UserDTO> getByEmails(String[] emails) {
+        List<UserDTO> users = new ArrayList<>();
+        Object[] uniqueEmails = Arrays.stream(emails).distinct().toArray();
+        for (Object email: uniqueEmails) {
+            Passenger passenger = passengerRepository.findByEmail(email.toString());
+            if (passenger == null) throw new NotFoundException("Passenger not found");
+            users.add(new UserDTO(passenger.getId(), email.toString()));
+        }
+        return users;
     }
 
 }
