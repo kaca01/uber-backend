@@ -27,6 +27,7 @@ import javax.validation.Valid;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/ride")
 public class RideController {
 
