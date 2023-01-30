@@ -109,12 +109,13 @@ public class UserController {
 
             //don't forget to call function to change drivers activity from front !!!
 
-//        if(check.getRoles().get(0).getName().equals("ROLE_DRIVER"))
-//        {
-//            Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
-//            driver.setActive(true);
-//            driverRepository.save(driver);
-//        }
+        if(check.getRoles().get(0).getName().equals("ROLE_DRIVER"))
+        {
+            Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
+            driver.setActive(true);
+            driverRepository.save(driver);
+            this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", driver);
+        }
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
