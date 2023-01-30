@@ -22,6 +22,8 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
     ('Darko', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'darko@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Milan', 'Lazić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'milan@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
+    ('Stjepan', 'Lević', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'stepa@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 
 insert into passenger values(1);
 insert into passenger values(2);
@@ -58,16 +60,20 @@ insert into vehicle(license_number, model, type_id, current_location_id, baby_tr
 values ('879-T-446', 'Hummer H2 Limuzina', 2, 4, false, true, 9);
 insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
 values ('123-T-321', 'Toyota Hiace Van', 3, 2, false, true, 6);
+insert into vehicle(license_number, model, type_id, current_location_id, baby_transport, pet_transport, passenger_seats)
+values ('123-T-321', 'Golf 6', 3, 5, false, true, 6);
 
 insert into driver (id, driving_license, vehicle_id, changes) values (5, '00198456', 1, false);
 insert into driver (id, driving_license, vehicle_id, changes) values (6, '00223789', 2, true);
 insert into driver (id, driving_license, vehicle_id, changes) values (7, '00346523', 3, false);
 insert into driver (id, driving_license, vehicle_id, changes) values (8, '00478956', 4, false);
+insert into driver (id, driving_license, vehicle_id, changes) values (13, '00123856', 5, false);
 
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document1', 5);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document2', 6);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document3', 7);
 insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document4', 8);
+insert into document (document_image, name, driver_id) values ('U3dhZ2dlciByb2Nrcw==', 'document4', 13);
 
 insert into user_activation (date, life, user_id) values ('2022-01-01T12:33:24.893Z', 180, 1);
 insert into user_activation (date, life, user_id) values ('2022-01-01T11:42:24.893Z', 180, 2);
@@ -90,19 +96,22 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2023-01-13T19:00:24.893Z', null, 10000, 180, 4, false, true, 7, null, 3, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2023-01-13T19:00:24.893Z', null, 450, 180, 3, false, false, 8, null, 3, '2023-01-13T16:20:24.893Z');
+values ('2023-01-13T19:00:24.893Z', null, 450, 180, 1, false, false, 8, null, 4, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 2, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 0, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z');
+insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
+                 driver_id, rejection_id, vehicle_id, scheduled_time)
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 13, 1, 5, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 3);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
@@ -112,7 +121,7 @@ insert into ride_passengers(ride_id, passengers_id) values (2, 4);
 insert into ride_passengers(ride_id, passengers_id) values (3, 2);
 insert into ride_passengers(ride_id, passengers_id) values (4, 3);
 insert into ride_passengers(ride_id, passengers_id) values (4, 4);
-
+insert into ride_passengers(ride_id, passengers_id) values (9, 12);
 insert into ride_passengers(ride_id, passengers_id) values (5, 2);
 insert into ride_passengers(ride_id, passengers_id) values (6, 4);
 insert into ride_passengers(ride_id, passengers_id) values (7, 2);
@@ -127,6 +136,7 @@ insert into ride_locations(ride_id, locations_id) values (6, 1);
 insert into ride_locations(ride_id, locations_id) values (6, 6);
 insert into ride_locations(ride_id, locations_id) values (7, 1);
 insert into ride_locations(ride_id, locations_id) values (8, 2);
+insert into ride_locations(ride_id, locations_id) values (9, 1);
 
 insert into working_hour(start, end, driver_id) values ('2022-12-24T20:54:24.893Z', '2022-12-24T23:54:24.893Z', 5);
 insert into working_hour(start, end, driver_id) values ('2022-12-25T12:00:04.893Z', '2022-12-25T20:07:11.193Z', 5);
@@ -204,5 +214,6 @@ insert into user_role (user_id, role_id) VALUES (9, 3);
 insert into user_role (user_id, role_id) VALUES (10, 3); 
 insert into user_role (user_id, role_id) VALUES (11, 3);
 insert into user_role (user_id, role_id) VALUES (12, 1);
+insert into user_role (user_id, role_id) VALUES (13, 2);
 
 insert into user_changes (driver_id, name, surname, profile_picture, telephone_number, email, address) VALUES (6, 'Mirko', 'Nesic', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2');
