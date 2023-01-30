@@ -1,7 +1,10 @@
 package com.example.test.service.implementation;
 
 import com.example.test.domain.ride.Ride;
-import com.example.test.domain.user.*;
+import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.Role;
+import com.example.test.domain.user.User;
+import com.example.test.domain.user.UserActivation;
 import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.UserDTO;
@@ -16,7 +19,6 @@ import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -151,8 +153,7 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public ErrorDTO
-    activatePassenger(Long activationId) {
+    public ErrorDTO activatePassenger(Long activationId) {
         UserActivation activation = userActivationRepository.findById(activationId).orElseThrow(
                 () -> new NotFoundException("Activation with entered id does not exist!"));
         Passenger p = findUserById(activation.getUser().getId());
@@ -167,4 +168,17 @@ public class PassengerService implements IPassengerService {
             throw new BadRequestException("Activation expired. Register again!");
         }
     }
+
+    @Override
+    public List<UserDTO> getByEmails(String[] emails) {
+        List<UserDTO> users = new ArrayList<>();
+        Object[] uniqueEmails = Arrays.stream(emails).distinct().toArray();
+        for (Object email: uniqueEmails) {
+            Passenger passenger = passengerRepository.findByEmail(email.toString());
+            if (passenger == null) throw new NotFoundException("Passenger not found");
+            users.add(new UserDTO(passenger.getId(), email.toString()));
+        }
+        return users;
+    }
+
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -81,5 +80,14 @@ public class PassengerController {
 
         AllDTO<RideDTO> allRides = new AllDTO<>(rides.size(), rides);
         return new ResponseEntity<>(allRides, HttpStatus.OK);
+    }
+
+    // checks if invited passenger (for new ride) exists in database
+    // returns id of added passenger (so that user can create new ride)
+    @PreAuthorize("hasRole('PASSENGER')")
+    @PutMapping(value="/invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> getPassengerIdByEmail(@Valid @RequestBody String[] emails) {
+        List<UserDTO> passengers = service.getByEmails(emails);
+        return new ResponseEntity<>(passengers, HttpStatus.OK);
     }
 }

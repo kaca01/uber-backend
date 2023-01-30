@@ -8,6 +8,7 @@ import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.exception.NotFoundException;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IRideService;

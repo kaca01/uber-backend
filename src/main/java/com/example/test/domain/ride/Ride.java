@@ -60,12 +60,13 @@ public class Ride {
     private Date scheduledTime;
 
     public Ride(RideDTO rideDTO) throws ParseException {
+        System.out.println("USAO U KONSTRUKTOR");
         this.setLocations(rideDTO.getLocations());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
 
         if(rideDTO.getScheduledTime() != null) 
-            this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                             .parse(rideDTO.getScheduledTime());
     }
 
