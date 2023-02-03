@@ -213,4 +213,20 @@ public class RideService implements IRideService {
             favoriteOrderRepository.delete(order);
         }
     }
+
+    @Override
+    @Transactional
+    public RideDTO getPendingRide(Long id) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.PENDING, id);
+        if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+        return new RideDTO(rides.get(0));
+    }
+
+    @Override
+    @Transactional
+    public RideDTO getAcceptedRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACCEPTED, id).orElseThrow(
+                () -> new NotFoundException("The passenger doesn't have an accepted ride!"));
+        return new RideDTO(ride);
+    }
 }
