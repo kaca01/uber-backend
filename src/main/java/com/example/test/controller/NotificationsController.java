@@ -78,11 +78,21 @@ public class NotificationsController {
                     && !messageConverted.get("toId").equals("")) {
                 this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("toId"),
                         messageConverted);
-                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"),
-                        messageConverted);
+//                this.simpMessagingTemplate.convertAndSend("/socket-publisher/" + messageConverted.get("fromId"),
+//                        messageConverted);
             } else {
                 this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
             }
+        }
+
+        return messageConverted;
+    }
+
+    @MessageMapping("/send/panic")
+    public Map<String, String> broadcastPanic(String message) {
+        Map<String, String> messageConverted = parseMessage(message);
+        if (messageConverted != null) {
+            this.simpMessagingTemplate.convertAndSend("/panic-publisher", messageConverted);
         }
 
         return messageConverted;

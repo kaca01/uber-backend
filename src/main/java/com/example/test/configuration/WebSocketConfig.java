@@ -22,9 +22,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //dodavanje tema
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/panic");  //teme
         registry.enableSimpleBroker("/notification");  //teme
         registry.enableSimpleBroker("/map-updates");  //teme
         //registry.setApplicationDestinationPrefixes("/app"); //kada front salje apije, slace sa ovim prefiksom
+
+        registry.setApplicationDestinationPrefixes("/panic-subscriber")
+                .enableSimpleBroker("/panic-publisher");
 
         registry.setApplicationDestinationPrefixes("/socket-subscriber") // Prefiks koji koji se koristi za mapiranje svih poruka.
                 // Klijenti moraju da ga navedu kada salju poruku serveru.
@@ -43,6 +47,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
                 .withSockJS();
         registry.addEndpoint("/notification")
+                .setAllowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
+                .withSockJS();
+        registry.addEndpoint("/panic")
                 .setAllowedOrigins("http://localhost:4200", "http://127.0.0.1:4200")
                 .withSockJS();
 
