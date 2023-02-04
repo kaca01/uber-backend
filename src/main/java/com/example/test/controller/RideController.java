@@ -4,11 +4,9 @@ import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
-import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
-import com.example.test.exception.NotFoundException;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IRideService;
@@ -20,7 +18,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -165,5 +162,26 @@ public class RideController {
         service.deleteFavoriteLocation(id, p);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
+    @GetMapping(value = "/pending/{id}/driver", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> checkDriverPendingRide(@PathVariable Long id) {
+        RideDTO ride = service.getDriverPendingRide(id);
+        return new ResponseEntity<>(ride, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('PASSENGER')")
+    @GetMapping(value = "/pending/{id}/passenger", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> checkPassengerPendingRide(@PathVariable Long id) {
+        RideDTO ride = service.getPassengerPendingRide(id);
+        return new ResponseEntity<>(ride, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('PASSENGER')")
+    @GetMapping(value = "/accepted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> checkAcceptedRide(@PathVariable Long id) {
+        RideDTO ride = service.getAcceptedRide(id);
+        return new ResponseEntity<>(ride, HttpStatus.OK);
     }
 }
