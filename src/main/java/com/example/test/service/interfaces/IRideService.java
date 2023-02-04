@@ -7,6 +7,7 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 
@@ -45,4 +46,7 @@ public interface IRideService {
     RideDTO getDriverPendingRide(Long id);
     
     RideDTO getPassengerPendingRide(Long id);
+
+    @Transactional
+    RideDTO getAcceptedRide(Long id);
 }
