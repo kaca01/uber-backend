@@ -39,6 +39,4 @@ public interface IRideService {
     void deleteFavoriteLocation(Long id, Passenger p);
 
     RideDTO getPendingRide(Long id);
-
-    RideDTO getAcceptedRide(Long id);
 }
