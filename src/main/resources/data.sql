@@ -102,7 +102,7 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 3);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
