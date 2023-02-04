@@ -49,7 +49,7 @@ public class DriverController {
     }
 
     // get driver by id
-    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN', 'PASSENGER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         UserDTO driver = service.get(id);
