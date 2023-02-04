@@ -93,6 +93,14 @@ public class RideService implements IRideService {
 
     @Transactional
     @Override
+    public RideDTO findDriversAcceptedRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, id).orElseThrow(
+                () -> new NotFoundException("Accepted ride does not exist!"));
+        return new RideDTO(ride);
+    }
+
+    @Transactional
+    @Override
     public RideDTO findPassengersActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, id).orElseThrow(
                 () -> new NotFoundException("Active ride does not exist!"));
@@ -228,5 +236,21 @@ public class RideService implements IRideService {
             if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
             return new RideDTO(rides.get(0));
         }
+   }
+
+    @Override
+    @Transactional
+    public RideDTO getDriverPendingRide(Long id) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.PENDING, id);
+        if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+        return new RideDTO(rides.get(0));
+    }
+
+    @Override
+    @Transactional
+    public RideDTO getPassengerPendingRide(Long id) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_Id(RideStatus.PENDING, id);
+        if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+        return new RideDTO(rides.get(0));
     }
 }

@@ -16,6 +16,8 @@ public interface IRideService {
 
     RideDTO findDriversActiveRide(Long id);
 
+    RideDTO findDriversAcceptedRide(Long id);
+
     RideDTO findPassengersActiveRide(Long id);
 
     RideDTO findOne(Long id);
@@ -39,4 +41,8 @@ public interface IRideService {
     void deleteFavoriteLocation(Long id, Passenger p);
 
     RideDTO getPendingRide(Long id);
+    
+    RideDTO getDriverPendingRide(Long id);
+    
+    RideDTO getPassengerPendingRide(Long id);
 }

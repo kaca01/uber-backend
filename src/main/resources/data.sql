@@ -33,11 +33,11 @@ insert into admin values(9);
 insert into admin values(10);
 insert into admin values(11);
 
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 5A', 10.22, 25.94);
-insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 78.23, 124.78);
-insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 14.2, 5.26);
-insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 19.223, 19.4758);
-insert into location(address, latitude, longitude) values ('Fruskogorska 25', 19.223, 19.4758);
+insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 5A', 45.23712230840664, 19.838562878762076);
+insert into location(address, latitude, longitude) values ('Bulevar Despota stefana 7', 45.245050139709306, 19.810228122818053);
+insert into location(address, latitude, longitude) values ('Nikole Pasica 24', 45.238024236996345, 19.83914507943879);
+insert into location(address, latitude, longitude) values ('Bulevar Oslobodjenja 13', 45.25357031864767, 19.816407931892286);
+insert into location(address, latitude, longitude) values ('Fruskogorska 25',45.2528452467932, 19.79289032513756);
 
 insert into route(departure_id, destination_id) values (1, 3);
 insert into route(departure_id, destination_id) values (1, 4);
@@ -102,7 +102,7 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z');
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 2, '2023-01-13T16:20:24.893Z');
 
 insert into ride_passengers(ride_id, passengers_id) values (1, 3);
 insert into ride_passengers(ride_id, passengers_id) values (1, 2);
