@@ -63,6 +63,14 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
+    @GetMapping(value = "/driver/{driverId}/accepted", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> findDriversAcceptedRide(@PathVariable Long driverId)
+    {
+        RideDTO ride = service.findDriversAcceptedRide(driverId);
+        return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
+    }
+
     //ride details
     @PreAuthorize("hasAnyRole('ADMIN', 'PASSENGER', 'DRIVER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

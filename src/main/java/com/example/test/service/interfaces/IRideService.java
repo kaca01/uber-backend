@@ -16,6 +16,8 @@ public interface IRideService {
 
     RideDTO findDriversActiveRide(Long id);
 
+    RideDTO findDriversAcceptedRide(Long id);
+
     RideDTO findPassengersActiveRide(Long id);
 
     RideDTO findOne(Long id);
