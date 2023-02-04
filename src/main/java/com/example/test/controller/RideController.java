@@ -172,6 +172,14 @@ public class RideController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // checking if the driver or passenger has a pending ride
+    @PreAuthorize("hasAnyRole('DRIVER', 'PASSENGER')")
+    @GetMapping(value = "/pending/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> checkPendingRide(@PathVariable Long id) {
+        RideDTO ride = service.getPendingRide(id);
+        return new ResponseEntity<>(ride, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('DRIVER')")
     @GetMapping(value = "/pending/{id}/driver", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> checkDriverPendingRide(@PathVariable Long id) {
@@ -183,13 +191,6 @@ public class RideController {
     @GetMapping(value = "/pending/{id}/passenger", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> checkPassengerPendingRide(@PathVariable Long id) {
         RideDTO ride = service.getPassengerPendingRide(id);
-        return new ResponseEntity<>(ride, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('PASSENGER')")
-    @GetMapping(value = "/accepted/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RideDTO> checkAcceptedRide(@PathVariable Long id) {
-        RideDTO ride = service.getAcceptedRide(id);
         return new ResponseEntity<>(ride, HttpStatus.OK);
     }
 }
