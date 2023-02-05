@@ -43,10 +43,12 @@ public interface IRideService {
 
     RideDTO getPendingRide(Long id);
     
-    RideDTO getDriverPendingRide(Long id);
+    //RideDTO getDriverPendingRide(Long id);
     
     RideDTO getPassengerPendingRide(Long id);
 
     @Transactional
     RideDTO getAcceptedRide(Long id);
+
+    RideDTO getNextRide(Long driverId);
 }

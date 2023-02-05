@@ -1,5 +1,6 @@
 package com.example.test.controller;
 
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
@@ -8,6 +9,7 @@ import com.example.test.dto.communication.NoteDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.*;
 import com.example.test.exception.BadRequestException;
+import com.example.test.repository.user.IDriverRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.security.TokenUtils;
 import com.example.test.service.interfaces.IUserService;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,6 +52,10 @@ public class UserController {
     AuthenticationManager authenticationManager;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private IDriverRepository driverRepository;
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
     // Change password of a user
     @PutMapping(value = "/user/{id}/changePassword", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,12 +107,21 @@ public class UserController {
         if(!check.isActive() && check.getRoles().get(0).getName().equals("ROLE_PASSENGER"))
             throw new BadRequestException("This account has not yet been activated!");
 
+            //don't forget to call function to change drivers activity from front !!!
+
+        if(check.getRoles().get(0).getName().equals("ROLE_DRIVER"))
+        {
+            Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
+            driver.setActive(true);
+            driverRepository.save(driver);
+            this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", driver);
+        }
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
 
         // if authentication is successful, add user in current security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         // Create tokens for that user
         User user = (User) authentication.getPrincipal();
 

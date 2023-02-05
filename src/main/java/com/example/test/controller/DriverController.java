@@ -1,16 +1,20 @@
 package com.example.test.controller;
 
+import com.example.test.domain.ride.Location;
+import com.example.test.domain.user.Driver;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.dto.user.DocumentDTO;
 import com.example.test.dto.user.UserDTO;
 import com.example.test.dto.vehicle.VehicleDTO;
+import com.example.test.repository.user.IDriverRepository;
 import com.example.test.service.interfaces.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +29,34 @@ public class DriverController {
     @Autowired
     IDriverService service;
 
+    @Autowired
+    IDriverRepository driverRepository;
+
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
+
     // add new driver
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO driverDTO){
         UserDTO returnedDriver = service.insertDriver(driverDTO);
         return new ResponseEntity<UserDTO>(returnedDriver, HttpStatus.OK);
+    }
+
+    //used for driver logout (for simulation) and activity change to false
+    @GetMapping(value ="/{id}/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> logout(@PathVariable Long id) {
+        Driver user = service.changeActivity(id, false);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/logout", user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    //used for driver (for simulation) activity change to true
+    @GetMapping(value ="/{id}/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> active(@PathVariable Long id) {
+        Driver user = service.changeActivity(id, true);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -48,12 +74,26 @@ public class DriverController {
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
+    //used for simulation
+    @GetMapping(value = "/all/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AllDTO<Driver>> getActiveDrivers() {
+        AllDTO<Driver> drivers = service.getActiveDrivers();
+        return new ResponseEntity<AllDTO<Driver>>(drivers, HttpStatus.OK);
+    }
+
     // get driver by id
     @PreAuthorize("hasAnyRole('DRIVER', 'ADMIN', 'PASSENGER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> get(@PathVariable Long id) throws Exception {
         UserDTO driver = service.get(id);
         return new ResponseEntity<UserDTO>(driver, HttpStatus.OK);
+    }
+
+    //used for simulation
+    @GetMapping(value = "/{id}/driver/real", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Driver> getRealDriver(@PathVariable Long id) throws Exception {
+        Driver driver = service.getRealDriver(id);
+        return new ResponseEntity<Driver>(driver, HttpStatus.OK);
     }
 
     // update existing driver

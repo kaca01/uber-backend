@@ -30,7 +30,6 @@ import com.example.test.repository.user.IUserRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
 import com.example.test.service.interfaces.IDriverService;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -95,10 +94,32 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    public AllDTO<Driver> getActiveDrivers() {
+        List<Driver> drivers = iDriverRepository.findByActive(true);
+        return new AllDTO<>(drivers.size(), drivers);
+    }
+
+    @Override
+    public Driver changeActivity(Long id, boolean active) {
+        Driver user = iDriverRepository.findById(id);
+        if(user == null) throw new NotFoundException("Driver does not exist!");
+        user.setActive(active);
+        iDriverRepository.save(user);
+        return user;
+    }
+
+    @Override
     public UserDTO get(Long id) {
         Driver driver =  iDriverRepository.findById(id);
         if (driver == null) throw new NotFoundException("Driver does not exist!");
         return new UserDTO(driver);
+    }
+
+    @Override
+    public Driver getRealDriver(Long id) {
+        Driver driver =  iDriverRepository.findById(id);
+        if (driver == null) throw new NotFoundException("Driver does not exist!");
+        return driver;
     }
 
     @Override
@@ -174,6 +195,16 @@ public class DriverService implements IDriverService {
         vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
+    }
+
+    @Override
+    public VehicleDTO updateVehicleLocation(Long id, Location location) {
+        Vehicle vehicle = this.iVehicleRepository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle does not exist!"));
+        location = iLocationRepository.save(location);
+        vehicle.setCurrentLocation(location);
+        vehicle = iVehicleRepository.save(vehicle);
+        Driver d = iDriverRepository.findByVehicleId(vehicle.getId());
+        return new VehicleDTO(d, vehicle);
     }
 
     @Override

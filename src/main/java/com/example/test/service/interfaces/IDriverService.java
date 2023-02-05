@@ -1,5 +1,7 @@
 package com.example.test.service.interfaces;
 
+import com.example.test.domain.ride.Location;
+import com.example.test.domain.user.Driver;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -19,6 +21,8 @@ public interface IDriverService {
 
     public UserDTO get(Long id);
 
+    public Driver getRealDriver(Long id);
+
     public UserDTO update(Long id, UserDTO driverDTO);
 
     public List<DocumentDTO> getDriverDocuments(Long id);
@@ -30,6 +34,8 @@ public interface IDriverService {
     public VehicleDTO getVehicle(Long id);
 
     public VehicleDTO insertVehicle(Long id, VehicleDTO vehicle);
+
+    VehicleDTO updateVehicleLocation(Long id, Location location);
 
     public VehicleDTO updateVehicle(Long id, VehicleDTO vehicle);
 
@@ -48,4 +54,8 @@ public interface IDriverService {
     public void addChanges(Long id, UserDTO userDTO);
 
     void deleteDriver(Long id);
+
+    AllDTO<Driver> getActiveDrivers();
+
+    Driver changeActivity(Long id, boolean b);
 }
