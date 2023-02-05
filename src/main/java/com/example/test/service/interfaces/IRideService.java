@@ -37,4 +37,6 @@ public interface IRideService {
     AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p);
 
     void deleteFavoriteLocation(Long id, Passenger p);
+
+    RideDTO getNextRide(Long driverId);
 }

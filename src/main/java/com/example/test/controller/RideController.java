@@ -8,6 +8,7 @@ import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IRideService;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -45,6 +47,14 @@ public class RideController {
     public ResponseEntity<RideDTO> insert(@Nullable @Valid @RequestBody RideDTO rideDTO) throws Exception
     {
         RideDTO newRide = service.insert(rideDTO);  // returns ride with set id and other data
+        return new ResponseEntity<RideDTO>(newRide, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/nextRide/{driverId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DRIVER')")
+    public ResponseEntity<RideDTO> getNextRide(@PathVariable Long driverId)
+    {
+        RideDTO newRide = service.getNextRide(driverId);
         return new ResponseEntity<RideDTO>(newRide, HttpStatus.OK);
     }
 

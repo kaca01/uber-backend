@@ -211,4 +211,20 @@ public class RideService implements IRideService {
             favoriteOrderRepository.delete(order);
         }
     }
+
+    @Transactional
+    @Override
+    public RideDTO getNextRide(Long driverId) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
+        if(rides.isEmpty()) return null;
+        Ride ride = null;
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000 + 60*60*1000; //moze poceti 8 minuta kasnije
+        long max = Calendar.getInstance().getTime().getTime() + 5 * 60 * 1000 + 60*60*1000; //moze poceti 5 minuta ranije
+        for (Ride r : rides){
+            if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() <= max)
+                ride = r;
+        }
+        if (ride == null) return null;
+        return new RideDTO(ride);
+    }
 }
