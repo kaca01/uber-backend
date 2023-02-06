@@ -8,6 +8,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Report {
-    private Date date;
+    private String date;
     private double value;
 }
