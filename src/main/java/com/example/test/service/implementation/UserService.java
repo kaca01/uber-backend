@@ -5,6 +5,7 @@ import com.example.test.domain.communication.Message;
 import com.example.test.domain.communication.Note;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.ResetPassword;
+import com.example.test.domain.user.Role;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
@@ -311,4 +312,11 @@ public class UserService implements IUserService, UserDetailsService {
         ImageData imageData = imageDataRepository.findByUserId(id);
         if(imageData != null) imageDataRepository.delete(imageData);
     }
+
+    @Override
+    public Role getRole(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User does not exist!"));
+        return user.getRoles().get(0);
+    }
+
 }
