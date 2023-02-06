@@ -10,4 +10,12 @@ public interface IReportService {
     public AllDTO<Report> createNumOfRidesReport(Long userId);
 
     public AllDTO<Report> createSumOfMoneyReport(Long userId);
+
+    // TODO : delete methods below
+
+    public void createWeeklyReport();
+
+    public void createMonthlyReport();
+
+    public void createDailyReport();
 }

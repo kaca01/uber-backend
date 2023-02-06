@@ -101,7 +101,7 @@ public class ReportService implements IReportService {
         for(Ride ride: rides) {
             // reports are only for the last month
             if (isDateOlderThanOneMonth(ride.getStartTime())) continue;
-            String date = ride.getStartTime().toString().split("T")[0];
+            String date = ride.getStartTime().toString().substring(0, 10);
             double kms = iSelectionDriver.getDistance(ride.getLocations().iterator().next().getDeparture(),
                     ride.getLocations().iterator().next().getDestination());
             if(!crossedKmsPerDay.containsKey(date)) crossedKmsPerDay.put(date, kms);
@@ -115,7 +115,7 @@ public class ReportService implements IReportService {
          HashMap<String, Double> ridesPerDay = new HashMap<>();
          for (Ride ride: rides) {
              if (isDateOlderThanOneMonth(ride.getStartTime())) continue;
-             String date = ride.getStartTime().toString().split("T")[0];
+             String date = ride.getStartTime().toString().substring(0, 10);
              if(!ridesPerDay.containsKey(date)) ridesPerDay.put(date, 1.0);
              else ridesPerDay.put(date, ridesPerDay.get(date) + 1);
         }
@@ -128,11 +128,27 @@ public class ReportService implements IReportService {
 
         for (Ride ride: rides) {
             if(isDateOlderThanOneMonth(ride.getStartTime())) continue;
-            String date = ride.getStartTime().toString().split("T")[0];
+            String date = ride.getStartTime().toString().substring(0, 10);
             if(!sumOfMoneyPerDay.containsKey(date)) sumOfMoneyPerDay.put(date, ride.getTotalCost());
             else sumOfMoneyPerDay.put(date, sumOfMoneyPerDay.get(date) + ride.getTotalCost());
         }
 
         return sumOfMoneyPerDay;
+    }
+
+    // TODO : delete methods below
+    @Override
+    public void createWeeklyReport() {
+
+    }
+
+    @Override
+    public void createMonthlyReport() {
+
+    }
+
+    @Override
+    public void createDailyReport() {
+
     }
 }
