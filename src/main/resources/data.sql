@@ -29,6 +29,7 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Milojka', 'Milojkić', 'U3dhZ2dlciByb2Nrcw==', '+381009333', 'milojka@gmail.com', 'Zarka Zrenjanina 18', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 
+
 insert into passenger values(1);
 insert into passenger values(2);
 insert into passenger values(3);
