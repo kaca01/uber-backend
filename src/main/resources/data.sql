@@ -118,10 +118,10 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', '2022-12-22T14:42:24.893Z', 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, 2, 2, '2023-02-06T20:42:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 6, 2, 2, '2023-02-06T21:47:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z', false);
