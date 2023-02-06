@@ -33,6 +33,8 @@ public class Ride {
     @Column(name = "endTime")
     @PastOrPresent
     private Date endTime;
+    @Column(name = "isPanic")
+    private boolean isPanic;
     @Column(name = "totalCost")
     private double totalCost;
     @Column(name = "estimatedTimeInMinutes")
@@ -68,6 +70,26 @@ public class Ride {
         if(rideDTO.getScheduledTime() != null) 
             this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                             .parse(rideDTO.getScheduledTime());
+    }
+
+    public Ride(Long id, Date startTime, Date endTime, double totalCost, double estimatedTimeInMinutes, Vehicle vehicle,
+                Driver driver, List<Passenger> passengers, RideStatus status, Rejection rejection, boolean babyTransport,
+                boolean petTransport, Set<Route> locations, Set<Review> reviews, Date scheduledTime) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalCost = totalCost;
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
+        this.vehicle = vehicle;
+        this.driver = driver;
+        this.passengers = passengers;
+        this.status = status;
+        this.rejection = rejection;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+        this.locations = locations;
+        this.reviews = reviews;
+        this.scheduledTime = scheduledTime;
     }
 
     public Ride(Long id) {

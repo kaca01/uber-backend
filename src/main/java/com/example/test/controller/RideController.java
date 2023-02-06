@@ -1,6 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.domain.ride.FavoriteOrder;
+import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
@@ -63,6 +64,7 @@ public class RideController {
     public ResponseEntity<RideDTO> findDriversActiveRide(@PathVariable Long driverId)
     {
         RideDTO ride = service.findDriversActiveRide(driverId);
+        System.out.println(ride);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
@@ -118,6 +120,7 @@ public class RideController {
         String email = authentication.getName();
         User sender = userRepository.findByEmail(email).orElse(null);
         PanicDTO message = service.setPanic(reason, id, sender);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/panic", this.service.findOne(id));
         return new ResponseEntity<PanicDTO>(message, HttpStatus.OK);
     }
 
@@ -134,6 +137,7 @@ public class RideController {
     public ResponseEntity<RideDTO> startRide(@PathVariable Long id) {
 
         RideDTO ride = service.startRide(id);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/change-page-start", ride);
         this.simpMessagingTemplate.convertAndSend("/map-updates/start-ride", ride);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
@@ -144,6 +148,7 @@ public class RideController {
     public ResponseEntity<RideDTO> endRide(@PathVariable Long id)
     {
         RideDTO ride = service.endRide(id);
+        this.simpMessagingTemplate.convertAndSend("/map-updates/change-page-end", ride);
         this.simpMessagingTemplate.convertAndSend("/map-updates/ended-ride", ride);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }

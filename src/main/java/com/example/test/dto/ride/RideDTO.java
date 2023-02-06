@@ -24,6 +24,7 @@ public class RideDTO {
     private Long id;
     private String startTime;
     private String endTime;
+    private boolean isPanic;
     @Min(0)
     private double totalCost;
     @NotNull
@@ -58,6 +59,7 @@ public class RideDTO {
         this.petTransport = ride.isPetTransport();
         this.estimatedTimeInMinutes = ride.getEstimatedTimeInMinutes();
         this.status = ride.getStatus().toString();
+        this.isPanic = ride.isPanic();
         this.scheduledTime = format.format(ride.getScheduledTime());
         if(ride.getDriver() != null) this.driver = new UserDTO(ride.getDriver());
         if (ride.getRejection() != null) this.rejection = new RejectionDTO(ride.getRejection());
@@ -70,6 +72,7 @@ public class RideDTO {
         this.passengers = passengers;
         this.vehicleType = vehicleType;
         this.babyTransport = babyTransport;
+        this.isPanic = false;
         this.petTransport = petTransport;
         this.scheduledTime = scheduledTime;
     }
@@ -93,6 +96,7 @@ public class RideDTO {
         this.driver = driver;
         this.rejection = rejection;
         this.scheduledTime = scheduledTime;
+        this.isPanic = false;
     }
 
     private List<UserDTO> convertPassengersToUsersDTO(Ride ride) {

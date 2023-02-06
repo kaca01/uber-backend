@@ -136,7 +136,8 @@ public class RideService implements IRideService {
     public PanicDTO setPanic(PanicDTO reason, Long id, User sender)
     {
         Ride ride = findRideById(id);
-        ride.setStatus(RideStatus.REJECTED);
+        //ride.setStatus(RideStatus.ACTIVE);
+        ride.setPanic(true);
         ride = rideRepository.save(ride);
         String msg;
         if (reason != null) msg= reason.getReason(); else msg = "";
