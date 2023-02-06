@@ -72,7 +72,7 @@ public class NotificationsController {
     @MessageMapping("/send/message")
     public Map<String, String> broadcastNotification(String message) {
         Map<String, String> messageConverted = parseMessage(message);
-
+        System.out.println("seeeend message!!!!!!!!!!!");
         if (messageConverted != null) {
             if (messageConverted.containsKey("toId") && messageConverted.get("toId") != null
                     && !messageConverted.get("toId").equals("")) {
@@ -90,9 +90,10 @@ public class NotificationsController {
 
     @MessageMapping("/send/panic")
     public Map<String, String> broadcastPanic(String message) {
+        System.out.println("USAAAAAAAAAAAAAAAAAAAOOOOOOOOOOOOOOOOOOOO");
         Map<String, String> messageConverted = parseMessage(message);
         if (messageConverted != null) {
-            this.simpMessagingTemplate.convertAndSend("/panic-publisher", messageConverted);
+            this.simpMessagingTemplate.convertAndSend("/socket-publisher", messageConverted);
         }
 
         return messageConverted;

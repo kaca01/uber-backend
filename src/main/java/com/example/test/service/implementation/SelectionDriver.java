@@ -37,6 +37,8 @@ public class SelectionDriver implements ISelectionDriver {
 
     @Override
     public Driver findDriver(Ride ride, String type) {
+        System.out.println("ASKEDDDDDDD");
+        System.out.println(askedDrivers);
         Optional<Route> location = ride.getLocations().stream().findFirst();
         double kms = getDistance(location.get().getDeparture(), location.get().getDestination());
         ride.setEstimatedTimeInMinutes(calculateEstimationTime(kms));
@@ -52,6 +54,8 @@ public class SelectionDriver implements ISelectionDriver {
         if (availableDrivers.size() > 0) {
             Driver driver =  findWithMinDistance(availableDrivers, ride);
             addToAskedDrivers(driver, ride);
+            System.out.println("ASKEDDDDDDD222");
+            System.out.println(askedDrivers);
             return driver;
         }
         // if there are no active available drivers, find drivers that do not have scheduled ride
@@ -60,6 +64,8 @@ public class SelectionDriver implements ISelectionDriver {
         removeFinishedForToday(noScheduledRide);
         removeIncompatible(noScheduledRide, ride, type);
         Driver driver = getFinishEarliest(noScheduledRide, ride);
+        System.out.println("ASKEDDDDDDD111");
+        System.out.println(askedDrivers);
         addToAskedDrivers(driver, ride);
         return driver;
     }
@@ -104,6 +110,7 @@ public class SelectionDriver implements ISelectionDriver {
         List<Driver> allDrivers = iDriverRepository.findAll();
         List<Driver> drivers = new ArrayList<>();
         for (Driver driver: allDrivers) {
+            if (isRefused(ride, driver)) continue;
             if (!isVehicleCompatible(type, driver)) continue;
             if (driver.isActive()) drivers.add(driver);
         }
@@ -262,17 +269,25 @@ public class SelectionDriver implements ISelectionDriver {
         for (Driver driver : drivers) {
             Date whenFinished = findWhenFinishes(driver, ride.getEstimatedTimeInMinutes());
             if (minDriver == null) {
-                if (!askedDrivers.get(ride).contains(driver)) {
+                if (!isRefused(ride, driver)) {
                     minDriver = driver;
                     minFinishes = whenFinished;
                 }
+//                if (!askedDrivers.get(ride).contains(driver)) {
+//                    minDriver = driver;
+//                    minFinishes = whenFinished;
+//                }
             }
             else {
                 if (minFinishes.after(whenFinished)) {
-                    if (!askedDrivers.get(ride).contains(driver)) {
+                    if (!isRefused(ride, driver)) {
                         minDriver = driver;
                         minFinishes = whenFinished;
                     }
+//                    if (!askedDrivers.get(ride).contains(driver)) {
+//                        minDriver = driver;
+//                        minFinishes = whenFinished;
+//                    }
                 }
             }
         }
@@ -302,6 +317,20 @@ public class SelectionDriver implements ISelectionDriver {
         double kms_per_min = 0.5;
         double min_taken = kms / kms_per_min;
         return (int) min_taken;
+    }
+
+    private boolean isRefused(Ride ride, Driver driver) {
+        for (Ride r: askedDrivers.keySet()) {
+            System.out.println("IDDDDDDDDDDDD");
+            System.out.println(ride.getId());
+            System.out.println(r.getId());
+            if (r.getId() == ride.getId()) {
+                for (Driver d : askedDrivers.get(ride)) {
+                    if (d.getId() == driver.getId()) return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
