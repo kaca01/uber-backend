@@ -1,6 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.domain.user.Driver;
+import com.example.test.domain.user.Role;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.business.WorkingHourDTO;
@@ -217,5 +218,12 @@ public class UserController {
     public ResponseEntity<?> deleteImage(@PathVariable Long id) {
         service.deleteImage(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Role> getRole(@PathVariable Long id) {
+        Role role = service.getRole(id);
+        return new ResponseEntity<Role>(role, HttpStatus.OK);
     }
 }

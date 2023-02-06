@@ -1,5 +1,6 @@
 package com.example.test.service.interfaces;
 
+import com.example.test.domain.user.Role;
 import com.example.test.domain.user.User;
 import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.MessageDTO;
@@ -49,4 +50,6 @@ public interface IUserService {
     byte[] downloadImage(Long id);
 
     void deleteImage(Long id);
+
+    Role getRole(Long id);
 }
