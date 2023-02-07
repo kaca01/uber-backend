@@ -14,9 +14,7 @@ import com.example.test.repository.ride.IFavoriteOrderRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.implementation.RideService;
-import com.example.test.service.interfaces.IRideService;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,11 +23,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.convert.DataSizeUnit;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;
 
@@ -362,5 +355,56 @@ public class RideServiceTest {
                                                 "ana@gmail.com"));
 
         verify(favoriteOrderRepository, times(0)).save(favoriteOrder);
+    }
+
+    @Test
+    @DisplayName("Should delete favorite order")
+    public void shouldDeleteFavoriteOrder() {
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+                passenger, new HashSet<>(), false, false, new HashSet<>());
+
+        Mockito.when(favoriteOrderRepository.findById(123L)).thenReturn(Optional.of(favoriteOrder));
+
+        rideService.deleteFavoriteLocation(123L, passenger);
+
+        verify(favoriteOrderRepository, times(1)).delete(favoriteOrder);
+    }
+
+    @Test
+    @DisplayName("Should not delete favorite order. Wrong passenger")
+    public void shouldNotDeleteFavoriteOrder() {
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+                passenger, new HashSet<>(), false, false, new HashSet<>());
+
+        Passenger passenger1 = new Passenger(151L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        Mockito.when(favoriteOrderRepository.findById(123L)).thenReturn(Optional.of(favoriteOrder));
+
+        rideService.deleteFavoriteLocation(123L, passenger1);
+
+        verify(favoriteOrderRepository, times(0)).delete(favoriteOrder);
+    }
+
+    @Test
+    @DisplayName("Should not delete favorite order. Not existing favorite order")
+    public void notExistingFavoriteOrderDelete() {
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+                passenger, new HashSet<>(), false, false, new HashSet<>());
+
+        Mockito.when(favoriteOrderRepository.findById(123L)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(123L, passenger));
+
+        verify(favoriteOrderRepository, times(0)).delete(favoriteOrder);
     }
 }
