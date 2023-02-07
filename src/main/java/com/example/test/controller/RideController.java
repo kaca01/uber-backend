@@ -21,6 +21,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -74,6 +75,15 @@ public class RideController {
     public ResponseEntity<RideDTO> findPassengersActiveRide(@PathVariable Long passengerId)
     {
         RideDTO ride = service.findPassengersActiveRide(passengerId);
+        return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyRole('DRIVER')")
+    @GetMapping(value = "/accepted/next/{driverId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> findNextAcceptedRide(@PathVariable Long driverId)
+    {
+        RideDTO ride = service.findNextAcceptedRide(driverId);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 

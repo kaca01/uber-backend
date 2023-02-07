@@ -282,4 +282,19 @@ public class RideService implements IRideService {
         if (ride == null) return null;
         return new RideDTO(ride);
     }
+
+    @Override
+    public RideDTO findNextAcceptedRide(Long driverId) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driverId).orElse(null);
+        if (ride != null) return new RideDTO(ride);
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
+        if(rides.isEmpty()) return null;
+        ride = rides.get(0);
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000; //moze poceti 8 minuta kasnije
+        for (Ride r : rides){
+            if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() < ride.getScheduledTime().getTime())
+                ride = r;
+        }
+        return new RideDTO(ride);
+    }
 }
