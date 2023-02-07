@@ -213,13 +213,14 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).save(ride);
     }
 
-    @Test
+    @ParameterizedTest
+    @EnumSource(value=RideStatus.class, names = {"PENDING", "ACTIVE", "FINISHED", "REJECTED"})
     @DisplayName("Should not start a ride. Wrong ride status")
-    public void wrongRideStatusStartRide() {
+    public void wrongRideStatusStartRide(RideStatus type) {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
                 new ArrayList<Passenger>(), RideStatus.PENDING, null, false, false,
                 new HashSet<Route>(), new HashSet<Review>(), new Date());
-
+        ride.setStatus(type);
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
 
         assertThrows(BadRequestException.class, () -> rideService.startRide(123L));
@@ -267,12 +268,14 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).save(ride);
     }
 
-    @Test
+    @ParameterizedTest
+    @EnumSource(value=RideStatus.class, names = {"PENDING", "ACCEPTED", "FINISHED", "REJECTED"})
     @DisplayName("Should not end a ride. Wrong ride status")
-    public void wrongRideStatusEndRide() {
+    public void wrongRideStatusEndRide(RideStatus type) {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
                 new ArrayList<Passenger>(), RideStatus.PENDING, null, false, false,
                 new HashSet<Route>(), new HashSet<Review>(), new Date());
+        ride.setStatus(type);
 
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
 
