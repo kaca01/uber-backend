@@ -74,6 +74,9 @@ public class RideService implements IRideService {
         ride.setDriver(driver);
         if (driver != null) {
             ride.setVehicle(driver.getVehicle());
+        } else {
+            iSelectionDriver.emptyAskedDrivers();
+            ride.setStatus(RideStatus.REJECTED);
         }
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
@@ -126,6 +129,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING){
             ride.setStatus(RideStatus.REJECTED);
+            iSelectionDriver.emptyAskedDrivers();
             ride = rideRepository.save(ride);
             return new RideDTO(ride);
         }else throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or STARTED!");
@@ -152,6 +156,7 @@ public class RideService implements IRideService {
         if (ride.getStatus()!= RideStatus.PENDING) throw new BadRequestException("Cannot accept a ride that is not in status PENDING!");
         ride.setStatus(RideStatus.ACCEPTED);
         ride = rideRepository.save(ride);
+        iSelectionDriver.emptyAskedDrivers();
         return new RideDTO(ride);
     }
 
