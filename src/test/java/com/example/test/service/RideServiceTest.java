@@ -91,7 +91,7 @@ public class RideServiceTest {
     @DisplayName("Should find drivers active ride")
     public void shouldFindDriversActiveRide() {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
-                new ArrayList<Passenger>(), RideStatus.PENDING, null, false, false,
+                new ArrayList<Passenger>(), RideStatus.ACTIVE, null, false, false,
                 new HashSet<Route>(), null, new Date());
         RideDTO expectedRide = new RideDTO(ride);
         Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, 123L)).thenReturn(Optional.of(ride));
@@ -124,5 +124,44 @@ public class RideServiceTest {
         assertThrows(NotFoundException.class, () -> rideService.findDriversActiveRide(123L));
 
         verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACTIVE, 123L);
+    }
+
+    @Test
+    @DisplayName("Should find drivers accepted ride")
+    public void shouldFindDriversAcceptedRide() {
+        Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
+                new ArrayList<Passenger>(), RideStatus.ACCEPTED, null, false, false,
+                new HashSet<Route>(), null, new Date());
+        RideDTO expectedRide = new RideDTO(ride);
+        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L)).thenReturn(Optional.of(ride));
+
+        RideDTO actualRide = rideService.findDriversAcceptedRide(123L);
+        Assertions.assertThat(actualRide.getId()).isEqualTo(expectedRide.getId());
+        Assertions.assertThat(actualRide.getStartTime()).isEqualTo(expectedRide.getStartTime());
+        Assertions.assertThat(actualRide.getEndTime()).isEqualTo(expectedRide.getEndTime());
+        Assertions.assertThat(actualRide.getScheduledTime()).isEqualTo(expectedRide.getScheduledTime());
+        Assertions.assertThat(actualRide.getTotalCost()).isEqualTo(expectedRide.getTotalCost());
+        Assertions.assertThat(actualRide.getLocations()).isEqualTo(expectedRide.getLocations());
+        Assertions.assertThat(actualRide.getPassengers()).isEqualTo(expectedRide.getPassengers());
+        Assertions.assertThat(actualRide.getVehicleType()).isEqualTo(expectedRide.getVehicleType());
+        Assertions.assertThat(actualRide.isBabyTransport()).isEqualTo(expectedRide.isBabyTransport());
+        Assertions.assertThat(actualRide.isPetTransport()).isEqualTo(expectedRide.isPetTransport());
+        Assertions.assertThat(actualRide.getEstimatedTimeInMinutes()).isEqualTo(expectedRide.getEstimatedTimeInMinutes());
+        Assertions.assertThat(actualRide.getStatus()).isEqualTo(expectedRide.getStatus());
+        Assertions.assertThat(actualRide.isPanic()).isEqualTo(expectedRide.isPanic());
+        Assertions.assertThat(actualRide.getDriver()).isEqualTo(expectedRide.getDriver());
+        Assertions.assertThat(actualRide.getRejection()).isEqualTo(expectedRide.getRejection());
+
+        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L);
+    }
+
+    @Test
+    @DisplayName("Should not find driver accepted ride")
+    public void shouldNotFindAcceptedRide() {
+        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(123L));
+
+        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L);
     }
 }
