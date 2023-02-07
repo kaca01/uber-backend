@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -29,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(RideControllerTest.class)
+@WebMvcTest(controllers = RideController.class)
 //@ExtendWith(MockitoExtension.class)
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@TestPropertySource(
@@ -53,15 +54,18 @@ public class RideControllerTest {
     @Test
     @DisplayName("Creating a ride")
     public void shouldCreateRide() throws Exception {
-        // PRVI NACIN
-        RideDTO ride1 = new RideDTO(123L, "2023-01-12T16:20:24.893Z", "2023-01-12T16:40:24.893Z", 550.0, null, null, "STANDARD", false, false, 5, "PENDING", null, null, "2023-01-12T16:40:24.893Z");
+        RideDTO ride1 = new RideDTO(123L, "2023-01-12T16:20:24.893Z", "2023-01-12T16:40:24.893Z",
+                550.0, null, null, "STANDARD", false, false,
+                5, "PENDING", null, null, "2023-01-12T16:40:24.893Z");
 
         Mockito.when(rideService.findOne(123L)).thenReturn(ride1);
 
         mockMvc.perform(get("/api/ride/{id}", 123L))
-                .andExpect(status().is(200));
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
+
 
     @Test
     public void orderRide() throws URISyntaxException {
