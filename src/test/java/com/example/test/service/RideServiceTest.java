@@ -104,6 +104,12 @@ public class RideServiceTest {
     }
 
     @Test
+    @DisplayName("Should not end a ride. No parameters")
+    public void noParametersFindRideById() {
+        assertThrows(NotFoundException.class, () -> rideService.findOne(null));
+    }
+
+    @Test
     @DisplayName("Should find drivers active ride")
     public void shouldFindDriversActiveRide() {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
@@ -143,6 +149,12 @@ public class RideServiceTest {
     }
 
     @Test
+    @DisplayName("Should not find driver active ride. No parameters")
+    public void noParametersFindDriverActiveRide() {
+        assertThrows(NotFoundException.class, () -> rideService.findDriversActiveRide(null));
+    }
+
+    @Test
     @DisplayName("Should find drivers accepted ride")
     public void shouldFindDriversAcceptedRide() {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
@@ -179,6 +191,12 @@ public class RideServiceTest {
         assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(123L));
 
         verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L);
+    }
+
+    @Test
+    @DisplayName("Should not find accepted ride. No parameters")
+    public void noParametersAcceptedRide() {
+        assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(null));
     }
 
     @Test
@@ -237,6 +255,12 @@ public class RideServiceTest {
     }
 
     @Test
+    @DisplayName("Should not start a ride. No parameters")
+    public void noParametersStartRide() {
+        assertThrows(NotFoundException.class, () -> rideService.startRide(null));
+    }
+
+    @Test
     @DisplayName("Should end a ride")
     public void shouldEndRide() {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
@@ -290,6 +314,12 @@ public class RideServiceTest {
     public void wrongRideIdEndRide() {
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> rideService.endRide(123L));
+    }
+
+    @Test
+    @DisplayName("Should not end a ride. No parameters")
+    public void noParametersEndRide() {
+        assertThrows(NotFoundException.class, () -> rideService.endRide(null));
     }
 
     @Test
@@ -422,6 +452,12 @@ public class RideServiceTest {
     }
 
     @Test
+    @DisplayName("Should not delete favorite order. Not existing favorite order")
+    public void noParametersFavoriteOrderDelete() {
+        assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(null, null));
+    }
+
+    @Test
     @DisplayName("Should find passengers active ride")
     public void shouldFindPassengersActiveRide() {
         Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
@@ -459,6 +495,12 @@ public class RideServiceTest {
         assertThrows(NotFoundException.class, () -> rideService.findPassengersActiveRide(123L));
 
         verify(rideRepository, times(1)).findByStatusAndPassengers_id(RideStatus.ACTIVE, 123L);
+    }
+
+    @Test
+    @DisplayName("Should not find passenger active ride when no parameter has been sent")
+    public void shouldNotFindPassengersActiveRideWhenNoParameters() {
+        assertThrows(NotFoundException.class, () -> rideService.findPassengersActiveRide(null));
     }
 
     @ParameterizedTest
@@ -519,6 +561,12 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).findById(123L);
     }
 
+    @Test
+    @DisplayName("Should not cancel ride (perspective of driver) if no parameters have been sent")
+    public void shouldNotCancelRideAsDriverWhenNoParameter() {
+        assertThrows(NotFoundException.class, () -> rideService.cancelRide(null, null));
+    }
+
     @ParameterizedTest
     @EnumSource(value=RideStatus.class, names = {"PENDING", "ACCEPTED"})
     @DisplayName("Should cancel ride (perspective of passenger)")
@@ -569,5 +617,11 @@ public class RideServiceTest {
         assertThrows(BadRequestException.class, () -> rideService.cancelExistingRide(123L));
 
         verify(rideRepository, times(1)).findById(123L);
+    }
+
+    @Test
+    @DisplayName("Should not cancel ride (perspective of passenger) if no parameters have been sent")
+    public void shouldNotCancelRideAsPassengerWhenNoParameter() {
+        assertThrows(NotFoundException.class, () -> rideService.cancelExistingRide(null));
     }
 }
