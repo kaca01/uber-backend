@@ -82,6 +82,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    // TODO : move this to driver service
     private Driver findAvailableDriver(Ride ride, String vehicleType) {
         return iSelectionDriver.findDriver(ride, vehicleType);
     }
@@ -200,7 +201,7 @@ public class RideService implements IRideService {
     public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
         Passenger passengerT = passengerRepository.findByEmail(email);
         List<FavoriteOrder> fo = favoriteOrderRepository.findByPassenger_Id(passengerT.getId());
-        if(fo.size() >=10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
+        if(fo.size() >= 10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
         Set<Passenger> passengers = new HashSet<>();
         for (Passenger p : favoriteOrder.getPassengers())
         {
