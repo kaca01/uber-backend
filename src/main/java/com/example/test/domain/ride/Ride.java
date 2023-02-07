@@ -62,7 +62,6 @@ public class Ride {
     private Date scheduledTime;
 
     public Ride(RideDTO rideDTO) throws ParseException {
-        System.out.println("USAO U KONSTRUKTOR");
         this.setLocations(rideDTO.getLocations());
         this.setBabyTransport(rideDTO.isBabyTransport());
         this.setPetTransport(rideDTO.isPetTransport());
