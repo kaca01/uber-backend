@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.DataSizeUnit;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -219,5 +220,59 @@ public class RideServiceTest {
     public void wrongRideIdStartRide() {
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> rideService.startRide(123L));
+    }
+
+    @Test
+    @DisplayName("Should end a ride")
+    public void shouldEndRide() {
+        Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
+                new ArrayList<Passenger>(), RideStatus.ACTIVE, null, false, false,
+                new HashSet<Route>(), new HashSet<Review>(), new Date());
+
+        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
+        Mockito.when(rideRepository.save(ride)).thenReturn(ride);
+
+        RideDTO actualRide = rideService.endRide(123L);
+        ride.setStatus(RideStatus.FINISHED);
+
+        RideDTO expectedRide = new RideDTO(ride);
+        Assertions.assertThat(actualRide.getId()).isEqualTo(expectedRide.getId());
+        Assertions.assertThat(actualRide.getStartTime()).isEqualTo(expectedRide.getStartTime());
+        Assertions.assertThat(actualRide.getEndTime()).isEqualTo(expectedRide.getEndTime());
+        Assertions.assertThat(actualRide.getScheduledTime()).isEqualTo(expectedRide.getScheduledTime());
+        Assertions.assertThat(actualRide.getTotalCost()).isEqualTo(expectedRide.getTotalCost());
+        Assertions.assertThat(actualRide.getLocations()).isEqualTo(expectedRide.getLocations());
+        Assertions.assertThat(actualRide.getPassengers()).isEqualTo(expectedRide.getPassengers());
+        Assertions.assertThat(actualRide.getVehicleType()).isEqualTo(expectedRide.getVehicleType());
+        Assertions.assertThat(actualRide.isBabyTransport()).isEqualTo(expectedRide.isBabyTransport());
+        Assertions.assertThat(actualRide.isPetTransport()).isEqualTo(expectedRide.isPetTransport());
+        Assertions.assertThat(actualRide.getEstimatedTimeInMinutes()).isEqualTo(expectedRide.getEstimatedTimeInMinutes());
+        Assertions.assertThat(actualRide.getStatus()).isEqualTo(expectedRide.getStatus());
+        Assertions.assertThat(actualRide.isPanic()).isEqualTo(expectedRide.isPanic());
+        Assertions.assertThat(actualRide.getDriver()).isEqualTo(expectedRide.getDriver());
+        Assertions.assertThat(actualRide.getRejection()).isEqualTo(expectedRide.getRejection());
+
+        verify(rideRepository, times(1)).save(ride);
+    }
+
+    @Test
+    @DisplayName("Should not end a ride. Wrong ride status")
+    public void wrongRideStatusEndRide() {
+        Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
+                new ArrayList<Passenger>(), RideStatus.PENDING, null, false, false,
+                new HashSet<Route>(), new HashSet<Review>(), new Date());
+
+        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
+
+        assertThrows(BadRequestException.class, () -> rideService.endRide(123L));
+
+        verify(rideRepository, times(0)).save(ride);
+    }
+
+    @Test
+    @DisplayName("Should not end a ride. Wrong ride id")
+    public void wrongRideIdEndRide() {
+        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> rideService.endRide(123L));
     }
 }
