@@ -6,6 +6,7 @@ import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Passenger;
+import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.enumeration.RideStatus;
@@ -455,6 +456,52 @@ public class RideServiceTest {
     @DisplayName("Should not delete favorite order. Not existing favorite order")
     public void noParametersFavoriteOrderDelete() {
         assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(null, null));
+    }
+
+    @Test
+    @DisplayName("Should find passenger's favorite orders")
+    public void shouldFindFavoriteOrders() {
+        FavoriteOrder favoriteOrder = new FavoriteOrder(133L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+        favoriteOrder.setPassenger(passenger);
+        List<FavoriteOrder> favoriteOrders = new ArrayList<>();
+        favoriteOrders.add(favoriteOrder);
+
+        Mockito.when(favoriteOrderRepository.findByPassenger_Id(150L)).thenReturn(favoriteOrders);
+
+        AllDTO<FavoriteOrder> actualOrders = rideService.getFavoriteOrdersByPassenger(passenger);
+        Assertions.assertThat(actualOrders.getTotalCount()).isEqualTo(favoriteOrders.size());
+
+        Assertions.assertThat(favoriteOrders.get(0).getId()).isEqualTo(actualOrders.getResults().get(0).getId());
+        Assertions.assertThat(favoriteOrders.get(0).getLocations()).isEqualTo(actualOrders.getResults().get(0).getLocations());
+        Assertions.assertThat(favoriteOrders.get(0).getPassengers()).isEqualTo(actualOrders.getResults().get(0).getPassengers());
+        Assertions.assertThat(favoriteOrders.get(0).getVehicleType()).isEqualTo(actualOrders.getResults().get(0).getVehicleType());
+        Assertions.assertThat(favoriteOrders.get(0).isBabyTransport()).isEqualTo(actualOrders.getResults().get(0).isBabyTransport());
+        Assertions.assertThat(favoriteOrders.get(0).isPetTransport()).isEqualTo(actualOrders.getResults().get(0).isPetTransport());
+
+        verify(favoriteOrderRepository, times(1)).findByPassenger_Id(150L);
+    }
+
+    @Test
+    @DisplayName("Should not find passenger's favorite orders")
+    public void shouldNotFindFavoriteOrders() {
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        Mockito.when(favoriteOrderRepository.findByPassenger_Id(150L)).thenReturn(new ArrayList<>());
+
+        AllDTO<FavoriteOrder> actualOrders = rideService.getFavoriteOrdersByPassenger(passenger);
+        Assertions.assertThat(actualOrders.getTotalCount()).isEqualTo(0);
+
+        verify(favoriteOrderRepository, times(1)).findByPassenger_Id(150L);
+    }
+
+    @Test
+    @DisplayName("Should not find passenger's favorite orders beacuse there are no parameters")
+    public void shouldNotFindFavoriteOrdersNoParameters() {
+        assertThrows(NullPointerException.class, () -> rideService.getFavoriteOrdersByPassenger(null));
     }
 
     @Test
