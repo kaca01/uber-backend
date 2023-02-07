@@ -37,4 +37,32 @@ public class ReportController {
         AllDTO<Report> reports = service.createSumOfMoneyReport(id);
         return new ResponseEntity<AllDTO<Report>>(reports, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
+    @GetMapping("/money-sum/drivers")
+    public ResponseEntity<AllDTO<Report>> getSumOfMoneyReportDrivers(){
+        AllDTO<Report> reports = service.createSumOfMoneyReportDrivers();
+        return new ResponseEntity<AllDTO<Report>>(reports, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
+    @GetMapping("/money-sum/passengers")
+    public ResponseEntity<AllDTO<Report>> getSumOfMoneyReportPassengers(){
+        AllDTO<Report> reports = service.createSumOfMoneyReportDrivers();
+        return new ResponseEntity<AllDTO<Report>>(reports, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
+    @GetMapping("/crossed-kms/drivers")
+    public ResponseEntity<AllDTO<Report>> createCrossedKmsReportDrivers(){
+        AllDTO<Report> reports = service.createCrossedKmsReportDrivers();
+        return new ResponseEntity<AllDTO<Report>>(reports, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'PASSENGER')")
+    @GetMapping("/crossed-kms/passengers")
+    public ResponseEntity<AllDTO<Report>> createCrossedKmsReportPassengers(){
+        AllDTO<Report> reports = service.createCrossedKmsReportPassengers();
+        return new ResponseEntity<AllDTO<Report>>(reports, HttpStatus.OK);
+    }
 }

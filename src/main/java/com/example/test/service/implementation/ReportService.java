@@ -4,6 +4,7 @@ import com.example.test.domain.business.Report;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Role;
 import com.example.test.dto.AllDTO;
+import com.example.test.dto.user.UserDTO;
 import com.example.test.enumeration.RideStatus;
 import com.example.test.exception.NotFoundException;
 import com.example.test.repository.ride.IRideRepository;
@@ -30,6 +31,8 @@ public class ReportService implements IReportService {
 
     @Autowired
     IUserService iUserService;
+    @Autowired
+    IUserService passengerRepository;
 
     @Autowired
     IRideRepository iRideRepository;
@@ -150,5 +153,41 @@ public class ReportService implements IReportService {
     @Override
     public void createDailyReport() {
 
+    }
+
+    @Override
+    public AllDTO<Report> createSumOfMoneyReportPassengers() {
+        List<Report> reports = new ArrayList<>();
+        for (UserDTO p : iPassengerService.getAll(0,0)){
+            reports.addAll(createSumOfMoneyReport(p.getId()).getResults());
+        }
+        return new AllDTO<>(reports.size(), reports);
+    }
+
+    @Override
+    public AllDTO<Report> createSumOfMoneyReportDrivers() {
+        List<Report> reports = new ArrayList<>();
+        for (UserDTO p : iDriverService.getAll().getResults()){
+            reports.addAll(createSumOfMoneyReport(p.getId()).getResults());
+        }
+        return new AllDTO<>(reports.size(), reports);
+    }
+
+    @Override
+    public AllDTO<Report> createCrossedKmsReportDrivers() {
+        List<Report> reports = new ArrayList<>();
+        for (UserDTO p : iDriverService.getAll().getResults()){
+            reports.addAll(createCrossedKmReport(p.getId()).getResults());
+        }
+        return new AllDTO<>(reports.size(), reports);
+    }
+
+    @Override
+    public AllDTO<Report> createCrossedKmsReportPassengers() {
+        List<Report> reports = new ArrayList<>();
+        for (UserDTO p : iPassengerService.getAll(0,0)){
+            reports.addAll(createCrossedKmReport(p.getId()).getResults());
+        }
+        return new AllDTO<>(reports.size(), reports);
     }
 }

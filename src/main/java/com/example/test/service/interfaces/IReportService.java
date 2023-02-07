@@ -18,4 +18,12 @@ public interface IReportService {
     public void createMonthlyReport();
 
     public void createDailyReport();
+
+    AllDTO<Report> createSumOfMoneyReportPassengers();
+
+    AllDTO<Report> createSumOfMoneyReportDrivers();
+
+    AllDTO<Report> createCrossedKmsReportDrivers();
+
+    AllDTO<Report> createCrossedKmsReportPassengers();
 }
