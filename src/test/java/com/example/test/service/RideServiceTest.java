@@ -1,14 +1,18 @@
 package com.example.test.service;
 
 import com.example.test.domain.communication.Review;
+import com.example.test.domain.ride.FavoriteOrder;
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.ride.Route;
 import com.example.test.domain.user.Passenger;
 import com.example.test.dto.ride.RideDTO;
 import com.example.test.enumeration.RideStatus;
+import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
+import com.example.test.repository.ride.IFavoriteOrderRepository;
 import com.example.test.repository.ride.IRideRepository;
+import com.example.test.repository.user.IPassengerRepository;
 import com.example.test.service.implementation.RideService;
 import com.example.test.service.interfaces.IRideService;
 
@@ -42,6 +46,12 @@ public class RideServiceTest {
 
     @Mock
     IRideRepository rideRepository;
+
+    @Mock
+    IFavoriteOrderRepository favoriteOrderRepository;
+
+    @Mock
+    IPassengerRepository passengerRepository;
 
     @Autowired
     @InjectMocks
@@ -274,5 +284,83 @@ public class RideServiceTest {
     public void wrongRideIdEndRide() {
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> rideService.endRide(123L));
+    }
+
+    @Test
+    @DisplayName("Should insert favorite order")
+    public void shouldInsertFavoriteOrder() {
+        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        List<FavoriteOrder> favoriteOrders = new ArrayList<>();
+
+        Mockito.when(passengerRepository.findByEmail("ana@gmail.com")).thenReturn(passenger);
+        Mockito.when(favoriteOrderRepository.findByPassenger_Id(150L)).thenReturn(favoriteOrders);
+        Mockito.when(favoriteOrderRepository.save(favoriteOrder)).thenReturn(favoriteOrder);
+
+        FavoriteOrder actualFavOrder = rideService.insertFavoriteOrder(favoriteOrder, "ana@gmail.com");
+
+        Assertions.assertThat(actualFavOrder.getId()).isEqualTo(favoriteOrder.getId());
+        Assertions.assertThat(actualFavOrder.getFavoriteName()).isEqualTo(favoriteOrder.getFavoriteName());
+        Assertions.assertThat(actualFavOrder.getVehicleType()).isEqualTo(favoriteOrder.getVehicleType());
+        Assertions.assertThat(actualFavOrder.getPassenger()).isEqualTo(favoriteOrder.getPassenger());
+        Assertions.assertThat(actualFavOrder.getPassengers()).isEqualTo(favoriteOrder.getPassengers());
+        Assertions.assertThat(actualFavOrder.isBabyTransport()).isEqualTo(favoriteOrder.isBabyTransport());
+        Assertions.assertThat(actualFavOrder.isPetTransport()).isEqualTo(favoriteOrder.isPetTransport());
+        Assertions.assertThat(actualFavOrder.getLocations()).isEqualTo(favoriteOrder.getLocations());
+
+        verify(favoriteOrderRepository, times(1)).save(favoriteOrder);
+    }
+
+    @Test
+    @DisplayName("Should not insert favorite ride.Number of favorite rides cannot exceed 10")
+    public void tooBigNumberOfFavoriteOrders() {
+        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder2 = new FavoriteOrder(124L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder3 = new FavoriteOrder(125L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder4 = new FavoriteOrder(126L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder5 = new FavoriteOrder(127L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder6 = new FavoriteOrder(128L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder7 = new FavoriteOrder(129L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder8 = new FavoriteOrder(130L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder9 = new FavoriteOrder(131L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder10 = new FavoriteOrder(132L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+        FavoriteOrder favoriteOrder11 = new FavoriteOrder(133L, "name", VehicleTypeName.STANDARD,
+                null, new HashSet<>(), false, false, new HashSet<>());
+
+        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+                "ana@gmail.com", "address", "pass", false, true);
+
+        List<FavoriteOrder> favoriteOrders = new ArrayList<>();
+        favoriteOrders.add(favoriteOrder2);
+        favoriteOrders.add(favoriteOrder3);
+        favoriteOrders.add(favoriteOrder4);
+        favoriteOrders.add(favoriteOrder5);
+        favoriteOrders.add(favoriteOrder6);
+        favoriteOrders.add(favoriteOrder7);
+        favoriteOrders.add(favoriteOrder8);
+        favoriteOrders.add(favoriteOrder9);
+        favoriteOrders.add(favoriteOrder10);
+        favoriteOrders.add(favoriteOrder11);
+
+        Mockito.when(passengerRepository.findByEmail("ana@gmail.com")).thenReturn(passenger);
+        Mockito.when(favoriteOrderRepository.findByPassenger_Id(150L)).thenReturn(favoriteOrders);
+
+        assertThrows(BadRequestException.class, () -> rideService.insertFavoriteOrder(favoriteOrder,
+                                                "ana@gmail.com"));
+
+        verify(favoriteOrderRepository, times(0)).save(favoriteOrder);
     }
 }
