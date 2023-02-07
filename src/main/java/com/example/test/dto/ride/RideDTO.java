@@ -27,10 +27,8 @@ public class RideDTO {
     private boolean isPanic;
     @Min(0)
     private double totalCost;
-    @NotNull
     @NotEmpty
     private Set<Route> locations;
-    @NotNull
     private List<UserDTO> passengers;
     @NotEmpty
     @NotNull
