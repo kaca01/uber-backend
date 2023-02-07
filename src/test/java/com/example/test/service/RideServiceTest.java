@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -94,20 +96,16 @@ public class RideServiceTest {
         Assertions.assertThat(actualRide.getRejection()).isEqualTo(expectedRide.getRejection());
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not find ride by id. Also should throw exception Not Found")
-    public void shouldNotFindRideById() {
-        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
+    public void shouldNotFindRideById(Long name) {
+        Mockito.when(rideRepository.findById(name)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> rideService.findOne(123L));
+        assertThrows(NotFoundException.class, () -> rideService.findOne(name));
 
-        verify(rideRepository, times(1)).findById(123L);
-    }
-
-    @Test
-    @DisplayName("Should not end a ride. No parameters")
-    public void noParametersFindRideById() {
-        assertThrows(NotFoundException.class, () -> rideService.findOne(null));
+        verify(rideRepository, times(1)).findById(name);
     }
 
     @Test
@@ -139,20 +137,16 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACTIVE, 123L);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not find driver active ride")
-    public void shouldNotFindDriverActiveRide() {
-        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, 123L)).thenReturn(Optional.empty());
+    public void shouldNotFindDriverActiveRide(Long name) {
+        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, name)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> rideService.findDriversActiveRide(123L));
+        assertThrows(NotFoundException.class, () -> rideService.findDriversActiveRide(name));
 
-        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACTIVE, 123L);
-    }
-
-    @Test
-    @DisplayName("Should not find driver active ride. No parameters")
-    public void noParametersFindDriverActiveRide() {
-        assertThrows(NotFoundException.class, () -> rideService.findDriversActiveRide(null));
+        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACTIVE, name);
     }
 
     @Test
@@ -184,20 +178,16 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not find driver accepted ride")
-    public void shouldNotFindAcceptedRide() {
-        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L)).thenReturn(Optional.empty());
+    public void shouldNotFindAcceptedRide(Long name) {
+        Mockito.when(rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, name)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(123L));
+        assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(name));
 
-        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, 123L);
-    }
-
-    @Test
-    @DisplayName("Should not find accepted ride. No parameters")
-    public void noParametersAcceptedRide() {
-        assertThrows(NotFoundException.class, () -> rideService.findDriversAcceptedRide(null));
+        verify(rideRepository, times(1)).findByStatusAndDriver_id(RideStatus.ACCEPTED, name);
     }
 
     @Test
@@ -248,17 +238,15 @@ public class RideServiceTest {
         verify(rideRepository, times(0)).save(ride);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not start a ride. Wrong ride id")
-    public void wrongRideIdStartRide() {
-        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> rideService.startRide(123L));
-    }
+    public void wrongRideIdStartRide(Long name) {
+        Mockito.when(rideRepository.findById(name)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> rideService.startRide(name));
 
-    @Test
-    @DisplayName("Should not start a ride. No parameters")
-    public void noParametersStartRide() {
-        assertThrows(NotFoundException.class, () -> rideService.startRide(null));
+        verify(rideRepository, times(1)).findById(name);
     }
 
     @Test
@@ -310,17 +298,15 @@ public class RideServiceTest {
         verify(rideRepository, times(0)).save(ride);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not end a ride. Wrong ride id")
-    public void wrongRideIdEndRide() {
-        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> rideService.endRide(123L));
-    }
+    public void wrongRideIdEndRide(Long name) {
+        Mockito.when(rideRepository.findById(name)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> rideService.endRide(name));
 
-    @Test
-    @DisplayName("Should not end a ride. No parameters")
-    public void noParametersEndRide() {
-        assertThrows(NotFoundException.class, () -> rideService.endRide(null));
+        verify(rideRepository, times(1)).findById(name);
     }
 
     @Test
@@ -436,26 +422,22 @@ public class RideServiceTest {
         verify(favoriteOrderRepository, times(0)).delete(favoriteOrder);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not delete favorite order. Not existing favorite order")
-    public void notExistingFavoriteOrderDelete() {
+    public void notExistingFavoriteOrderDelete(Long name) {
         Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
                 "ana@gmail.com", "address", "pass", false, true);
 
-        FavoriteOrder favoriteOrder = new FavoriteOrder(123L, "name", VehicleTypeName.STANDARD,
+        FavoriteOrder favoriteOrder = new FavoriteOrder(name, "name", VehicleTypeName.STANDARD,
                 passenger, new HashSet<>(), false, false, new HashSet<>());
 
-        Mockito.when(favoriteOrderRepository.findById(123L)).thenReturn(Optional.empty());
+        Mockito.when(favoriteOrderRepository.findById(name)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(123L, passenger));
+        assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(name, passenger));
 
         verify(favoriteOrderRepository, times(0)).delete(favoriteOrder);
-    }
-
-    @Test
-    @DisplayName("Should not delete favorite order. Not existing favorite order")
-    public void noParametersFavoriteOrderDelete() {
-        assertThrows(NotFoundException.class, () -> rideService.deleteFavoriteLocation(null, null));
     }
 
     @Test
@@ -484,24 +466,20 @@ public class RideServiceTest {
         verify(favoriteOrderRepository, times(1)).findByPassenger_Id(150L);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {150L})
     @DisplayName("Should not find passenger's favorite orders")
-    public void shouldNotFindFavoriteOrders() {
-        Passenger passenger = new Passenger(150L, "name", "surname", "sadas", "123465",
+    public void shouldNotFindFavoriteOrders(Long name) {
+        Passenger passenger = new Passenger(name, "name", "surname", "sadas", "123465",
                 "ana@gmail.com", "address", "pass", false, true);
 
-        Mockito.when(favoriteOrderRepository.findByPassenger_Id(150L)).thenReturn(new ArrayList<>());
+        Mockito.when(favoriteOrderRepository.findByPassenger_Id(name)).thenReturn(new ArrayList<>());
 
         AllDTO<FavoriteOrder> actualOrders = rideService.getFavoriteOrdersByPassenger(passenger);
         Assertions.assertThat(actualOrders.getTotalCount()).isEqualTo(0);
 
-        verify(favoriteOrderRepository, times(1)).findByPassenger_Id(150L);
-    }
-
-    @Test
-    @DisplayName("Should not find passenger's favorite orders beacuse there are no parameters")
-    public void shouldNotFindFavoriteOrdersNoParameters() {
-        assertThrows(NullPointerException.class, () -> rideService.getFavoriteOrdersByPassenger(null));
+        verify(favoriteOrderRepository, times(1)).findByPassenger_Id(name);
     }
 
     @Test
@@ -534,20 +512,16 @@ public class RideServiceTest {
         verify(rideRepository, times(1)).findByStatusAndPassengers_id(RideStatus.ACTIVE, 123L);
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(longs = {123L})
     @DisplayName("Should not find passenger active ride")
-    public void shouldNotFindPassengersActiveRide() {
-        Mockito.when(rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, 123L)).thenReturn(Optional.empty());
+    public void shouldNotFindPassengersActiveRide(Long name) {
+        Mockito.when(rideRepository.findByStatusAndPassengers_id(RideStatus.ACTIVE, name)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> rideService.findPassengersActiveRide(123L));
+        assertThrows(NotFoundException.class, () -> rideService.findPassengersActiveRide(name));
 
-        verify(rideRepository, times(1)).findByStatusAndPassengers_id(RideStatus.ACTIVE, 123L);
-    }
-
-    @Test
-    @DisplayName("Should not find passenger active ride when no parameter has been sent")
-    public void shouldNotFindPassengersActiveRideWhenNoParameters() {
-        assertThrows(NotFoundException.class, () -> rideService.findPassengersActiveRide(null));
+        verify(rideRepository, times(1)).findByStatusAndPassengers_id(RideStatus.ACTIVE, name);
     }
 
     @ParameterizedTest
@@ -606,12 +580,14 @@ public class RideServiceTest {
         assertThrows(BadRequestException.class, () -> rideService.cancelRide(rejection, 123L));
 
         verify(rideRepository, times(1)).findById(123L);
+        verify(rideRepository, times(0)).save(ride);
     }
 
     @Test
     @DisplayName("Should not cancel ride (perspective of driver) if no parameters have been sent")
     public void shouldNotCancelRideAsDriverWhenNoParameter() {
         assertThrows(NotFoundException.class, () -> rideService.cancelRide(null, null));
+        verify(rideRepository, times(1)).findById(null);
     }
 
     @ParameterizedTest
@@ -664,11 +640,13 @@ public class RideServiceTest {
         assertThrows(BadRequestException.class, () -> rideService.cancelExistingRide(123L));
 
         verify(rideRepository, times(1)).findById(123L);
+        verify(rideRepository, times(0)).save(ride);
     }
 
     @Test
     @DisplayName("Should not cancel ride (perspective of passenger) if no parameters have been sent")
     public void shouldNotCancelRideAsPassengerWhenNoParameter() {
         assertThrows(NotFoundException.class, () -> rideService.cancelExistingRide(null));
+        verify(rideRepository, times(1)).findById(null);
     }
 }
