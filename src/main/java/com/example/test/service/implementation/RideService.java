@@ -280,7 +280,7 @@ public class RideService implements IRideService {
 
     @Override
     public RideDTO findNextAcceptedRide(Long driverId) {
-        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, driverId).orElse(null);
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driverId).orElse(null);
         if (ride != null) return new RideDTO(ride);
         List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
         if(rides.isEmpty()) return null;
