@@ -82,6 +82,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
+    // TODO : move this to driver service
     private Driver findAvailableDriver(Ride ride, String vehicleType) {
         return iSelectionDriver.findDriver(ride, vehicleType);
     }
