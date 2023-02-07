@@ -294,6 +294,10 @@ public class SelectionDriver implements ISelectionDriver {
         askedDrivers.put(ride.getPassengers().get(ride.getPassengers().size() - 1).getId(), drivers);
     }
 
+    public void emptyAskedDrivers() {
+        askedDrivers = new HashMap<>();
+    }
+
     private double calculatePrice(String type, double distance) {
         VehicleType vehicleType;
         switch (type) {

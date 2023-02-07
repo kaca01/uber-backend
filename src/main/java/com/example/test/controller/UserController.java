@@ -115,7 +115,7 @@ public class UserController {
             Driver driver = driverRepository.findByEmail(loginDTO.getEmail());
             driver.setActive(true);
             driverRepository.save(driver);
-            this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", driver);
+            this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/driver-login", driver);
         }
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

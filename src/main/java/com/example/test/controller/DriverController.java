@@ -47,7 +47,7 @@ public class DriverController {
     @GetMapping(value ="/{id}/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Driver> logout(@PathVariable Long id) {
         Driver user = service.changeActivity(id, false);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/logout", user);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/logout", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -55,7 +55,7 @@ public class DriverController {
     @GetMapping(value ="/{id}/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Driver> active(@PathVariable Long id) {
         Driver user = service.changeActivity(id, true);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/driver-login", user);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/driver-login", user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

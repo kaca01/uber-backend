@@ -21,6 +21,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,6 +78,15 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @Transactional
+    @PreAuthorize("hasAnyRole('DRIVER')")
+    @GetMapping(value = "/accepted/next/{driverId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RideDTO> findNextAcceptedRide(@PathVariable Long driverId)
+    {
+        RideDTO ride = service.findNextAcceptedRide(driverId);
+        return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @GetMapping(value = "/driver/{driverId}/accepted", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> findDriversAcceptedRide(@PathVariable Long driverId)
@@ -120,7 +130,7 @@ public class RideController {
         String email = authentication.getName();
         User sender = userRepository.findByEmail(email).orElse(null);
         PanicDTO message = service.setPanic(reason, id, sender);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/panic", this.service.findOne(id));
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/panic", this.service.findOne(id));
         return new ResponseEntity<PanicDTO>(message, HttpStatus.OK);
     }
 
@@ -137,8 +147,8 @@ public class RideController {
     public ResponseEntity<RideDTO> startRide(@PathVariable Long id) {
 
         RideDTO ride = service.startRide(id);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/change-page-start", ride);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/start-ride", ride);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/change-page-start", ride);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/start-ride", ride);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
@@ -148,8 +158,8 @@ public class RideController {
     public ResponseEntity<RideDTO> endRide(@PathVariable Long id)
     {
         RideDTO ride = service.endRide(id);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/change-page-end", ride);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/ended-ride", ride);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/change-page-end", ride);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/ended-ride", ride);
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 

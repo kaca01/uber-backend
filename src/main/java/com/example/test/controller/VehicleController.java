@@ -28,7 +28,7 @@ public class VehicleController {
     @PutMapping(value = "/{id}/location", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vehicle> update(@PathVariable Long id, @Valid @RequestBody Location location) {
         Vehicle vehicle = this.service.update(id, location);
-        this.simpMessagingTemplate.convertAndSend("/map-updates/update-vehicle-position", vehicle);
+        //this.simpMessagingTemplate.convertAndSend("/socket-publisher/map-updates/update-vehicle-position", vehicle);
         return new ResponseEntity<>(vehicle, HttpStatus.OK);
     }
 }

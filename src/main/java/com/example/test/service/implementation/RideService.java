@@ -74,6 +74,9 @@ public class RideService implements IRideService {
         ride.setDriver(driver);
         if (driver != null) {
             ride.setVehicle(driver.getVehicle());
+        } else {
+            iSelectionDriver.emptyAskedDrivers();
+            ride.setStatus(RideStatus.REJECTED);
         }
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
@@ -126,6 +129,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING){
             ride.setStatus(RideStatus.REJECTED);
+            iSelectionDriver.emptyAskedDrivers();
             ride = rideRepository.save(ride);
             return new RideDTO(ride);
         }else throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or STARTED!");
@@ -152,6 +156,7 @@ public class RideService implements IRideService {
         if (ride.getStatus()!= RideStatus.PENDING) throw new BadRequestException("Cannot accept a ride that is not in status PENDING!");
         ride.setStatus(RideStatus.ACCEPTED);
         ride = rideRepository.save(ride);
+        iSelectionDriver.emptyAskedDrivers();
         return new RideDTO(ride);
     }
 
@@ -268,13 +273,28 @@ public class RideService implements IRideService {
         List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
         if(rides.isEmpty()) return null;
         Ride ride = null;
-        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000 + 60*60*1000; //moze poceti 8 minuta kasnije
-        long max = Calendar.getInstance().getTime().getTime() + 5 * 60 * 1000 + 60*60*1000; //moze poceti 5 minuta ranije
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000; //moze poceti 8 minuta kasnije
+        long max = Calendar.getInstance().getTime().getTime() + 5 * 60 * 1000; //moze poceti 5 minuta ranije
         for (Ride r : rides){
             if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() <= max)
                 ride = r;
         }
         if (ride == null) return null;
+        return new RideDTO(ride);
+    }
+
+    @Override
+    public RideDTO findNextAcceptedRide(Long driverId) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driverId).orElse(null);
+        if (ride != null) return new RideDTO(ride);
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
+        if(rides.isEmpty()) return null;
+        ride = rides.get(0);
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000; //moze poceti 8 minuta kasnije
+        for (Ride r : rides){
+            if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() < ride.getScheduledTime().getTime())
+                ride = r;
+        }
         return new RideDTO(ride);
     }
 }

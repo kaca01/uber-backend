@@ -51,4 +51,6 @@ public interface IRideService {
     RideDTO getAcceptedRide(Long id);
 
     RideDTO getNextRide(Long driverId);
+
+    RideDTO findNextAcceptedRide(Long driverId);
 }

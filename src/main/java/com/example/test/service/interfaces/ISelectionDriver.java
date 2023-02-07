@@ -12,6 +12,7 @@ public interface ISelectionDriver {
     public double getDistance(Location l1, Location l2);
     public double getDistanceFromRide(Driver driver, Ride ride);
     public void addToAskedDrivers(Driver driver, Ride ride);
+    public void emptyAskedDrivers();
     public Date addMinutesToDate(Date date, long minutes);
     public int calculateEstimationTime(double kms);
 
