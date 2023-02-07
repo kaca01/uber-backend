@@ -181,7 +181,7 @@ public class RideService implements IRideService {
         if (reason == null) msg = ""; else msg = reason.getReason();;
         Rejection rejection = new Rejection(msg, ride.getDriver(), new Date());
         ride.setRejection(rejection);
-        rejectionRepository.save(rejection);
+        //rejectionRepository.save(rejection);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
