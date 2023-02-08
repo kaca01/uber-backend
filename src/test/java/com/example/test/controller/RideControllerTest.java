@@ -76,9 +76,11 @@ public class RideControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessTokenDriver);
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id","6");
 
         ResponseEntity<RideDTO> responseEntity =
-                restTemplate.exchange(RIDE_URL + "/6", HttpMethod.GET, httpEntity, RideDTO.class);
+                restTemplate.exchange(RIDE_URL + "/{id}", HttpMethod.GET, httpEntity, RideDTO.class, param);
 
         RideDTO ride = responseEntity.getBody();
         System.out.println(ride);
@@ -93,9 +95,11 @@ public class RideControllerTest {
     public void testGetRideDetailsUnauthorized() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id","6");
 
         ResponseEntity<RideDTO> responseEntity =
-                restTemplate.exchange(RIDE_URL + "/6", HttpMethod.GET, httpEntity, RideDTO.class);
+                restTemplate.exchange(RIDE_URL + "/{id}", HttpMethod.GET, httpEntity, RideDTO.class, param);
 
         RideDTO ride = responseEntity.getBody();
         System.out.println(ride);
@@ -108,9 +112,11 @@ public class RideControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessTokenPassenger);
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id","15");
 
         ResponseEntity<RideDTO> responseEntity =
-                restTemplate.exchange(RIDE_URL + "/passenger/15/active", HttpMethod.GET, httpEntity, RideDTO.class);
+                restTemplate.exchange(RIDE_URL + "/passenger/{id}/active", HttpMethod.GET, httpEntity, RideDTO.class, param);
 
         RideDTO ride = responseEntity.getBody();
         System.out.println(ride);
@@ -147,9 +153,11 @@ public class RideControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessTokenDriver);
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id","4");
 
         ResponseEntity<RideDTO> responseEntity =
-                restTemplate.exchange(RIDE_URL + "/passenger/4/active", HttpMethod.GET, httpEntity, RideDTO.class);
+                restTemplate.exchange(RIDE_URL + "/passenger/{id}/active", HttpMethod.GET, httpEntity, RideDTO.class, param);
 
         RideDTO ride = responseEntity.getBody();
         System.out.println(ride);
@@ -161,9 +169,11 @@ public class RideControllerTest {
     public void testGetPassengerActiveRideUnauthorized() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> httpEntity = new HttpEntity<Object>(headers);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("id","4");
 
         ResponseEntity<RideDTO> responseEntity =
-                restTemplate.exchange(RIDE_URL + "/passenger/4/active", HttpMethod.GET, httpEntity, RideDTO.class);
+                restTemplate.exchange(RIDE_URL + "/passenger/{id}/active", HttpMethod.GET, httpEntity, RideDTO.class, param);
 
         RideDTO ride = responseEntity.getBody();
         System.out.println(ride);
