@@ -51,12 +51,12 @@ public class ReviewService implements IReviewService {
         vehicleRepository.findById(vehicleId).orElseThrow(() -> new NotFoundException("Vehicle does not exist!"));
 
         List<Ride> rides = rideRepository.findRidesByVehicleId(vehicleId);
-        for(Ride ride: rides) {
-            for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
-                if(review.getType() == ReviewType.VEHICLE)
-                    vehicleReviews.add(review);
-            }
-        }
+//        for(Ride ride: rides) {
+//            for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
+//                if(review.getType() == ReviewType.VEHICLE)
+//                    vehicleReviews.add(review);
+//            }
+//        }
         List<ReviewDTO> reviewsDTO = new ArrayList<>();
         for(Review review : vehicleReviews) {
             reviewsDTO.add(new ReviewDTO(review));
@@ -78,12 +78,12 @@ public class ReviewService implements IReviewService {
         if(driver == null) throw new NotFoundException("Driver does not exist!");
 
         List<Ride> rides = rideRepository.findRidesByDriverId(driverId);
-        for(Ride ride: rides) {
-            for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
-                if(review.getType() == ReviewType.DRIVER)
-                    vehicleReviews.add(review);
-            }
-        }
+//        for(Ride ride: rides) {
+//            for(Review review : rideRepository.findReviewsByRideId(ride.getId())) {
+//                if(review.getType() == ReviewType.DRIVER)
+//                    vehicleReviews.add(review);
+//            }
+//        }
         List<ReviewDTO> reviewsDTO = new ArrayList<>();
         for(Review review : vehicleReviews) {
             reviewsDTO.add(new ReviewDTO(review));
@@ -96,7 +96,8 @@ public class ReviewService implements IReviewService {
     public List<RideReviewDTO> getReviewByRide(Long rideId) {
         rideRepository.findById(rideId).orElseThrow(() -> new NotFoundException("Ride does not exist!"));
 
-        List<Review> reviews = rideRepository.findReviewsByRideId(rideId);
+        List<Review> reviews = new ArrayList<>();
+        //rideRepository.findReviewsByRideId(rideId);
         reviews.sort(Comparator.comparing(Review::getPassengerId));
 
         return convertReviewToRideReviewDTO(reviews);
