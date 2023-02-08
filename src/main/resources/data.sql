@@ -103,25 +103,25 @@ insert into rejection(reason, time_of_rejection, user_id) values ('Gave me some 
 
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2023-01-12T16:20:24.893Z', '2023-01-12T16:40:24.893Z', 550.45, 190, 4, false, false, 5, 1, 1, '2023-01-13T16:20:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 6, null, 1, '2023-02-06T21:47:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
 values ('2023-01-13T16:00:24.893Z', '2023-01-13T16:20:24.893Z', 400.53, 180.89, 4, false, false, 6, 2, 2, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2023-01-13T19:00:24.893Z', '2023-01-13T19:10:24.893Z', 10000, 180, 4, false, true, 7, null, 3, '2023-01-13T16:20:24.893Z', false);
+values ('2023-01-13T19:00:24.893Z', null, 10000, 180, 1, false, true, 7, null, 3, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2023-01-13T19:00:24.893Z', null, 450, 180, 1, false, false, 8, null, 4, '2023-01-13T16:20:24.893Z', false);
+values (null, null, 450, 180, 0, false, false, 8, null, 4, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', '2022-12-22T14:42:24.893Z', 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', '2022-12-22T14:42:24.893Z', 350, 7, 2, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 6, 2, 2, '2023-02-06T21:47:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 6, null, 2, '2023-02-06T21:47:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 5, 2, 1, '2023-01-13T16:20:24.893Z', false);
+values (null, null, 350, 7, 0, false, false, 6, 2, 1, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 4, false, false, 8, 1, 4, '2023-01-13T16:20:24.893Z', false);
@@ -130,11 +130,9 @@ insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, st
 values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 13, 1, 5, '2023-01-13T16:20:24.893Z', false);
 insert into ride(start_time, end_time, total_cost, estimated_time_in_minutes, status, baby_transport, pet_transport,
                  driver_id, rejection_id, vehicle_id, scheduled_time, is_panic)
-values ('2022-12-22T13:42:24.893Z', null, 350, 7, 1, false, false, 14, 1, 6, '2023-01-13T16:20:24.893Z', false);
+values ('2022-12-22T13:42:24.893Z', null, 350, 7, 3, false, false, 14, 1, 6, '2023-01-13T16:20:24.893Z', false);
 
-insert into ride_passengers(ride_id, passengers_id) values (1, 3);
-insert into ride_passengers(ride_id, passengers_id) values (1, 2);
-insert into ride_passengers(ride_id, passengers_id) values (1, 1);
+insert into ride_passengers(ride_id, passengers_id) values (1, 4);
 insert into ride_passengers(ride_id, passengers_id) values (2, 1);
 insert into ride_passengers(ride_id, passengers_id) values (2, 4);
 insert into ride_passengers(ride_id, passengers_id) values (3, 2);
@@ -152,7 +150,6 @@ insert into ride_locations(ride_id, locations_id) values (3, 3);
 insert into ride_locations(ride_id, locations_id) values (4, 4);
 insert into ride_locations(ride_id, locations_id) values (5, 5);
 insert into ride_locations(ride_id, locations_id) values (6, 1);
-insert into ride_locations(ride_id, locations_id) values (6, 6);
 insert into ride_locations(ride_id, locations_id) values (7, 1);
 insert into ride_locations(ride_id, locations_id) values (8, 2);
 insert into ride_locations(ride_id, locations_id) values (9, 1);
@@ -222,16 +219,16 @@ insert into role (name) values ('ROLE_PASSENGER');
 insert into role (name) values ('ROLE_DRIVER');
 insert into role (name) values ('ROLE_ADMIN');
 
-insert into user_role (user_id, role_id) VALUES (1, 1); 
-insert into user_role (user_id, role_id) VALUES (2, 1); 
+insert into user_role (user_id, role_id) VALUES (1, 1);
+insert into user_role (user_id, role_id) VALUES (2, 1);
 insert into user_role (user_id, role_id) VALUES (3, 1);
-insert into user_role (user_id, role_id) VALUES (4, 1); 
-insert into user_role (user_id, role_id) VALUES (5, 2); 
+insert into user_role (user_id, role_id) VALUES (4, 1);
+insert into user_role (user_id, role_id) VALUES (5, 2);
 insert into user_role (user_id, role_id) VALUES (6, 2);
-insert into user_role (user_id, role_id) VALUES (7, 2); 
-insert into user_role (user_id, role_id) VALUES (8, 2); 
-insert into user_role (user_id, role_id) VALUES (9, 3); 
-insert into user_role (user_id, role_id) VALUES (10, 3); 
+insert into user_role (user_id, role_id) VALUES (7, 2);
+insert into user_role (user_id, role_id) VALUES (8, 2);
+insert into user_role (user_id, role_id) VALUES (9, 3);
+insert into user_role (user_id, role_id) VALUES (10, 3);
 insert into user_role (user_id, role_id) VALUES (11, 3);
 insert into user_role (user_id, role_id) VALUES (12, 1);
 insert into user_role (user_id, role_id) VALUES (13, 2);
