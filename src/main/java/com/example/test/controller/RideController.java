@@ -143,6 +143,7 @@ public class RideController {
         return new ResponseEntity<RideDTO>(ride, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('DRIVER')")  //ukloniti zbog simulacije
     @PutMapping(value = "/{id}/start", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RideDTO> startRide(@PathVariable Long id) {
 
