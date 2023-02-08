@@ -26,7 +26,7 @@ import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RideControllerTest {
+public class RideController2Test {
 
     @Autowired
     private TestRestTemplate restTemplate;
