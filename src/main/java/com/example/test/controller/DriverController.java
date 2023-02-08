@@ -97,7 +97,7 @@ public class DriverController {
     }
 
     // update existing driver
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> update (@PathVariable Long id, @Valid @RequestBody UserDTO driverDTO) {

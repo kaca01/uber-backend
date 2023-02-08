@@ -43,7 +43,7 @@ public class UserDTO {
     @NotEmpty
     @Length(max = 100, message = "Max 100 characters allowed for address!")
     private String address;
-    @JsonInclude( JsonInclude.Include.NON_NULL)
+    @JsonInclude()
     private String password;
     private boolean isBlocked;
     private boolean isChanged;
