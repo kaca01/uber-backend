@@ -7,7 +7,7 @@ insert into user (name, surname, profile_picture, telephone_number, email, addre
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Sima', 'Simić', 'U3dhZ2dlciByb2Nrcw==', '+38111123', 'sima@gmail.com', 'Sumadijska 111', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
-    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
+    ('Zlata', 'Popov', 'U3dhZ2dlciByb2Nrcw==', '+3811111111', 'zlata@gmail.com', 'Danila Kisa 81', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, true);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
     ('Boris', 'Petrov', 'U3dhZ2dlciByb2Nrcw==', '+381123123', 'boki@gmail.com', 'Sarajevska 2', '$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra', '2022-01-01T12:33:24.893Z', false, false);
 insert into user (name, surname, profile_picture, telephone_number, email, address, password, last_password_reset_date, blocked, active) values
@@ -41,16 +41,16 @@ insert into admin values(9);
 insert into admin values(10);
 insert into admin values(11);
 
-insert into location(address, longitude, latitude) values ('Djordja Mikeša 2', 45.235866, 19.807387);
-insert into location(address, longitude, latitude) values ('Andje Rankovic 2', 45.247309, 19.796717);
-insert into location(address, longitude, latitude) values ('Veselina Maslese 62', 45.259711, 19.809787);
-insert into location(address, longitude, latitude) values ('Jovana Hranilovica 2', 45.261421, 19.823026);
-insert into location(address, longitude, latitude) values ('Bele njive 24', 45.265435, 19.847805);
-insert into location(address, longitude, latitude) values ('Gajeva 2', 45.223481, 19.847990);
-insert into location(address, longitude, latitude) values ('Boska Buhe 10A', 45.242509, 19.844632);
-insert into location(address, longitude, latitude) values ('Strosmajerova 2', 45.254366, 19.861088);
-insert into location(address, longitude, latitude) values ('Njegoseva 2', 45.255521, 19.845071);
-insert into location(address, longitude, latitude) values ('Stajaliste kod velike menze', 45.246540, 19.849282);
+insert into location(address, longitude, latitude) values ('Djordja Mikeša 2', 19.807387, 45.235866);
+insert into location(address, longitude, latitude) values ('Andje Rankovic 2', 19.796717, 45.247309);
+insert into location(address, longitude, latitude) values ('Veselina Maslese 62', 19.809787, 45.259711);
+insert into location(address, longitude, latitude) values ('Jovana Hranilovica 2', 19.823026, 45.261421);
+insert into location(address, longitude, latitude) values ('Bele njive 24', 19.847805, 45.265435);
+insert into location(address, longitude, latitude) values ('Gajeva 2', 19.847990, 45.223481);
+insert into location(address, longitude, latitude) values ('Boska Buhe 10A', 19.844632, 45.242509);
+insert into location(address, longitude, latitude) values ('Strosmajerova 2', 19.861088, 45.254366);
+insert into location(address, longitude, latitude) values ('Njegoseva 2', 19.845071, 45.255521);
+insert into location(address, longitude, latitude) values ('Stajaliste kod velike menze', 19.849282, 45.246540);
 
 insert into route(departure_id, destination_id) values (1, 3);
 insert into route(departure_id, destination_id) values (1, 4);
