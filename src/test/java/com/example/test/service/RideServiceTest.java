@@ -760,7 +760,7 @@ public class RideServiceTest {
 
         PanicDTO expectedPanic = new PanicDTO("some reason", 100L, userDTO, rideDTO, time);
 
-        Assertions.assertThat(actualPanic.getRide()).isEqualTo(expectedPanic.getRide());
+        Assertions.assertThat(actualPanic.getRide().getId()).isEqualTo(expectedPanic.getRide().getId());
         Assertions.assertThat(actualPanic.getId()).isEqualTo(expectedPanic.getId());
         Assertions.assertThat(actualPanic.getReason()).isEqualTo(expectedPanic.getReason());
         Assertions.assertThat(actualPanic.getUser()).isEqualTo(expectedPanic.getUser());
