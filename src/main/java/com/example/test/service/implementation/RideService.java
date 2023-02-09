@@ -171,7 +171,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
-    //perspective of driver
+    // perspective of driver
     @Override
     public RideDTO cancelRide(RejectionDTO reason, Long id) {
         Ride ride = findRideById(id);
