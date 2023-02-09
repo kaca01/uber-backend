@@ -17,6 +17,7 @@ import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
 import com.example.test.repository.communication.IMessageRepository;
+import com.example.test.repository.communication.IRejectionRepository;
 import com.example.test.repository.ride.IFavoriteOrderRepository;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
@@ -62,6 +63,9 @@ public class RideServiceTest {
 
     @Mock
     IMessageRepository messageRepository;
+
+    @Mock
+    IRejectionRepository rejectionRepository;
 
     @Mock
     ISelectionDriver selectionDriver;
@@ -544,6 +548,7 @@ public class RideServiceTest {
 
         Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
         Mockito.when(rideRepository.save(ride)).thenReturn(ride);
+        Mockito.when(rejectionRepository.save(any())).thenReturn(reason);
 
         RideDTO actualRide = rideService.cancelRide(rejection, 123L);
         ride.setStatus(RideStatus.REJECTED);
@@ -712,6 +717,13 @@ public class RideServiceTest {
     }
 
     @Test
+    @DisplayName("Should not insert ride. Null ride")
+    public void shouldNotInsertNullRide() {
+        RideDTO ride = null;
+        assertThrows(NullPointerException.class, () -> rideService.insert(ride));
+    }
+
+    @Test
     @DisplayName("Should send panic")
     public void shouldSendPanic() {
         Passenger passenger = new Passenger(111L, "Pera", "Peric", "sadsadas", "456879", "email", "address", "pass",
@@ -770,5 +782,20 @@ public class RideServiceTest {
 
         verify(rideRepository, times(0)).save(any());
         verify(messageRepository, times(0)).save(any());
+    }
+
+    @Test
+    @DisplayName("Panic sending null...")
+    public void shouldNotSendPanicNull() {
+        Passenger passenger = new Passenger(111L, "Pera", "Peric", "sadsadas", "456879", "email", "address", "pass",
+                false, true);
+        Ride ride = new Ride(123L, new Date(), new Date(), 450, 45, null, null,
+                new ArrayList<Passenger>(), RideStatus.PENDING, null, false, false,
+                new HashSet<Route>(), new HashSet<Review>(), new Date());
+
+        Mockito.when(rideRepository.findById(123L)).thenReturn(Optional.of(ride));
+
+        assertThrows(NullPointerException.class, () -> rideService.setPanic(null, 123L, passenger));
+
     }
 }
