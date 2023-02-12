@@ -1,5 +1,6 @@
 package com.example.test.dto.user;
 
+import com.example.test.domain.user.Driver;
 import com.example.test.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,7 +31,7 @@ public class UserDTO {
     @JsonInclude( JsonInclude.Include.NON_NULL)
     private String profilePicture;
     @JsonInclude( JsonInclude.Include.NON_NULL)
-    @Length(max = 18)
+    @Length(max = 18, message = "Max 18 characters allowed for telephone number!")
     private String telephoneNumber;
     @NotNull
     @NotEmpty
@@ -40,16 +41,39 @@ public class UserDTO {
     @JsonInclude( JsonInclude.Include.NON_NULL)
     @NotNull
     @NotEmpty
-    @Length(max = 100)
+    @Length(max = 100, message = "Max 100 characters allowed for address!")
     private String address;
-    @JsonInclude( JsonInclude.Include.NON_NULL)
+    @JsonInclude()
     private String password;
     private boolean isBlocked;
+    private boolean isChanged;
+    private String drivingLicense;
+
+    public UserDTO(Long id, String name, String surname, String profilePicture, String telephoneNumber, String email,
+                   String address, String password, boolean isBlocked, boolean isChanged, String licenseNumber) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.profilePicture = profilePicture;
+        this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.isBlocked = isBlocked;
+        this.isChanged = isChanged;
+        this.drivingLicense = licenseNumber;
+    }
 
     public UserDTO(User user)
     {
         this(user.getId(), user.getName(), user.getSurname(), user.getProfilePicture(), user.getTelephoneNumber(),
                 user.getEmail(), user.getAddress(), user.isBlocked());
+    }
+
+    public UserDTO(Driver driver) {
+        this(driver.getId(), driver.getName(), driver.getSurname(), driver.getProfilePicture(), driver.getTelephoneNumber(),
+                driver.getEmail(), driver.getAddress(), driver.isBlocked());
+        this.isChanged = driver.isChanges();
     }
 
     // response

@@ -29,6 +29,8 @@ public class Driver extends User {
     @OneToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
+    private boolean changes;
+
     public Driver(UserDTO driverDTO) {
         this(driverDTO.getId(), driverDTO.getName(), driverDTO.getSurname(), driverDTO.getProfilePicture(),
                 driverDTO.getTelephoneNumber(), driverDTO.getEmail(), driverDTO.getAddress());

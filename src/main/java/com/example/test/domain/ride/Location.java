@@ -20,9 +20,7 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "address", nullable = true)
-    @NotNull
-    @NotEmpty
+    @Column(name = "address")
     private String address;
     @Column(name = "latitude", nullable = false)
     @Min(-90)

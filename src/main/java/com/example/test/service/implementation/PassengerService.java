@@ -2,6 +2,8 @@ package com.example.test.service.implementation;
 
 import com.example.test.domain.ride.Ride;
 import com.example.test.domain.user.Passenger;
+import com.example.test.domain.user.Role;
+import com.example.test.domain.user.User;
 import com.example.test.domain.user.UserActivation;
 import com.example.test.dto.ErrorDTO;
 import com.example.test.dto.ride.RideDTO;
@@ -10,18 +12,21 @@ import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
 import com.example.test.repository.ride.IRideRepository;
 import com.example.test.repository.user.IPassengerRepository;
+import com.example.test.repository.user.IRoleRepository;
 import com.example.test.repository.user.IUserActivationRepository;
 import com.example.test.repository.user.IUserRepository;
 import com.example.test.service.interfaces.IPassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 @Service
 public class PassengerService implements IPassengerService {
@@ -36,6 +41,10 @@ public class PassengerService implements IPassengerService {
     private IUserActivationRepository userActivationRepository;
     @Autowired
     public BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private JavaMailSender mailSender;
+    @Autowired
+    private IRoleRepository roleRepository;
 
     //get only those whose active status is true
     @Override
@@ -53,18 +62,49 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public UserDTO insert(UserDTO passengerDTO)
-    {
+    public UserDTO insert(UserDTO passengerDTO) throws MessagingException, UnsupportedEncodingException {
         if (this.userRepository.existsByEmail(passengerDTO.getEmail())) {
             throw new BadRequestException("User with that email already exists!");
         }
         Passenger passenger = new Passenger(passengerDTO);
-        passenger.setPassword(passengerDTO.getPassword());
+        passenger.setPassword(passwordEncoder.encode(passengerDTO.getPassword()));
         passenger.setActive(false);
         passenger.setBlocked(false);
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findById(1L).get());
+        passenger.setRoles(roles);
+
         passenger = passengerRepository.save(passenger);
-        userActivationRepository.save(new UserActivation(passenger, new Date(), 180));
+        UserActivation activation = userActivationRepository.save(new UserActivation(passenger, new Date(), 180));
+        sendActivationEmail(activation);
         return new UserDTO(passenger);
+    }
+
+    public void sendActivationEmail(UserActivation activation) throws MessagingException, UnsupportedEncodingException {
+        User user = userRepository.findByEmail(activation.getUser().getEmail()).orElseThrow(()
+                -> new NotFoundException("User does not exist!"));
+        String toAddress = "hristinacina@gmail.com";
+        String fromAddress = "anastasijas557@gmail.com";
+        String senderName = "Uber Support";
+        String subject = "Activate Your Uber Account";
+        String content = "Hello [[name]], thank you for joining us!<br>"
+                + "To activate your account please follow this link: "
+                + "<a href='http://localhost:4200/activation/[[id]]'>activate</a><br>"
+                + "The Uber team.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getName() + " " + user.getSurname());
+        content = content.replace("[[id]]", activation.getId().toString());
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
     @Override
@@ -113,8 +153,7 @@ public class PassengerService implements IPassengerService {
     }
 
     @Override
-    public ErrorDTO
-    activatePassenger(Long activationId) {
+    public ErrorDTO activatePassenger(Long activationId) {
         UserActivation activation = userActivationRepository.findById(activationId).orElseThrow(
                 () -> new NotFoundException("Activation with entered id does not exist!"));
         Passenger p = findUserById(activation.getUser().getId());
@@ -129,4 +168,17 @@ public class PassengerService implements IPassengerService {
             throw new BadRequestException("Activation expired. Register again!");
         }
     }
+
+    @Override
+    public List<UserDTO> getByEmails(String[] emails) {
+        List<UserDTO> users = new ArrayList<>();
+        Object[] uniqueEmails = Arrays.stream(emails).distinct().toArray();
+        for (Object email: uniqueEmails) {
+            Passenger passenger = passengerRepository.findByEmail(email.toString());
+            if (passenger == null) throw new NotFoundException("Passenger not found");
+            users.add(new UserDTO(passenger.getId(), email.toString()));
+        }
+        return users;
+    }
+
 }

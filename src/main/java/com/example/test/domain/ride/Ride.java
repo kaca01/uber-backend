@@ -17,9 +17,7 @@ import javax.validation.constraints.PastOrPresent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,6 +33,8 @@ public class Ride {
     @Column(name = "endTime")
     @PastOrPresent
     private Date endTime;
+    @Column(name = "isPanic")
+    private boolean isPanic;
     @Column(name = "totalCost")
     private double totalCost;
     @Column(name = "estimatedTimeInMinutes")
@@ -44,7 +44,7 @@ public class Ride {
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Passenger> passengers = new HashSet<>();
+    private List<Passenger> passengers = new ArrayList<>();
     @Column(name = "status", nullable = false)
     private RideStatus status;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -67,8 +67,28 @@ public class Ride {
         this.setPetTransport(rideDTO.isPetTransport());
 
         if(rideDTO.getScheduledTime() != null) 
-            this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            this.scheduledTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                             .parse(rideDTO.getScheduledTime());
+    }
+
+    public Ride(Long id, Date startTime, Date endTime, double totalCost, double estimatedTimeInMinutes, Vehicle vehicle,
+                Driver driver, List<Passenger> passengers, RideStatus status, Rejection rejection, boolean babyTransport,
+                boolean petTransport, Set<Route> locations, Set<Review> reviews, Date scheduledTime) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalCost = totalCost;
+        this.estimatedTimeInMinutes = estimatedTimeInMinutes;
+        this.vehicle = vehicle;
+        this.driver = driver;
+        this.passengers = passengers;
+        this.status = status;
+        this.rejection = rejection;
+        this.babyTransport = babyTransport;
+        this.petTransport = petTransport;
+        this.locations = locations;
+        this.reviews = reviews;
+        this.scheduledTime = scheduledTime;
     }
 
     public Ride(Long id) {

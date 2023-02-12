@@ -50,33 +50,39 @@ public class RideService implements IRideService {
     @Override
     public RideDTO insert(RideDTO rideDTO) throws ParseException {
         //Cannot create a ride while you have one already pending!
-
         Ride ride = new Ride(rideDTO);
-        Set<Passenger> passengers = new HashSet<>();
+
+        List<Passenger> passengers = new ArrayList<>();
 
         for (UserDTO u : rideDTO.getPassengers()) {
             Passenger p = passengerRepository.findByEmail(u.getEmail());
             passengers.add(p);
         }
+
         if(rideDTO.getPassengers().size() != 0) {
-            List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().stream().reduce((one, two) -> two).get().getEmail()));
-            if(!rides.isEmpty()) throw new BadRequestException("Cannot create a ride while you have one already pending!");
+            List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_email(RideStatus.PENDING, (rideDTO.getPassengers().get(rideDTO.getPassengers().size()-1).getEmail()));
+            if(!rides.isEmpty()) {
+                throw new BadRequestException("Cannot create a ride while you have one already pending!");
+            }
         }
         ride.setPassengers(passengers);
         ride.setStatus(RideStatus.PENDING);
         ride.setLocations(rideDTO.getLocations());
 
         if(ride.getScheduledTime() == null) ride.setScheduledTime(new Date());
-        
         Driver driver = findAvailableDriver(ride, rideDTO.getVehicleType());
         ride.setDriver(driver);
         if (driver != null) {
             ride.setVehicle(driver.getVehicle());
+        } else {
+            iSelectionDriver.emptyAskedDrivers();
+            ride.setStatus(RideStatus.REJECTED);
         }
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
 
+    // TODO : move this to driver service
     private Driver findAvailableDriver(Ride ride, String vehicleType) {
         return iSelectionDriver.findDriver(ride, vehicleType);
     }
@@ -86,6 +92,14 @@ public class RideService implements IRideService {
     public RideDTO findDriversActiveRide(Long id) {
         Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, id).orElseThrow(
                 () -> new NotFoundException("Active ride does not exist!"));
+        return new RideDTO(ride);
+    }
+
+    @Transactional
+    @Override
+    public RideDTO findDriversAcceptedRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACCEPTED, id).orElseThrow(
+                () -> new NotFoundException("Accepted ride does not exist!"));
         return new RideDTO(ride);
     }
 
@@ -116,6 +130,7 @@ public class RideService implements IRideService {
         Ride ride = findRideById(id);
         if (ride.getStatus()==RideStatus.ACCEPTED || ride.getStatus()==RideStatus.PENDING){
             ride.setStatus(RideStatus.REJECTED);
+            iSelectionDriver.emptyAskedDrivers();
             ride = rideRepository.save(ride);
             return new RideDTO(ride);
         }else throw new BadRequestException("Cannot cancel a ride that is not in status PENDING or STARTED!");
@@ -126,7 +141,8 @@ public class RideService implements IRideService {
     public PanicDTO setPanic(PanicDTO reason, Long id, User sender)
     {
         Ride ride = findRideById(id);
-        ride.setStatus(RideStatus.REJECTED);
+        //ride.setStatus(RideStatus.ACTIVE);
+        ride.setPanic(true);
         ride = rideRepository.save(ride);
         String msg;
         if (reason != null) msg= reason.getReason(); else msg = "";
@@ -141,6 +157,7 @@ public class RideService implements IRideService {
         if (ride.getStatus()!= RideStatus.PENDING) throw new BadRequestException("Cannot accept a ride that is not in status PENDING!");
         ride.setStatus(RideStatus.ACCEPTED);
         ride = rideRepository.save(ride);
+        iSelectionDriver.emptyAskedDrivers();
         return new RideDTO(ride);
     }
 
@@ -154,7 +171,7 @@ public class RideService implements IRideService {
         return new RideDTO(ride);
     }
 
-    //perspective of driver
+    // perspective of driver
     @Override
     public RideDTO cancelRide(RejectionDTO reason, Long id) {
         Ride ride = findRideById(id);
@@ -164,7 +181,7 @@ public class RideService implements IRideService {
         if (reason == null) msg = ""; else msg = reason.getReason();;
         Rejection rejection = new Rejection(msg, ride.getDriver(), new Date());
         ride.setRejection(rejection);
-        rejectionRepository.save(rejection);
+        //rejectionRepository.save(rejection);
         ride = rideRepository.save(ride);
         return new RideDTO(ride);
     }
@@ -184,7 +201,7 @@ public class RideService implements IRideService {
     public FavoriteOrder insertFavoriteOrder(FavoriteOrder favoriteOrder, String email) {
         Passenger passengerT = passengerRepository.findByEmail(email);
         List<FavoriteOrder> fo = favoriteOrderRepository.findByPassenger_Id(passengerT.getId());
-        if(fo.size() >=10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
+        if(fo.size() >= 10) throw new BadRequestException("Number of favorite rides cannot exceed 10!");
         Set<Passenger> passengers = new HashSet<>();
         for (Passenger p : favoriteOrder.getPassengers())
         {
@@ -210,5 +227,75 @@ public class RideService implements IRideService {
         if (Objects.equals(order.getPassenger().getId(), p.getId())){
             favoriteOrderRepository.delete(order);
         }
+    }
+
+    @Override
+    @Transactional
+    public RideDTO getPendingRide(Long id) {
+        Passenger passenger = passengerRepository.findById(id).orElse(null);
+        if(passenger != null) {
+            Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.PENDING, id).orElseThrow(
+                    () -> new NotFoundException("The passenger doesn't have an accepted ride!"));
+            return new RideDTO(ride);
+        }
+        else {
+            List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.PENDING, id);
+            if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+            return new RideDTO(rides.get(0));
+        }
+   }
+
+    @Override
+    @Transactional
+    public RideDTO getAcceptedRide(Long id) {
+        Ride ride = rideRepository.findByStatusAndPassengers_id(RideStatus.ACCEPTED, id).orElseThrow(
+                () -> new NotFoundException("The passenger doesn't have an accepted ride!"));
+        return new RideDTO(ride);
+    }
+
+    // @Override
+    // @Transactional
+    // public RideDTO getDriverPendingRide(Long id) {
+    //     List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.PENDING, id);
+    //     if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+    //     return new RideDTO(rides.get(0));
+    // }
+
+    @Override
+    @Transactional
+    public RideDTO getPassengerPendingRide(Long id) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndPassengers_Id(RideStatus.PENDING, id);
+        if(rides.isEmpty()) throw new NotFoundException("The driver doesn't have a ride");
+        return new RideDTO(rides.get(0));
+    }
+    @Transactional
+    @Override
+    public RideDTO getNextRide(Long driverId) {
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
+        if(rides.isEmpty()) return null;
+        Ride ride = null;
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000; //moze poceti 8 minuta kasnije
+        long max = Calendar.getInstance().getTime().getTime() + 5 * 60 * 1000; //moze poceti 5 minuta ranije
+        for (Ride r : rides){
+            if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() <= max)
+                ride = r;
+        }
+        if (ride == null) return null;
+        return new RideDTO(ride);
+    }
+
+    @Override
+    public RideDTO findNextAcceptedRide(Long driverId) {
+        Ride ride = rideRepository.findByStatusAndDriver_id(RideStatus.ACTIVE, driverId).orElse(null);
+        if (ride != null) return new RideDTO(ride);
+        List<Ride> rides = rideRepository.findRidesByStatusAndDriver_Id(RideStatus.ACCEPTED, driverId);
+        if(rides.isEmpty()) return null;
+        ride = rides.get(0);
+        long min = Calendar.getInstance().getTime().getTime() - 8 * 60 * 1000; //moze poceti 8 minuta kasnije
+        for (Ride r : rides){
+            if (min <= r.getScheduledTime().getTime() && r.getScheduledTime().getTime() < ride.getScheduledTime().getTime())
+                ride = r;
+        }
+        return new RideDTO(ride);
     }
 }

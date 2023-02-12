@@ -12,10 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/passenger")
 public class PassengerController {
 
@@ -24,8 +27,7 @@ public class PassengerController {
 
     // create passenger
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO)
-    {
+    public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO passengerDTO) throws MessagingException, UnsupportedEncodingException {
         UserDTO passenger = service.insert(passengerDTO);  // returns passenger with set id
         return new ResponseEntity<UserDTO>(passenger, HttpStatus.OK);
     }
@@ -70,7 +72,7 @@ public class PassengerController {
 
     //get passenger rides
     //todo PAGINATED RIDES
-    @PreAuthorize("hasAnyRole('ADMIN', 'PASSENGER')")
+    @PreAuthorize("hasAnyRole('PASSENGER', 'ADMIN')")
     @GetMapping(value = "/{id}/ride", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AllDTO<RideDTO>> getRidesByPassenger(@PathVariable int id)
     {
@@ -78,5 +80,14 @@ public class PassengerController {
 
         AllDTO<RideDTO> allRides = new AllDTO<>(rides.size(), rides);
         return new ResponseEntity<>(allRides, HttpStatus.OK);
+    }
+
+    // checks if invited passenger (for new ride) exists in database
+    // returns id of added passenger (so that user can create new ride)
+    @PreAuthorize("hasRole('PASSENGER')")
+    @PutMapping(value="/invitation", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> getPassengerIdByEmail(@Valid @RequestBody String[] emails) {
+        List<UserDTO> passengers = service.getByEmails(emails);
+        return new ResponseEntity<>(passengers, HttpStatus.OK);
     }
 }

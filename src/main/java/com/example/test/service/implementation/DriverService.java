@@ -1,5 +1,6 @@
 package com.example.test.service.implementation;
 
+import com.example.test.domain.account.UserChanges;
 import com.example.test.domain.business.WorkingHour;
 import com.example.test.domain.ride.Location;
 import com.example.test.domain.ride.Ride;
@@ -18,6 +19,7 @@ import com.example.test.dto.vehicle.VehicleDTO;
 import com.example.test.enumeration.VehicleTypeName;
 import com.example.test.exception.BadRequestException;
 import com.example.test.exception.NotFoundException;
+import com.example.test.repository.account.IUserChangesRepository;
 import com.example.test.repository.business.IWorkingHourRepository;
 import com.example.test.repository.ride.ILocationRepository;
 import com.example.test.repository.ride.IRideRepository;
@@ -28,7 +30,6 @@ import com.example.test.repository.user.IUserRepository;
 import com.example.test.repository.vehicle.IVehicleRepository;
 import com.example.test.repository.vehicle.IVehicleTypeRepository;
 import com.example.test.service.interfaces.IDriverService;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,6 +63,8 @@ public class DriverService implements IDriverService {
     @Autowired
     IRoleRepository iRoleRepository;
     @Autowired
+    IUserChangesRepository iUserChangesRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
@@ -70,14 +73,15 @@ public class DriverService implements IDriverService {
         if (user.isPresent()) throw new BadRequestException("User with that email already exists!");
         Driver driver = new Driver(driverDTO);
         driver.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
-        driver.setActive(true);
+        driver.setActive(false);
         List<Role> roles = new ArrayList<>();
         roles.add(iRoleRepository.findById(2L).get());
         driver.setRoles(roles);
-        iDriverRepository.save(driver);
-        iUserRepository.save(driver);
-        driverDTO.setId(driver.getId());
-        driverDTO.setPassword(passwordEncoder.encode(driverDTO.getPassword()));
+        driver.setDrivingLicense(driverDTO.getDrivingLicense());
+        driver = iDriverRepository.save(driver);
+        String password = passwordEncoder.encode(driverDTO.getPassword());
+        driverDTO = new UserDTO(driver);
+        driverDTO.setPassword(password);
         return driverDTO;
     }
 
@@ -90,10 +94,32 @@ public class DriverService implements IDriverService {
     }
 
     @Override
+    public AllDTO<Driver> getActiveDrivers() {
+        List<Driver> drivers = iDriverRepository.findByActive(true);
+        return new AllDTO<>(drivers.size(), drivers);
+    }
+
+    @Override
+    public Driver changeActivity(Long id, boolean active) {
+        Driver user = iDriverRepository.findById(id);
+        if(user == null) throw new NotFoundException("Driver does not exist!");
+        user.setActive(active);
+        iDriverRepository.save(user);
+        return user;
+    }
+
+    @Override
     public UserDTO get(Long id) {
         Driver driver =  iDriverRepository.findById(id);
         if (driver == null) throw new NotFoundException("Driver does not exist!");
         return new UserDTO(driver);
+    }
+
+    @Override
+    public Driver getRealDriver(Long id) {
+        Driver driver =  iDriverRepository.findById(id);
+        if (driver == null) throw new NotFoundException("Driver does not exist!");
+        return driver;
     }
 
     @Override
@@ -108,6 +134,10 @@ public class DriverService implements IDriverService {
         roles.add(iRoleRepository.findById(2L).get());
         driver.setRoles(roles);
         iUserRepository.save(driver);
+
+        // delete change in user changes
+        iUserChangesRepository.deleteAllByDriverId(id);
+
         return driverDTO;
     }
 
@@ -165,6 +195,16 @@ public class DriverService implements IDriverService {
         vehicleDTO.setDriverId(driver.getId());
         vehicleDTO.setId(vehicle.getId());
         return vehicleDTO;
+    }
+
+    @Override
+    public VehicleDTO updateVehicleLocation(Long id, Location location) {
+        Vehicle vehicle = this.iVehicleRepository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle does not exist!"));
+        location = iLocationRepository.save(location);
+        vehicle.setCurrentLocation(location);
+        vehicle = iVehicleRepository.save(vehicle);
+        Driver d = iDriverRepository.findByVehicleId(vehicle.getId());
+        return new VehicleDTO(d, vehicle);
     }
 
     @Override
@@ -284,6 +324,42 @@ public class DriverService implements IDriverService {
             // if there is set location from database
         else vehicle.setCurrentLocation(location);
         return vehicle;
+    }
+
+    @Override
+    public UserDTO getChanges(Long id) {
+        UserChanges changes =  iUserChangesRepository.findByDriverId(id);
+        if (changes == null) throw new NotFoundException("Changes for this driver does not exist!");
+        return new UserDTO(changes.getName(), changes.getSurname(), changes.getProfilePicture(),
+                changes.getTelephoneNumber(), changes.getEmail(), changes.getAddress(), "");
+    }
+
+    @Override
+    public void addChanges(Long id, UserDTO userDTO) {
+        Driver driver = iDriverRepository.findById(id);
+
+        UserChanges changes = iUserChangesRepository.findByDriverId(id);
+        if(changes == null) {
+            UserChanges newChanges = new UserChanges(userDTO, driver);
+            iUserChangesRepository.save(newChanges);
+            driver.setChanges(true);
+            iUserRepository.save(driver);
+        }
+        else {
+            changes.setName(userDTO.getName());
+            changes.setSurname(userDTO.getSurname());
+            changes.setTelephoneNumber(userDTO.getTelephoneNumber());
+            changes.setAddress(userDTO.getAddress());
+            changes.setEmail(userDTO.getEmail());
+            iUserChangesRepository.save(changes);
+        }
+    }
+
+    @Override
+    public void deleteDriver(Long id) {
+        Driver driver = iDriverRepository.findById(id);
+        if (driver == null) return;
+        iDriverRepository.delete(driver);
     }
 
     private Driver getDriver(Long id) {

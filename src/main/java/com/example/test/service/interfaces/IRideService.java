@@ -7,6 +7,7 @@ import com.example.test.dto.AllDTO;
 import com.example.test.dto.communication.PanicDTO;
 import com.example.test.dto.communication.RejectionDTO;
 import com.example.test.dto.ride.RideDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 
@@ -15,6 +16,8 @@ public interface IRideService {
     RideDTO insert(RideDTO vehicleType) throws ParseException;
 
     RideDTO findDriversActiveRide(Long id);
+
+    RideDTO findDriversAcceptedRide(Long id);
 
     RideDTO findPassengersActiveRide(Long id);
 
@@ -37,4 +40,17 @@ public interface IRideService {
     AllDTO<FavoriteOrder> getFavoriteOrdersByPassenger(Passenger p);
 
     void deleteFavoriteLocation(Long id, Passenger p);
+
+    RideDTO getPendingRide(Long id);
+    
+    //RideDTO getDriverPendingRide(Long id);
+    
+    RideDTO getPassengerPendingRide(Long id);
+
+    @Transactional
+    RideDTO getAcceptedRide(Long id);
+
+    RideDTO getNextRide(Long driverId);
+
+    RideDTO findNextAcceptedRide(Long driverId);
 }
