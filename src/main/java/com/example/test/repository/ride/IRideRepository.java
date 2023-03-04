@@ -26,5 +26,7 @@ public interface IRideRepository extends JpaRepository<Ride, Long> {
 
     public List<Ride> findRidesByStatusAndDriver_Id(RideStatus status, Long driverId);
     public List<Ride> findRidesByStatusAndPassengers_Id(RideStatus status, Long driverId);
+    @Query("select r.reviews from Ride r where r.id = ?1")
+    public List<Review> findReviewsByRideId(Long id);
     List<Ride> findByStatus(RideStatus status);
 }
